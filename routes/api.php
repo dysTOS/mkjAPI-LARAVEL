@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AusrueckungController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,9 +16,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/ausrueckungen', [AusrueckungController::class, 'index']);
-Route::post('/ausrueckungen', [AusrueckungController::class, 'store']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//Public Routes
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('/ausrueckungen', [AusrueckungController::class, 'index']);
+Route::get('ausrueckungen/{id}', [AusrueckungController::class, 'show']);
+Route::get('/ausrueckungen/search/{name}', [AusrueckungController::class, 'search']);
+
+//Route::resource('ausrueckungen', AusrueckungController::class);
+
+
+//Protected Routes
+Route::group(['middleware' => ['auth:sanctum']], function (){
+    Route::post('/ausrueckungen', [AusrueckungController::class, 'store']);
+    Route::put('/ausrueckungen/{id}', [AusrueckungController::class, 'update']);
+    Route::delete('/ausrueckungen/{id}', [AusrueckungController::class, 'destroy']);
+
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/deleteUser', [AuthController::class, 'deleteUser']);
 });

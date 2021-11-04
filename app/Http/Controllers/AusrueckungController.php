@@ -25,8 +25,10 @@ class AusrueckungController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validation([
-
+        $request->validate([
+            'name' => 'required',
+            'von' => 'required',
+            'bis' => 'required'
         ]);
 
         return Ausrueckung::create($request->all());
@@ -40,7 +42,7 @@ class AusrueckungController extends Controller
      */
     public function show($id)
     {
-        //
+        return Ausrueckung::find($id);
     }
 
     /**
@@ -52,7 +54,9 @@ class AusrueckungController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $ausrueckung = Ausrueckung::find($id);
+        $ausrueckung->update($request->all());
+        return $ausrueckung;
     }
 
     /**
@@ -63,6 +67,12 @@ class AusrueckungController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Ausrueckung::destroy($id);
+    }
+
+
+    public function search($name)
+    {
+        return Ausrueckung::where('name', 'like', '%'.$name.'%')->get();
     }
 }
