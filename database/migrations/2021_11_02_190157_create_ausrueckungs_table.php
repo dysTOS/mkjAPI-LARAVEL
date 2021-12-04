@@ -18,6 +18,8 @@ class CreateAusrueckungsTable extends Migration
             $table->string('name');
             $table->string('beschreibung')->nullable();
             $table->string('infoMusiker')->nullable();
+            $table->string('kategorie')->nullable();
+            $table->string('status')->nullable();
             $table->dateTime('von');
             $table->dateTime('bis');
             $table->timestamps();
