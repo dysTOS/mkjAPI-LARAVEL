@@ -17,16 +17,43 @@ class AusrueckungController extends Controller
         return Ausrueckung::all();
     }
 
+    public function getActualForHomepage()
+    {
+        $actualYear = date('Y') . "-01-01 00:00:00";
+        return Ausrueckung::where('oeffentlich', true)
+            ->where('von', '>=', $actualYear)->orderBy('von', 'asc')->get();
+    }
+
+    public function getFiltered(Request $request)
+    {
+        $request->validate([
+            'vonFilter' => 'required',
+            'bisFilter' => 'required',
+        ]);
+
+        return Ausrueckung::where('von', '>=', $request->get('vonFilter'))
+            ->where('bis', '<=', $request->get('bisFilter'))->get();
+    }
+
+    public function getNextActual()
+    {
+        $actualDate = date("Y-m-d H:i:s");
+        return Ausrueckung::where('von', '>=', $actualDate)->where('oeffentlich', true)
+            ->oldest('von')->first();
+    }
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function create(Request $request)
     {
         $request->validate([
             'name' => 'required',
+            'kategorie' => 'required',
+            'status' => 'required',
             'von' => 'required',
             'bis' => 'required'
         ]);
@@ -40,7 +67,7 @@ class AusrueckungController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function getSingle($id)
     {
         return Ausrueckung::find($id);
     }

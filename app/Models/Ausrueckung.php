@@ -14,6 +14,7 @@ class Ausrueckung extends Model
         'name',
         'beschreibung',
         'infoMusiker',
+        'oeffentlich',
         'kategorie',
         'status',
         'von',
