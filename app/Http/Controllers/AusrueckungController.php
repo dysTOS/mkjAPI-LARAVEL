@@ -32,7 +32,7 @@ class AusrueckungController extends Controller
         ]);
 
         return Ausrueckung::where('von', '>=', $request->get('vonFilter'))
-            ->where('bis', '<=', $request->get('bisFilter'))->get();
+            ->where('von', '<=', $request->get('bisFilter'))->get();
     }
 
     public function getNextActual()

@@ -18,10 +18,8 @@ class DatabaseSeeder extends Seeder
     {
          // \App\Models\ausrueckung::factory(10)->create();
 
-         DB::table('ausrueckungs')->insert([
-            'name' => Str::random(10),
-            'beschreibung' => Str::random(10),
-            'von' => Str::random(10),
-        ]);
+         $this->call([
+                 AusrueckungenSeeder::class
+             ]);
     }
 }
