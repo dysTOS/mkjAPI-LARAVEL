@@ -16,6 +16,8 @@ class Ausrueckung extends Model
         'infoMusiker',
         'oeffentlich',
         'kategorie',
+        'ort',
+        'treffzeit',
         'status',
         'von',
         'bis'

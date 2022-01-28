@@ -12,12 +12,12 @@ class AusrueckungController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getAll()
     {
         return Ausrueckung::all();
     }
 
-    public function getActualForHomepage()
+    public function getActualYearPublic()
     {
         $actualYear = date('Y') . "-01-01 00:00:00";
         return Ausrueckung::where('oeffentlich', true)
@@ -35,11 +35,17 @@ class AusrueckungController extends Controller
             ->where('von', '<=', $request->get('bisFilter'))->get();
     }
 
-    public function getNextActual()
+    public function getNextActualPublic()
     {
         $actualDate = date("Y-m-d H:i:s");
         return Ausrueckung::where('von', '>=', $actualDate)->where('oeffentlich', true)
             ->oldest('von')->first();
+    }
+
+    public function getNextActual()
+    {
+        $actualDate = date("Y-m-d H:i:s");
+        return Ausrueckung::where('von', '>=', $actualDate)->oldest('von')->first();
     }
 
     /**

@@ -17,8 +17,10 @@ class CreateAusrueckungsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('beschreibung')->nullable();
-            $table->string('infoMusiker')->nullable();
             $table->boolean('oeffentlich')->default(true);
+            $table->string('infoMusiker')->nullable();
+            $table->string('ort')->nullable();
+            $table->time('treffzeit')->nullable();
             $table->string('kategorie');
             $table->string('status');
             $table->dateTime('von');

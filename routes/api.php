@@ -23,11 +23,12 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::post('/deleteUser', [AuthController::class, 'deleteUser']);
 
-Route::get('/ausrueckungen', [AusrueckungController::class, 'index']);
+Route::get('/ausrueckungen', [AusrueckungController::class, 'getAll']);
 Route::get('/ausrueckungen/{id}', [AusrueckungController::class, 'getSingle']);
+Route::get('/nextausrueckungpublic', [AusrueckungController::class, 'getNextActualPublic']);
 Route::get('/nextausrueckung', [AusrueckungController::class, 'getNextActual']);
 Route::get('/ausrueckungen/search/{name}', [AusrueckungController::class, 'search']);
-Route::get('/ausrueckungenaktuell', [AusrueckungController::class, 'getActualForHomepage']);
+Route::get('/ausrueckungenaktuellpublic', [AusrueckungController::class, 'getActualYearPublic']);
 Route::post('/ausrueckungenfiltered', [AusrueckungController::class, 'getFiltered']);
 Route::post('/ausrueckungen', [AusrueckungController::class, 'create']);
 Route::put('/ausrueckungen/{id}', [AusrueckungController::class, 'update']);
