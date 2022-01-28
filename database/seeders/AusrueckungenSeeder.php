@@ -16,16 +16,36 @@ class AusrueckungenSeeder extends Seeder
      */
     public function run()
     {
-        for($i = 0; $i < 500; $i++) {
-        DB::table('ausrueckungen')->insert([
-            'name' => Str::random(10),
-            'beschreibung' => Str::random(10),
-            'von' => DateTime::dateTime(),
-            'bis' => DateTime::dateTime(),
-            'kategorie' => Str::random(10),
-            'status' => Str::random(10)
-        ]);
-    }
+        for($i = 0; $i < 100; $i++) {
+            DB::table('ausrueckungen')->insert([
+                'name' => Str::random(10),
+                'beschreibung' => Str::random(10),
+                'von' => DateTime::dateTime(),
+                'bis' => DateTime::dateTime(),
+                'kategorie' => "Weckruf",
+                'status' => "Fixiert"
+            ]);
+        }
+        for($i = 0; $i < 200; $i++) {
+            DB::table('ausrueckungen')->insert([
+                'name' => Str::random(10),
+                'beschreibung' => Str::random(10),
+                'von' => DateTime::dateTime(),
+                'bis' => DateTime::dateTime(),
+                'kategorie' => "Kurkonzert",
+                'status' => "Geplant"
+            ]);
+        }
+        for($i = 0; $i < 100; $i++) {
+            DB::table('ausrueckungen')->insert([
+                'name' => Str::random(10),
+                'beschreibung' => Str::random(10),
+                'von' => DateTime::dateTime(),
+                'bis' => DateTime::dateTime(),
+                'kategorie' => "Ständchen",
+                'status' => "Ersatztermin"
+            ]);
+        }
 
     }
 }
