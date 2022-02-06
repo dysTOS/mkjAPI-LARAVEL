@@ -22,6 +22,7 @@ class AusrueckungenSeeder extends Seeder
                 'beschreibung' => Str::random(10),
                 'von' => DateTime::dateTime(),
                 'bis' => DateTime::dateTime(),
+                'treffzeit' => DateTime::dateTime(),
                 'kategorie' => "Weckruf",
                 'status' => "Fixiert"
             ]);
@@ -32,6 +33,7 @@ class AusrueckungenSeeder extends Seeder
                 'beschreibung' => Str::random(10),
                 'von' => DateTime::dateTime(),
                 'bis' => DateTime::dateTime(),
+                'treffzeit' => DateTime::dateTime(),
                 'kategorie' => "Kurkonzert",
                 'status' => "Geplant"
             ]);
@@ -42,6 +44,7 @@ class AusrueckungenSeeder extends Seeder
                 'beschreibung' => Str::random(10),
                 'von' => DateTime::dateTime(),
                 'bis' => DateTime::dateTime(),
+                'treffzeit' => DateTime::dateTime(),
                 'kategorie' => "Ständchen",
                 'status' => "Ersatztermin"
             ]);

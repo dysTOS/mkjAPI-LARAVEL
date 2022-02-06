@@ -20,7 +20,7 @@ class CreateAusrueckungsTable extends Migration
             $table->boolean('oeffentlich')->default(true);
             $table->string('infoMusiker')->nullable();
             $table->string('ort')->nullable();
-            $table->time('treffzeit')->nullable();
+            $table->string('treffzeit');
             $table->string('kategorie');
             $table->string('status');
             $table->dateTime('von');
