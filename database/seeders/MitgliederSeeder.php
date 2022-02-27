@@ -17,11 +17,6 @@ class MitgliederSeeder extends Seeder
     public function run()
     {
         DB::table('mitglieder')->insert([
-            'vorname' => 'Roland',
-            'zuname' => 'Sams',
-            'email' => 'rolandsams@gmail.com',
-        ]);
-        DB::table('mitglieder')->insert([
             'vorname' => 'Viktoria',
             'zuname' => 'Sams',
             'email' => 'viktoriasams@gmail.com',
