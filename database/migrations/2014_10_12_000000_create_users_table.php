@@ -17,10 +17,19 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+
+            $table->integer('mitglied_id')->nullable();
+            $table->foreign('mitglied_id')
+                ->references('id')
+                ->on('mitglieder')
+                ->onDelete('cascade');
+
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('passwort');
             $table->rememberToken();
             $table->timestamps();
+
+
         });
     }
 
