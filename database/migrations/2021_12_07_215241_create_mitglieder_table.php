@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateMitgliederTable extends Migration
@@ -43,6 +44,12 @@ class CreateMitgliederTable extends Migration
 
 
         });
+
+        DB::table('mitglieder')->insert([
+            'vorname' => 'Roland',
+            'zuname' => 'Sams',
+            'email' => 'rolandsams@gmail.com',
+        ]);
     }
 
     /**
