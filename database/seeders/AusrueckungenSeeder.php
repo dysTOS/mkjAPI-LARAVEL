@@ -16,7 +16,7 @@ class AusrueckungenSeeder extends Seeder
      */
     public function run()
     {
-        for($i = 0; $i < 100; $i++) {
+        for($i = 0; $i < 10; $i++) {
             DB::table('ausrueckungen')->insert([
                 'name' => Str::random(10),
                 'beschreibung' => Str::random(10),
@@ -27,7 +27,7 @@ class AusrueckungenSeeder extends Seeder
                 'status' => "Fixiert"
             ]);
         }
-        for($i = 0; $i < 200; $i++) {
+        for($i = 0; $i < 20; $i++) {
             DB::table('ausrueckungen')->insert([
                 'name' => Str::random(10),
                 'beschreibung' => Str::random(10),
@@ -38,7 +38,7 @@ class AusrueckungenSeeder extends Seeder
                 'status' => "Geplant"
             ]);
         }
-        for($i = 0; $i < 100; $i++) {
+        for($i = 0; $i < 10; $i++) {
             DB::table('ausrueckungen')->insert([
                 'name' => Str::random(10),
                 'beschreibung' => Str::random(10),

@@ -20,10 +20,10 @@ class CreateAusrueckungsTable extends Migration
             $table->boolean('oeffentlich')->default(true);
             $table->string('infoMusiker')->nullable();
             $table->string('ort')->nullable();
-            $table->string('treffzeit');
+            $table->string('treffzeit')->nullable();
             $table->string('kategorie');
             $table->string('status');
-            $table->dateTime('von');
+            $table->dateTime('von')->index();
             $table->dateTime('bis');
             $table->timestamps();
         });
@@ -36,6 +36,6 @@ class CreateAusrueckungsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ausrueckungs');
+        Schema::dropIfExists('ausrueckungen');
     }
 }
