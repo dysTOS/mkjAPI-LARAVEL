@@ -26,20 +26,20 @@ class CreateMitgliederTable extends Migration
             $table->string('vorname');
             $table->string('zuname');
             $table->string('email')->unique();
-            $table->string('titel_vor')->nullable();
-            $table->string('titel_nach')->nullable();
-            $table->date('geb_datum')->nullable();
+            $table->string('titelVor')->nullable();
+            $table->string('titelNach')->nullable();
+            $table->date('geburtsdatum')->nullable();
             $table->string('geschlecht')->nullable();
             $table->string('strasse')->nullable();
             $table->string('hausnummer')->nullable();
             $table->string('ort')->nullable();
             $table->string('plz')->nullable();
-            $table->string('tel_haupt')->nullable();
-            $table->string('tel_mobil')->nullable();
+            $table->string('telefonHaupt')->nullable();
+            $table->string('telefonMobil')->nullable();
             $table->string('beruf')->nullable();
             $table->boolean('aktiv')->nullable();
-            $table->date('eintritt_datum')->nullable();
-            $table->date('austritt_datum')->nullable();
+            $table->date('eintrittDatum')->nullable();
+            $table->date('austrittDatum')->nullable();
             $table->timestamps();
 
 

@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -22,31 +23,31 @@ class AuthController extends Controller
         $mitglied = Mitglieder::where('email', $fields['email'])->first();
 
         if (!$mitglied || $mitglied->vorname != $fields['vorname'] || $mitglied->zuname != $fields['zuname']) {
-            return response([
+            /*return response([
                 'message' => 'Falsche Zugangsdaten!'
-            ], 401);
-        }
+            ], 401);*/
+            throw ValidationException::withMessages(['Falsche Zugangsdaten']);
 
-        /*$roles = $mitglied->roles()->get();
-        if (count($roles) > 0) {
-            foreach ($roles as $role){
-                $mitglied->roles()->attach($role);
-            }
-        }
-        else{
-            $standardRole = Role::where('role', '=', 'mitglied')->first();
-            $mitglied->roles()->attach($standardRole);
         }
 
         if($mitglied->email == "rolandsams@gmail.com"){
+            $standardRole = Role::where('role', '=', 'mitglied')->first();
+            $mitglied->roles()->attach($standardRole);
             $adminRole = Role::where('role', '=', 'admin')->get();
-            $mitglied->roles()->attach($adminRole); // 1|B0cXVAPQVhXPVu9i2UV1JzsMFphgixTpiswPZIcB
+            $mitglied->roles()->attach($adminRole);
         }
         if($mitglied->email == "viktoriasams@gmail.com"){
+            $standardRole = Role::where('role', '=', 'mitglied')->first();
+            $mitglied->roles()->attach($standardRole);
             $adminRole = Role::where('role', '=', 'ausschuss')->get();
-            $mitglied->roles()->attach($adminRole); // 2|z8UB4bp0dA5bO3nv7NlmeAAy0bnNPqozeiSsgKgz
-        }*/
+            $mitglied->roles()->attach($adminRole);
+        }
 
+        $roles = $mitglied->roles()->get();
+        if (count($roles) == 0) {
+            $standardRole = Role::where('role', '=', 'mitglied')->first();
+            $mitglied->roles()->attach($standardRole);
+        }
 
         $user = new User();
         $user->name = $fields['vorname'] . ' ' . $fields['zuname'];
@@ -58,7 +59,7 @@ class AuthController extends Controller
         $mitglied->save();
 
         return response([
-            'message' => 'User erfolgreich erstellt!'
+            'message' => 'Registrierung erfolgreich!'
         ], 201);
     }
 
@@ -90,6 +91,7 @@ class AuthController extends Controller
 
         $response = [
             'user' => $user,
+            'mitglied' => $mitglied,
             'roles' => $mitglied->roles()->get(),
             'token' => $token
         ];
@@ -97,9 +99,20 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
+    public function getCurrentUser(Request $request){
+        $user = $request->user();
+        $mitglied = Mitglieder::where('user_id', $user->id)->first();
+
+        return response([
+            'user' => $user,
+            'mitglied' => $mitglied,
+            'roles' => $mitglied->roles()->get(),
+        ], 200);
+    }
+
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
+        $request->user()->currentAccessToken()->delete();
 
         return [
             'message' => 'Erfolgreich abgemeldet!'
