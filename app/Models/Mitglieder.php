@@ -25,20 +25,20 @@ class Mitglieder extends Model
     protected $fillable = [
         'vorname',
         'zuname',
-        'titel_vor',
-        'titel_nach',
-        'geb_dat',
+        'titelVor',
+        'titelNach',
+        'geburtsdatum',
         'geschlecht',
         'strasse',
         'hausnummer',
         'ort',
         'plz',
-        'tel_haupt',
-        'tel_mobil',
+        'telefonHaupt',
+        'telefonMobil',
         'email',
         'beruf',
         'aktiv',
-        'eintritt_datum',
-        'austritt_datum'
+        'eintrittDatum',
+        'austrittDatum'
     ];
 }
