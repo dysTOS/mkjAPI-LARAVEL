@@ -22,12 +22,8 @@ class AuthController extends Controller
 
         $mitglied = Mitglieder::where('email', $fields['email'])->first();
 
-        if (!$mitglied || $mitglied->vorname != $fields['vorname'] || $mitglied->zuname != $fields['zuname']) {
-            /*return response([
-                'message' => 'Falsche Zugangsdaten!'
-            ], 401);*/
-            throw ValidationException::withMessages(['Falsche Zugangsdaten']);
-
+        if (!$mitglied || $mitglied->vorname != $fields['vorname'] || $mitglied->zuname != $fields['zuname']){
+            abort(403, "Falsche Zugangsdaten!");
         }
 
         if($mitglied->email == "rolandsams@gmail.com"){
@@ -75,9 +71,7 @@ class AuthController extends Controller
 
         //Check password
         if (!$user || !Hash::check($fields['passwort'], $user->passwort)) {
-            return response([
-                'message' => 'Login-Daten falsch!'
-            ], 401);
+            abort(403, "Falsche Login Daten!");
         }
 
         $mitglied = Mitglieder::where('user_id', $user->id)->first();
@@ -115,7 +109,7 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return [
-            'message' => 'Erfolgreich abgemeldet!'
+            'success' => true
         ];
     }
 
@@ -128,7 +122,7 @@ class AuthController extends Controller
         $request->user()->tokens()->delete();
         User::destroy($user->id);
         return [
-            'message' => 'User successfully deleted!'
+            'success' => true
         ];
     }
 
