@@ -37,6 +37,9 @@ class CreateRolesTable extends Migration
         DB::table('roles')->insert([
             'role' => 'ausschuss'
         ]);
+        DB::table('roles')->insert([
+            'role' => 'festausschuss'
+        ]);
     }
 
     /**

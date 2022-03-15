@@ -16,7 +16,7 @@ class MitgliederSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('mitglieder')->insert([
+        /*DB::table('mitglieder')->insert([
             'vorname' => 'Viktoria',
             'zuname' => 'Sams',
             'email' => 'viktoriasams@gmail.com',
@@ -30,9 +30,9 @@ class MitgliederSeeder extends Seeder
             'vorname' => 'Manueala',
             'zuname' => 'Sams',
             'email' => 'manuelasams@gmail.com',
-        ]);
+        ]);*/
 
-        for($i = 0; $i < 50; $i++) {
+        /*for($i = 0; $i < 50; $i++) {
             DB::table('mitglieder')->insert([
                 'vorname' => Str::random(10),
                 'zuname' => Str::random(10),
@@ -52,6 +52,6 @@ class MitgliederSeeder extends Seeder
                 'eintrittDatum' => DateTime::date(),
                 'austrittDatum' => DateTime::date(),
             ]);
-        }
+        }*/
     }
 }

@@ -25,10 +25,10 @@ class CreateMitgliederTable extends Migration
 
             $table->string('vorname');
             $table->string('zuname');
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('titelVor')->nullable();
             $table->string('titelNach')->nullable();
-            $table->date('geburtsdatum')->nullable();
+            $table->string('geburtsdatum')->nullable();
             $table->string('geschlecht')->nullable();
             $table->string('strasse')->nullable();
             $table->string('hausnummer')->nullable();
@@ -38,18 +38,18 @@ class CreateMitgliederTable extends Migration
             $table->string('telefonMobil')->nullable();
             $table->string('beruf')->nullable();
             $table->boolean('aktiv')->nullable();
-            $table->date('eintrittDatum')->nullable();
-            $table->date('austrittDatum')->nullable();
+            $table->string('eintrittDatum')->nullable();
+            $table->string('austrittDatum')->nullable();
             $table->timestamps();
 
 
         });
 
-        DB::table('mitglieder')->insert([
+        /*DB::table('mitglieder')->insert([
             'vorname' => 'Roland',
             'zuname' => 'Sams',
             'email' => 'rolandsams@gmail.com',
-        ]);
+        ]);*/
     }
 
     /**

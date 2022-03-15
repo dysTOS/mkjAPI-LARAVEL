@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Mitglieder;
 use App\Models\Role;
+use App\Models\Token;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -18,16 +19,10 @@ class RoleController extends Controller
         $mitglied = Mitglieder::find($fields['mitglied_id']);
         $role = Role::find($fields['role_id']);
         if(!$mitglied || !$role){
-            return response([
-                'success' => false,
-               'error' => 'Falsche IDs!'
-            ]);
+            abort(403, "IDs falsch!");
         }
         if($mitglied->roles()->get()->contains($role)){
-            return response([
-                'success' => false,
-                'error' => 'Rolle bereits vorhanden!'
-            ]);
+            abort(403, "Mitglied hat Rolle bereits erhalten.");
         }
         $mitglied->roles()->attach($role);
 
@@ -35,7 +30,8 @@ class RoleController extends Controller
         $user->tokens()->delete();
 
         return response([
-            'success' => $mitglied->roles()->get()->contains($role)
+            'success' => $mitglied->roles()->get()->contains($role),
+            'message' => 'Rolle zugewiesen!'
         ]);
     }
 
@@ -48,16 +44,10 @@ class RoleController extends Controller
         $mitglied = Mitglieder::find($fields['mitglied_id']);
         $role = Role::find($fields['role_id']);
         if(!$mitglied || !$role){
-            return response([
-                'success' => false,
-                'error' => 'Falsche IDs!'
-            ]);
+            abort(403, "IDs falsch!");
         }
         if(!$mitglied->roles()->get()->contains($role)){
-            return response([
-                'success' => true,
-                'error' => 'Rolle bereits entfernt!'
-            ]);
+            abort(403, "Rolle nicht vorhanden!");
         }
         $mitglied->roles()->detach($role);
 
@@ -65,7 +55,8 @@ class RoleController extends Controller
         $user->tokens()->delete();
 
         return response([
-            'success' => !$mitglied->roles()->get()->contains($role)
+            'success' => !$mitglied->roles()->get()->contains($role),
+            'message' => 'Rolle entfernt!'
         ]);
     }
 
@@ -89,11 +80,26 @@ class RoleController extends Controller
             'id' => 'required'
         ]);
 
+        $mitglied = Mitglieder::find($fields['id']);
+        if(!$mitglied){
+            abort(403,
+               'Kein Mitglied gefunden!'
+            );
+        }
+        return $mitglied->roles()->get();
+    }
+
+    public function getRolesForUser(Request $request)
+    {
+        $fields = $request->validate([
+            'id' => 'required'
+        ]);
+
         $mitglied = Mitglieder::where('user_id', $fields['id'])->first();
         if(!$mitglied){
-            return response([
-               'error' => 'Mitglied nicht gefunden oder kein User-Account genutzt!'
-            ]);
+            abort(403,
+                'Kein User gefunden!'
+            );
         }
         return $mitglied->roles()->get();
     }
@@ -108,10 +114,5 @@ class RoleController extends Controller
     public function destroy($id)
     {
         Role::destroy($id);
-    }
-
-    public function search($name)
-    {
-        return Role::where('role', 'like', '%'.$name.'%')->get();
     }
 }

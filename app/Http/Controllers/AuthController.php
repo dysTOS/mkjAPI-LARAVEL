@@ -107,7 +107,6 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-
         return [
             'success' => true
         ];
@@ -119,7 +118,7 @@ class AuthController extends Controller
             'email' => 'required'
         ]);
         $user = User::where('email', $fields['email'])->first();
-        $request->user()->tokens()->delete();
+        $user->tokens()->delete();
         User::destroy($user->id);
         return [
             'success' => true

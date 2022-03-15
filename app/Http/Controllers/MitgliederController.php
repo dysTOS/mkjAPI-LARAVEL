@@ -18,6 +18,11 @@ class MitgliederController extends Controller
         return Mitglieder::all();
     }
 
+    public function getAllActive()
+    {
+        return Mitglieder::where('aktiv', true)->get();
+    }
+
 
     /**
      * Store a newly created resource in storage.

@@ -45,8 +45,8 @@ Route::group(['middleware' => ['auth:sanctum', 'ability:admin']], function (){
     Route::post('/deleteuser', [AuthController::class, 'deleteUser']);
 
     Route::get('/roles', [RoleController::class, 'getAll']);
-    Route::post('/getroles', [RoleController::class, 'getRolesForMitglied']);
-    Route::get('/roles/search/{name}', [RoleController::class, 'search']);
+    Route::post('/getrolesformitglied', [RoleController::class, 'getRolesForMitglied']);
+    Route::post('/getrolesforuser', [RoleController::class, 'getRolesForUser']);
     Route::post('/roles', [RoleController::class, 'create']);
     Route::put('/roles/{id}', [RoleController::class, 'update']);
     Route::delete('/roles/{id}', [RoleController::class, 'destroy']);
@@ -61,6 +61,7 @@ Route::group(['middleware' => ['auth:sanctum', 'ability:ausschuss,admin']], func
     Route::delete('/ausrueckungen/{id}', [AusrueckungController::class, 'destroy']);
 
     Route::get('/mitglieder', [MitgliederController::class, 'getAll']);
+    Route::get('/mitgliederaktiv', [MitgliederController::class, 'getAllActive']);
     Route::get('/mitglieder/{id}', [MitgliederController::class, 'getSingle']);
     Route::get('/mitglieder/search/{name}', [MitgliederController::class, 'search']);
     Route::post('/mitglieder', [MitgliederController::class, 'create']);
