@@ -3,6 +3,7 @@
 use App\Http\Controllers\AusrueckungController;
 use App\Http\Controllers\MitgliederController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NotenController;
 use App\Http\Controllers\RoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
