@@ -27,12 +27,14 @@ class RoleController extends Controller
         $mitglied->roles()->attach($role);
 
         $user = User::find($mitglied->user_id);
-        $user->tokens()->delete();
+        if($user) {
+            $user->tokens()->delete();
+        }
 
         return response([
             'success' => $mitglied->roles()->get()->contains($role),
-            'message' => 'Rolle zugewiesen!'
-        ]);
+            'message' => 'Rolle '.$role->role.' zugewiesen!'
+        ], 200);
     }
 
     public function detachRole(Request $request){
@@ -52,12 +54,14 @@ class RoleController extends Controller
         $mitglied->roles()->detach($role);
 
         $user = User::find($mitglied->user_id);
-        $user->tokens()->delete();
+        if($user) {
+            $user->tokens()->delete();
+        }
 
         return response([
             'success' => !$mitglied->roles()->get()->contains($role),
-            'message' => 'Rolle entfernt!'
-        ]);
+            'message' => 'Rolle '. $role->role.' entfernt!'
+        ], 200);
     }
 
     public function getAll()

@@ -9,6 +9,12 @@ class Ausrueckung extends Model
 {
     use HasFactory;
 
+    public function noten()
+    {
+        return $this->belongsToMany(Noten::class, 'ausrueckung_noten',
+            'ausrueckung_id', 'noten_id');
+    }
+
     protected $table = 'ausrueckungen';
     protected $fillable = [
         'name',

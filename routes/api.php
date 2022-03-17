@@ -36,6 +36,8 @@ Route::group(['middleware' => ['auth:sanctum', 'ability:mitglied']], function ()
     Route::get('/ausrueckungen/search/{name}', [AusrueckungController::class, 'search']);
     Route::post('/ausrueckungenfiltered', [AusrueckungController::class, 'getFiltered']);
 
+    Route::get('/noten', [NotenController::class, 'getAll']);
+
     Route::post('/user', [AuthController::class, 'getCurrentUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
