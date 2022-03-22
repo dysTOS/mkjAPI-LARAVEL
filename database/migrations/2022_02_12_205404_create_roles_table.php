@@ -17,28 +17,26 @@ class CreateRolesTable extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->string('role');
-
-//            $table->integer('mitglieder_id')->nullable();
-//            $table->foreign('mitglieder_id')
-//                ->references('mitglieder_id')
-//                ->on('role_mitglied')
-//                ->onDelete('cascade');
-
+            $table->string('name');
             $table->timestamps();
         });
 
         //initially create all Roles
         DB::table('roles')->insert([
-            'role' => 'mitglied'
+            'role' => 'mitglied',
+            'name' => 'Mitglied'
         ]);
         DB::table('roles')->insert([
-            'role' => 'admin'
+            'role' => 'admin',
+            'name' => 'Admin',
         ]);
         DB::table('roles')->insert([
-            'role' => 'ausschuss'
+            'role' => 'ausschuss',
+            'name' => 'Ausschuss'
         ]);
         DB::table('roles')->insert([
-            'role' => 'festausschuss'
+            'role' => 'festausschuss',
+            'name' => 'Festausschuss'
         ]);
     }
 
