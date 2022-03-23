@@ -12,7 +12,13 @@ class Ausrueckung extends Model
     public function noten()
     {
         return $this->belongsToMany(Noten::class, 'ausrueckung_noten',
-            'ausrueckung_id', 'noten_id');
+            'ausrueckung_id', 'noten_id')->withTimestamps();
+    }
+
+    public function mitglieder()
+    {
+        return $this->belongsToMany(Mitglieder::class, 'ausrueckung_mitglied',
+            'ausrueckung_id', 'mitglied_id')->withTimestamps();
     }
 
     protected $table = 'ausrueckungen';

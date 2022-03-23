@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAusrueckungNotenTable extends Migration
+class CreateAusrueckungMitgliedTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateAusrueckungNotenTable extends Migration
      */
     public function up()
     {
-        Schema::create('ausrueckung_noten', function (Blueprint $table) {
+        Schema::create('ausrueckung_mitglied', function (Blueprint $table) {
             $table->integer('ausrueckung_id')->unsigned()->index();
             $table->foreign('ausrueckung_id')->references('id')->on('ausrueckungen')->onDelete('cascade');
 
-            $table->integer('noten_id')->unsigned()->index();
-            $table->foreign('noten_id')->references('id')->on('noten')->onDelete('cascade');
+            $table->integer('mitglied_id')->unsigned()->index();
+            $table->foreign('mitglied_id')->references('id')->on('mitglieder')->onDelete('cascade');
 
             $table->timestamps();
 
-            $table->primary(['ausrueckung_id', 'noten_id']);
+            $table->primary(['ausrueckung_id', 'mitglied_id']);
         });
     }
 
@@ -33,6 +33,6 @@ class CreateAusrueckungNotenTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ausrueckung_noten');
+        Schema::dropIfExists('ausrueckung_mitglied');
     }
 }

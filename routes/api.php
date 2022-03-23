@@ -38,7 +38,6 @@ Route::group(['middleware' => ['auth:sanctum', 'ability:mitglied']], function ()
     Route::post('/ausrueckungenfiltered', [AusrueckungController::class, 'getFiltered']);
 
     Route::get('/noten', [NotenController::class, 'getAll']);
-    Route::get('/notenausrueckung/{id}', [NotenController::class, 'getNotenOfAusrueckung']);
     Route::get('/noten/search/{name}', [NotenController::class, 'search']);
 
     Route::post('/user', [AuthController::class, 'getCurrentUser']);
@@ -72,11 +71,15 @@ Route::group(['middleware' => ['auth:sanctum', 'ability:ausschuss,admin']], func
     Route::post('/mitglieder', [MitgliederController::class, 'create']);
     Route::put('/mitglieder/{id}', [MitgliederController::class, 'update']);
     Route::delete('/mitglieder/{id}', [MitgliederController::class, 'destroy']);
+    Route::post('/addmitglied', [MitgliederController::class, 'attachMitglied']);
+    Route::post('/removemitglied', [MitgliederController::class, 'detachMitglied']);
+    Route::get('/mitgliederausrueckung/{id}', [MitgliederController::class, 'getMitgliederOfAusrueckung']);
 
     Route::post('/noten', [NotenController::class, 'create']);
     Route::put('/noten/{id}', [NotenController::class, 'update']);
     Route::delete('/noten/{id}', [NotenController::class, 'destroy']);
     Route::post('/addnoten', [NotenController::class, 'attachNoten']);
     Route::post('/removenoten', [NotenController::class, 'detachNoten']);
+    Route::get('/notenausrueckung/{id}', [NotenController::class, 'getNotenOfAusrueckung']);
 
 });

@@ -21,6 +21,12 @@ class Mitglieder extends Model
             'role_mitglied', 'mitglied_id', 'role_id');
     }
 
+    public function ausrueckungen()
+    {
+        return $this->belongsToMany(Ausrueckung::class,
+            'ausrueckung_mitglied', 'mitglied_id', 'ausrueckung_id')->withTimestamps();
+    }
+
 
     protected $table = 'mitglieder';
     protected $fillable = [

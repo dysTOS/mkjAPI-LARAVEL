@@ -2,17 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ausrueckung;
+use App\Models\Noten;
 use Illuminate\Http\Request;
 use App\Models\Mitglieder;
 use Validator;
 
 class MitgliederController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function attachMitglied(Request $request){
+        $fields = $request->validate([
+            'mitglied_id' => 'required',
+            'ausrueckung_id' => 'required'
+        ]);
+
+        $mitglied = Mitglieder::find($fields['mitglied_id']);
+        $ausrueckung = Ausrueckung::find($fields['ausrueckung_id']);
+        $ausrueckung->mitglieder()->attach($mitglied);
+
+        return response([
+            'success' => $ausrueckung->mitglieder()->get()->contains($mitglied),
+            'message' => 'Mitglied '.$mitglied->vorname.' '.$mitglied->zuname.' zugewiesen!'
+        ], 200);
+    }
+    public function detachMitglied(Request $request){
+        $fields = $request->validate([
+            'mitglied_id' => 'required',
+            'ausrueckung_id' => 'required'
+        ]);
+
+        $mitglied = Mitglieder::find($fields['mitglied_id']);
+        $ausrueckung = Ausrueckung::find($fields['ausrueckung_id']);
+        $ausrueckung->mitglieder()->detach($mitglied);
+
+        return response([
+            'success' => !ausrueckung->mitglieder()->get()->contains($mitglied),
+            'message' => 'Mitglied '.$mitglied->vorname.' '.$mitglied->zuname.' entfernt!'
+        ], 200);
+    }
     public function getAll()
     {
         return Mitglieder::all();
@@ -23,13 +50,12 @@ class MitgliederController extends Controller
         return Mitglieder::where('aktiv', true)->get();
     }
 
+    public function getMitgliederOfAusrueckung($id){
+        $ausrueckung = Ausrueckung::find($id);
+        $mitglieder = $ausrueckung->mitglieder()->get();
+        return $mitglieder;
+    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function create(Request $request)
     {
         $request->validate([
@@ -41,24 +67,11 @@ class MitgliederController extends Controller
         return Mitglieder::create($request->all());
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function getSingle($id)
     {
         return Mitglieder::find($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $mitglied = Mitglieder::find($id);
@@ -66,12 +79,6 @@ class MitgliederController extends Controller
         return $mitglied;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         Mitglieder::destroy($id);
