@@ -36,7 +36,7 @@ class MitgliederController extends Controller
         $ausrueckung->mitglieder()->detach($mitglied);
 
         return response([
-            'success' => !ausrueckung->mitglieder()->get()->contains($mitglied),
+            'success' => !$ausrueckung->mitglieder()->get()->contains($mitglied),
             'message' => 'Mitglied '.$mitglied->vorname.' '.$mitglied->zuname.' entfernt!'
         ], 200);
     }

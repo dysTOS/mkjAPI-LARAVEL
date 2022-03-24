@@ -33,7 +33,7 @@ class RoleController extends Controller
 
         return response([
             'success' => $mitglied->roles()->get()->contains($role),
-            'message' => 'Rolle '.$role->role.' zugewiesen!'
+            'message' => 'Rolle '.$role->name.' zugewiesen!'
         ], 200);
     }
 
@@ -60,7 +60,7 @@ class RoleController extends Controller
 
         return response([
             'success' => !$mitglied->roles()->get()->contains($role),
-            'message' => 'Rolle '. $role->role.' entfernt!'
+            'message' => 'Rolle '. $role->name.' entfernt!'
         ], 200);
     }
 
