@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Ausrueckung;
 use App\Models\Noten;
 use Illuminate\Http\Request;
+use function PHPUnit\Framework\throwException;
 
 class NotenController extends Controller
 {
     public function attachNoten(Request $request){
+
         $fields = $request->validate([
             'noten_id' => 'required',
             'ausrueckung_id' => 'required'
@@ -16,6 +18,10 @@ class NotenController extends Controller
 
         $noten = Noten::find($fields['noten_id']);
         $ausrueckung = Ausrueckung::find($fields['ausrueckung_id']);
+
+        if($ausrueckung->noten()->get()->contains($noten)){
+            throw new \Exception('Stück bereits zugewiesen!');
+        }
         $ausrueckung->noten()->attach($noten);
 
         return response([
