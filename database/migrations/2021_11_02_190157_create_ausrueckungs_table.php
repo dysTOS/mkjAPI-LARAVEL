@@ -14,7 +14,7 @@ class CreateAusrueckungsTable extends Migration
     public function up()
     {
         Schema::create('ausrueckungen', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->string('name');
             $table->string('beschreibung')->nullable();
             $table->boolean('oeffentlich')->default(true);

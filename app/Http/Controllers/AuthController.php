@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -26,16 +27,10 @@ class AuthController extends Controller
             abort(403, "Falsche Zugangsdaten!");
         }
 
-        if($mitglied->email == "rolandsams@gmail.com"){
+        if($mitglied->email == "rolandsams@gmail.com") {
             $standardRole = Role::where('role', '=', 'mitglied')->first();
             $mitglied->roles()->attach($standardRole);
             $adminRole = Role::where('role', '=', 'admin')->get();
-            $mitglied->roles()->attach($adminRole);
-        }
-        if($mitglied->email == "viktoriasams@gmail.com"){
-            $standardRole = Role::where('role', '=', 'mitglied')->first();
-            $mitglied->roles()->attach($standardRole);
-            $adminRole = Role::where('role', '=', 'ausschuss')->get();
             $mitglied->roles()->attach($adminRole);
         }
 

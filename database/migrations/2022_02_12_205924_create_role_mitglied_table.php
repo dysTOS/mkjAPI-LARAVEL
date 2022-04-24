@@ -14,13 +14,13 @@ class CreateRoleMitgliedTable extends Migration
     public function up()
     {
         Schema::create('role_mitglied', function (Blueprint $table) {
-            $table->integer('mitglied_id')->unsigned()->index();
+            $table->uuid('mitglied_id')->index();
             $table->foreign('mitglied_id')->references('id')->on('mitglieder')->onDelete('cascade');
 
-            $table->integer('role_id')->unsigned()->index();
+            $table->uuid('role_id')->index();
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
 
-            $table->primary(['mitglied_id', 'role_id']);
+            /*$table->primary(['mitglied_id', 'role_id']);*/
         });
     }
 

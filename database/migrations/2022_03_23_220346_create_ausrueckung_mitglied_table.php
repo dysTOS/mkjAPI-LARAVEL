@@ -14,15 +14,13 @@ class CreateAusrueckungMitgliedTable extends Migration
     public function up()
     {
         Schema::create('ausrueckung_mitglied', function (Blueprint $table) {
-            $table->integer('ausrueckung_id')->unsigned()->index();
+            $table->uuid('ausrueckung_id')->index();
             $table->foreign('ausrueckung_id')->references('id')->on('ausrueckungen')->onDelete('cascade');
 
-            $table->integer('mitglied_id')->unsigned()->index();
+            $table->uuid('mitglied_id')->index();
             $table->foreign('mitglied_id')->references('id')->on('mitglieder')->onDelete('cascade');
 
-            $table->timestamps();
-
-            $table->primary(['ausrueckung_id', 'mitglied_id']);
+            /*$table->primary(['ausrueckung_id', 'mitglied_id']);*/
         });
     }
 

@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 
 class Mitglieder extends Model
 {
-    use HasFactory;
+    use HasFactory, Uuids;
 
     public function user()
     {
@@ -24,7 +25,7 @@ class Mitglieder extends Model
     public function ausrueckungen()
     {
         return $this->belongsToMany(Ausrueckung::class,
-            'ausrueckung_mitglied', 'mitglied_id', 'ausrueckung_id')->withTimestamps();
+            'ausrueckung_mitglied', 'mitglied_id', 'ausrueckung_id');
     }
 
 

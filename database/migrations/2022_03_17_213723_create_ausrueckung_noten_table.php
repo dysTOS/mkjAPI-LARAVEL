@@ -14,15 +14,13 @@ class CreateAusrueckungNotenTable extends Migration
     public function up()
     {
         Schema::create('ausrueckung_noten', function (Blueprint $table) {
-            $table->integer('ausrueckung_id')->unsigned()->index();
+            $table->uuid('ausrueckung_id')->index();
             $table->foreign('ausrueckung_id')->references('id')->on('ausrueckungen')->onDelete('cascade');
 
-            $table->integer('noten_id')->unsigned()->index();
+            $table->uuid('noten_id')->index();
             $table->foreign('noten_id')->references('id')->on('noten')->onDelete('cascade');
 
-            $table->timestamps();
-
-            $table->primary(['ausrueckung_id', 'noten_id']);
+            /*$table->primary(['ausrueckung_id', 'noten_id']);*/
         });
     }
 

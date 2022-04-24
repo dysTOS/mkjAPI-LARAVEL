@@ -14,7 +14,7 @@ class CreateNotenTable extends Migration
     public function up()
     {
         Schema::create('noten', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->string('inventarId')->nullable();
             $table->string('titel');
             $table->string('komponist')->nullable();
