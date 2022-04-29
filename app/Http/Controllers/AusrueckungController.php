@@ -58,6 +58,17 @@ class AusrueckungController extends Controller
         return Ausrueckung::create($request->all());
     }
 
+    public function duplicate(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+        ]);
+
+        $duplicate = Ausrueckung::find($request->get('id'));
+        $duplicate->id = null;
+        return Ausrueckung::create($duplicate);
+    }
+
     public function getSingle($id)
     {
         return Ausrueckung::find($id);
