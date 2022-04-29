@@ -23,8 +23,10 @@ class CreateAusrueckungsTable extends Migration
             $table->string('treffzeit')->nullable();
             $table->string('kategorie');
             $table->string('status');
-            $table->dateTime('von')->index();
-            $table->dateTime('bis');
+            $table->date('vonDatum')->index();
+            $table->date('bisDatum');
+            $table->string('vonZeit')->nullable();
+            $table->string('bisZeit')->nullable();
             $table->timestamps();
         });
     }

@@ -16,9 +16,9 @@ class AusrueckungController extends Controller
 
     public function getActualYearPublic()
     {
-        $actualYear = date('Y') . "-01-01 00:00:00";
+        $actualYear = date('Y') . "-01-01";
         return Ausrueckung::where('oeffentlich', true)
-            ->where('von', '>=', $actualYear)->orderBy('von', 'asc')->get();
+            ->where('vonDatum', '>=', $actualYear)->orderBy('vonDatum', 'asc')->get();
     }
 
     public function getFiltered(Request $request)
@@ -28,21 +28,21 @@ class AusrueckungController extends Controller
             'bisFilter' => 'required',
         ]);
 
-        return Ausrueckung::where('von', '>=', $request->get('vonFilter'))
-            ->where('von', '<=', $request->get('bisFilter'))->get();
+        return Ausrueckung::where('vonDatum', '>=', $request->get('vonFilter'))
+            ->where('vonDatum', '<=', $request->get('bisFilter'))->get();
     }
 
     public function getNextActualPublic()
     {
-        $actualDate = date("Y-m-d H:i:s");
-        return Ausrueckung::where('von', '>=', $actualDate)->where('oeffentlich', true)
-            ->oldest('von')->first();
+        $actualDate = date("Y-m-d");
+        return Ausrueckung::where('vonDatum', '>=', $actualDate)->where('oeffentlich', true)
+            ->oldest('vonDatum')->first();
     }
 
     public function getNextActual()
     {
-        $actualDate = date("Y-m-d H:i:s");
-        return Ausrueckung::where('von', '>=', $actualDate)->oldest('von')->first();
+        $actualDate = date("Y-m-d");
+        return Ausrueckung::where('vonDatum', '>=', $actualDate)->oldest('vonDatum')->first();
     }
 
     public function create(Request $request)
@@ -51,8 +51,8 @@ class AusrueckungController extends Controller
             'name' => 'required',
             'kategorie' => 'required',
             'status' => 'required',
-            'von' => 'required',
-            'bis' => 'required'
+            'vonDatum' => 'required',
+            'bisDatum' => 'required'
         ]);
 
         return Ausrueckung::create($request->all());

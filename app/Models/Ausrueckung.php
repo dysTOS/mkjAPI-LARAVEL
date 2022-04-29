@@ -32,7 +32,9 @@ class Ausrueckung extends Model
         'ort',
         'treffzeit',
         'status',
-        'von',
-        'bis'
+        'vonDatum',
+        'bisDatum',
+        'vonZeit',
+        'bisZeit',
     ];
 }
