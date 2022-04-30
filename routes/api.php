@@ -62,7 +62,6 @@ Route::group(['middleware' => ['auth:sanctum', 'ability:admin']], function (){
 Route::group(['middleware' => ['auth:sanctum', 'ability:ausschuss,admin']], function (){
     Route::post('/ausrueckungen', [AusrueckungController::class, 'create']);
     Route::put('/ausrueckungen/{id}', [AusrueckungController::class, 'update']);
-    Route::post('/ausrueckungduplicate', [AusrueckungController::class, 'duplicate']);
     Route::delete('/ausrueckungen/{id}', [AusrueckungController::class, 'destroy']);
 
     Route::get('/mitglieder', [MitgliederController::class, 'getAll']);

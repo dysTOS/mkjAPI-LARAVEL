@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Noten;
 use Illuminate\Http\Request;
 use App\Models\Ausrueckung;
+use Illuminate\Support\Carbon;
 use Validator;
 
 class AusrueckungController extends Controller
@@ -56,17 +57,6 @@ class AusrueckungController extends Controller
         ]);
 
         return Ausrueckung::create($request->all());
-    }
-
-    public function duplicate(Request $request)
-    {
-        $request->validate([
-            'id' => 'required',
-        ]);
-
-        $duplicate = Ausrueckung::find($request->get('id'));
-        $duplicate->id = null;
-        return Ausrueckung::create($duplicate);
     }
 
     public function getSingle($id)
