@@ -79,11 +79,29 @@ class MitgliederController extends Controller
         return $mitglied;
     }
 
+    //TODO doesnt work!!!
+    public function updateOwnMitgliedData(Request $request)
+    {
+        $fields = $request->validate([
+            'id' => 'required'
+        ]);
+
+        $mitglied = Mitglieder::find($fields['id']);
+        $user = $request->user();
+
+        if($mitglied->get('id') != $user->mitglied_id)
+        {
+            abort(300, $mitglied->get('vorname'));
+        }
+
+        $mitglied->update($request->all());
+        return $mitglied;
+    }
+
     public function destroy($id)
     {
         Mitglieder::destroy($id);
     }
-
 
     public function search($name)
     {

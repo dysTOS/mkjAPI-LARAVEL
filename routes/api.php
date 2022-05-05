@@ -40,6 +40,10 @@ Route::group(['middleware' => ['auth:sanctum', 'ability:mitglied']], function ()
     Route::get('/noten', [NotenController::class, 'getAll']);
     Route::get('/noten/search/{name}', [NotenController::class, 'search']);
 
+    Route::get('/mitglieder', [MitgliederController::class, 'getAll']);
+    Route::get('/mitgliederaktiv', [MitgliederController::class, 'getAllActive']);
+    Route::post('/mitgliedselbst', [MitgliederController::class, 'updateOwnMitgliedData']);
+
     Route::post('/user', [AuthController::class, 'getCurrentUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
@@ -64,8 +68,7 @@ Route::group(['middleware' => ['auth:sanctum', 'ability:ausschuss,admin']], func
     Route::put('/ausrueckungen/{id}', [AusrueckungController::class, 'update']);
     Route::delete('/ausrueckungen/{id}', [AusrueckungController::class, 'destroy']);
 
-    Route::get('/mitglieder', [MitgliederController::class, 'getAll']);
-    Route::get('/mitgliederaktiv', [MitgliederController::class, 'getAllActive']);
+
     Route::get('/mitglieder/{id}', [MitgliederController::class, 'getSingle']);
     Route::get('/mitglieder/search/{name}', [MitgliederController::class, 'search']);
     Route::post('/mitglieder', [MitgliederController::class, 'create']);
