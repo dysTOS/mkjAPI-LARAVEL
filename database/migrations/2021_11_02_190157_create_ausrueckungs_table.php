@@ -28,6 +28,7 @@ class CreateAusrueckungsTable extends Migration
             $table->string('vonZeit')->nullable();
             $table->string('bisZeit')->nullable();
             $table->timestamps();
+
         });
     }
 

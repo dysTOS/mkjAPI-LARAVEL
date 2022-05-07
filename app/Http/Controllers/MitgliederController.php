@@ -79,22 +79,40 @@ class MitgliederController extends Controller
         return $mitglied;
     }
 
-    //TODO doesnt work!!!
     public function updateOwnMitgliedData(Request $request)
     {
         $fields = $request->validate([
-            'id' => 'required'
+            'id' => 'required',
+            'vorname' => 'required',
+            'zuname' => 'required',
+            'email' => 'required'
         ]);
 
-        $mitglied = Mitglieder::find($fields['id']);
         $user = $request->user();
+        $mitglied = Mitglieder::where('id', '=', $user->mitglied_id)->first();
 
-        if($mitglied->get('id') != $user->mitglied_id)
+        if($mitglied->id != $fields['id'])
         {
-            abort(300, $mitglied->get('vorname'));
+            abort(300, 'Keine Berechtigung!');
         }
 
-        $mitglied->update($request->all());
+        $mitglied->update(array(
+            'vorname' => $request['vorname'],
+            'zuname' => $request['zuname'],
+            'titelVor' => $request['titelVor'],
+            'titelNach' => $request['titelNach'],
+            'geburtsdatum' => $request['geburtsdatum'],
+            'geschlecht' => $request['geschlecht'],
+            'strasse' => $request['strasse'],
+            'hausnummer' => $request['hausnummer'],
+            'ort' => $request['ort'],
+            'plz' => $request['plz'],
+            'telefonHaupt' => $request['telefonHaupt'],
+            'telefonMobil' => $request['telefonMobil'],
+            'email' => $request['email'],
+            'beruf' => $request['beruf'],
+        ));
+
         return $mitglied;
     }
 
