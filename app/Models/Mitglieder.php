@@ -16,12 +16,6 @@ class Mitglieder extends Model
         return $this->hasOne(User::class, 'mitglied_id');
     }
 
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class,
-            'role_mitglied', 'mitglied_id', 'role_id');
-    }
-
     public function ausrueckungen()
     {
         return $this->belongsToMany(Ausrueckung::class,
