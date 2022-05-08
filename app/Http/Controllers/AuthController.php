@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mitglieder;
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -21,23 +20,12 @@ class AuthController extends Controller
             'passwort' => 'required|string'
         ]);
 
-        $mitglied = Mitglieder::where('email', $fields['email'])->first();
+        $mitglied = Mitglieder::where('email', $fields['email'])->firstOr(function () {
+            abort(403, "E-Mail nicht in Datenbank vorhanden!");
+        });
 
-        if (!$mitglied || $mitglied->vorname != $fields['vorname'] || $mitglied->zuname != $fields['zuname']){
-            abort(403, "Falsche Zugangsdaten!");
-        }
-
-        if($mitglied->email == "rolandsams@gmail.com") {
-            $standardRole = Role::where('role', '=', 'mitglied')->first();
-            $mitglied->roles()->attach($standardRole);
-            $adminRole = Role::where('role', '=', 'admin')->get();
-            $mitglied->roles()->attach($adminRole);
-        }
-
-        $roles = $mitglied->roles()->get();
-        if (count($roles) == 0) {
-            $standardRole = Role::where('role', '=', 'mitglied')->first();
-            $mitglied->roles()->attach($standardRole);
+        if ($mitglied->vorname != $fields['vorname'] || $mitglied->zuname != $fields['zuname']){
+            abort(403, "Falscher Name!");
         }
 
         $user = new User();
@@ -48,6 +36,10 @@ class AuthController extends Controller
         $mitglied->user()->save($user);
         $mitglied->user_id = $user->id;
         $mitglied->save();
+
+        if($mitglied->email == "rolandsams@gmail.com") {
+            $user->assignRole('super-admin', 'notenarchivar');
+        }
 
         return response([
             'message' => 'Registrierung erfolgreich!'
@@ -62,17 +54,19 @@ class AuthController extends Controller
         ]);
 
         //Check email
-        $user = User::where('email', $fields['email'])->first();
+        $user = User::where('email', $fields['email'])->firstOr(function () {
+            abort(403, "E-Mail nicht gefunden!");
+        });
 
         //Check password
-        if (!$user || !Hash::check($fields['passwort'], $user->passwort)) {
-            abort(403, "Falsche Login Daten!");
+        if (!Hash::check($fields['passwort'], $user->passwort)) {
+            abort(403, "Falsches Passwort!");
         }
 
         $mitglied = Mitglieder::where('user_id', $user->id)->first();
 
-        $roleStringArray = $this->getRoleStringForMitglied($mitglied);
-        if (count($roleStringArray)) {
+        $roleStringArray = null;
+        if ($roleStringArray) {
             $token = $user->createToken('mkjToken', $roleStringArray)->plainTextToken;
         } else {
             $token = $user->createToken('mkjToken')->plainTextToken;
@@ -81,7 +75,8 @@ class AuthController extends Controller
         $response = [
             'user' => $user,
             'mitglied' => $mitglied,
-            'roles' => $mitglied->roles()->get(),
+            'roles' => $user->roles()->get(),
+            'permissions' => $user->permissions()->get(),
             'token' => $token
         ];
 
@@ -95,7 +90,7 @@ class AuthController extends Controller
         return response([
             'user' => $user,
             'mitglied' => $mitglied,
-            'roles' => $mitglied->roles()->get(),
+            'roles' => $user->roles()->get(),
         ], 200);
     }
 
@@ -118,14 +113,5 @@ class AuthController extends Controller
         return [
             'success' => true
         ];
-    }
-
-    private function getRoleStringForMitglied(Mitglieder $mitglied)
-    {
-        $roleStringArray = [];
-        foreach ($mitglied->roles as $role) {
-            $roleStringArray[] = $role->role;
-        }
-        return $roleStringArray;
     }
 }

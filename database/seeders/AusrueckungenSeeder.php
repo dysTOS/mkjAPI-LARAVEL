@@ -16,7 +16,7 @@ class AusrueckungenSeeder extends Seeder
      */
     public function run()
     {
-        for($i = 0; $i < 10; $i++) {
+       /* for($i = 0; $i < 10; $i++) {
             DB::table('ausrueckungen')->insert([
                 'name' => Str::random(10),
                 'beschreibung' => Str::random(10),
@@ -48,7 +48,7 @@ class AusrueckungenSeeder extends Seeder
                 'kategorie' => "Ständchen",
                 'status' => "Ersatztermin"
             ]);
-        }
+        }*/
 
     }
 }
