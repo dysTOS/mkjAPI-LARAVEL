@@ -17,7 +17,7 @@ class CreateMitgliederTable extends Migration
         Schema::create('mitglieder', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
 
-            $table->integer('user_id')->nullable();
+            $table->uuid('user_id')->nullable();
             $table->foreign('user_id')
             ->references('id')
             ->on('users')

@@ -29,6 +29,7 @@ class AuthController extends Controller
         }
 
         $user = new User();
+        $user->id = Str::uuid();
         $user->name = $fields['vorname'] . ' ' . $fields['zuname'];
         $user->email = $fields['email'];
         $user->passwort = bcrypt($fields['passwort']);
@@ -38,7 +39,7 @@ class AuthController extends Controller
         $mitglied->save();
 
         if($mitglied->email == "rolandsams@gmail.com") {
-            $user->assignRole('super-admin', 'notenarchivar');
+            $user->assignRole('super-admin');
         }
 
         return response([
@@ -55,7 +56,7 @@ class AuthController extends Controller
 
         //Check email
         $user = User::where('email', $fields['email'])->firstOr(function () {
-            abort(403, "E-Mail nicht gefunden!");
+            abort(403, "User ungültig, bitte erneut registrieren!");
         });
 
         //Check password
@@ -64,13 +65,7 @@ class AuthController extends Controller
         }
 
         $mitglied = Mitglieder::where('user_id', $user->id)->first();
-
-        $roleStringArray = null;
-        if ($roleStringArray) {
-            $token = $user->createToken('mkjToken', $roleStringArray)->plainTextToken;
-        } else {
-            $token = $user->createToken('mkjToken')->plainTextToken;
-        }
+        $token = $user->createToken('mkjToken')->plainTextToken;
 
         $response = [
             'user' => $user,
