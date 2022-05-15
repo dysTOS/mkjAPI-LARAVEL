@@ -19,20 +19,37 @@ class RolePermissionSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // create permissions
-        Permission::create(['name' => 'edit articles']);
-        Permission::create(['name' => 'delete articles']);
-        Permission::create(['name' => 'publish articles']);
-        Permission::create(['name' => 'unpublish articles']);
+        // AUTH permissions
+        Permission::create(['name' => 'delete user']);
+
+        // ROLE permissions
+        Permission::create(['name' => 'read role']);
+        Permission::create(['name' => 'edit role']);
+        Permission::create(['name' => 'delete role']);
+
+        // NOTEN permissions
+        Permission::create(['name' => 'read noten']);
+        Permission::create(['name' => 'edit noten']);
+        Permission::create(['name' => 'delete noten']);
+        Permission::create(['name' => 'assign noten']);
+
+        // MITGLIEDER permissions
+        Permission::create(['name' => 'read mitglieder']);
+        Permission::create(['name' => 'edit mitglieder']);
+        Permission::create(['name' => 'delete mitglieder']);
+        Permission::create(['name' => 'assign mitglieder']);
+
+        // AUSRUECKUNGEN permissions
+        Permission::create(['name' => 'read ausrueckungen']);
+        Permission::create(['name' => 'edit ausrueckungen']);
+        Permission::create(['name' => 'delete ausrueckungen']);
 
         // create roles and assign existing permissions
-        $role1 = Role::create(['name' => 'writer']);
-        $role1->givePermissionTo('edit articles');
-        $role1->givePermissionTo('delete articles');
+        $role1 = Role::create(['name' => 'Mitglied']);
+        $role1->givePermissionTo('read noten');
+        $role1->givePermissionTo('read ausrueckungen');
+        $role1->givePermissionTo('read mitglieder');
 
-        $role2 = Role::create(['name' => 'admin']);
-        $role2->givePermissionTo('publish articles');
-        $role2->givePermissionTo('unpublish articles');
 
         Role::create(['name' => 'super-admin']);
         // gets all permissions via Gate::before rule; see AuthServiceProvider

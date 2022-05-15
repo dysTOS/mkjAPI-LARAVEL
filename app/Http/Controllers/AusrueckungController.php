@@ -10,9 +10,11 @@ use Validator;
 
 class AusrueckungController extends Controller
 {
-    public function getAll()
+    function __construct()
     {
-        return Ausrueckung::all();
+        $this->middleware('permission:read ausrueckungen', ['only' => ['getAll','search', 'getFiltered', 'getNextActual', 'getSingle']]);
+        $this->middleware('permission:edit ausrueckungen', ['only' => ['create','update']]);
+        $this->middleware('permission:delete ausrueckungen', ['only' => ['destroy']]);
     }
 
     public function getActualYearPublic()
@@ -20,6 +22,19 @@ class AusrueckungController extends Controller
         $actualYear = date('Y') . "-01-01";
         return Ausrueckung::where('oeffentlich', true)
             ->where('vonDatum', '>=', $actualYear)->orderBy('vonDatum', 'asc')->get();
+    }
+
+    public function getNextActualPublic()
+    {
+        $actualDate = date("Y-m-d");
+        return Ausrueckung::where('vonDatum', '>=', $actualDate)->where('oeffentlich', true)
+            ->oldest('vonDatum')->first();
+    }
+
+
+    public function getAll()
+    {
+        return Ausrueckung::all();
     }
 
     public function getFiltered(Request $request)
@@ -31,13 +46,6 @@ class AusrueckungController extends Controller
 
         return Ausrueckung::where('vonDatum', '>=', $request->get('vonFilter'))
             ->where('vonDatum', '<=', $request->get('bisFilter'))->get();
-    }
-
-    public function getNextActualPublic()
-    {
-        $actualDate = date("Y-m-d");
-        return Ausrueckung::where('vonDatum', '>=', $actualDate)->where('oeffentlich', true)
-            ->oldest('vonDatum')->first();
     }
 
     public function getNextActual()

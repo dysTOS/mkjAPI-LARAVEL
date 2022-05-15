@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
@@ -18,10 +19,9 @@ class RoleController extends Controller
      */
     function __construct()
     {
-        $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
-        $this->middleware('permission:role-create', ['only' => ['create','store']]);
-        $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:read role', ['only' => ['getAllRoles','getAllPermissions', 'getPermissionsForRole']]);
+        $this->middleware('permission:edit role', ['only' => ['createRole','updateRole']]);
+        $this->middleware('permission:delete role', ['only' => ['deleteRole']]);
     }
 
     /**
@@ -29,11 +29,21 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function getAllRoles()
     {
-        $roles = Role::orderBy('id','DESC')->paginate(5);
-        return view('roles.index',compact('roles'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        return Role::all();
+    }
+
+    public function getAllPermissions()
+    {
+        return Permission::all();
+    }
+
+    public function getUserRoles($id){
+        $user = User::where('id', $id)->first();
+        $roles = $user->roles();
+
+        return $user;
     }
 
     /**
@@ -42,32 +52,17 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function createRole(Request $request)
     {
         $this->validate($request, [
             'name' => 'required|unique:roles,name',
             'permission' => 'required',
         ]);
 
-        $role = Role::create(['name' => $request->input('name')]);
+        $role = Role::create(['name' => $request->input('name'), 'guard_name' => 'web']);
         $role->syncPermissions($request->input('permission'));
 
         return $role;
-    }
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $role = Role::find($id);
-        $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
-            ->where("role_has_permissions.role_id",$id)
-            ->get();
-
-        return view('roles.show',compact('role','rolePermissions'));
     }
 
     /**
@@ -77,7 +72,7 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateRole(Request $request, $id)
     {
         $this->validate($request, [
             'name' => 'required',
@@ -92,16 +87,32 @@ class RoleController extends Controller
 
         return $role;
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getPermissionsForRole($id)
+    {
+        $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
+            ->where("role_has_permissions.role_id",$id)
+            ->get();
+
+        return $rolePermissions;
+    }
+
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function deleteRole($id)
     {
-        DB::table("roles")->where('id',$id)->delete();
-        return redirect()->route('roles.index')
-            ->with('success','Role deleted successfully');
+        return Role::destroy($id);
+
     }
 }

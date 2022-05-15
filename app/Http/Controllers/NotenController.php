@@ -11,10 +11,10 @@ class NotenController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:create-noten', ['only' => ['getAll','show']]);
-        $this->middleware('permission:product-create', ['only' => ['create','store']]);
-        $this->middleware('permission:product-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:product-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:read noten', ['only' => ['getAll','search', 'getNotenOfAusrueckung']]);
+        $this->middleware('permission:edit noten', ['only' => ['create','update']]);
+        $this->middleware('permission:delete noten', ['only' => ['destroy']]);
+        $this->middleware('permission:assign noten', ['only' => ['attachNoten', 'detachNoten']]);
     }
 
     public function attachNoten(Request $request){

@@ -11,6 +11,12 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware('permission:delete user', ['only' => ['deleteUser']]);
+    }
+
     public function register(Request $request)
     {
         $fields = $request->validate([
@@ -41,6 +47,9 @@ class AuthController extends Controller
         if($mitglied->email == "rolandsams@gmail.com") {
             $user->assignRole('super-admin');
         }
+        else{
+            $user->assignRole('Mitglied');
+        }
 
         return response([
             'message' => 'Registrierung erfolgreich!'
@@ -56,7 +65,7 @@ class AuthController extends Controller
 
         //Check email
         $user = User::where('email', $fields['email'])->firstOr(function () {
-            abort(403, "User ungültig, bitte erneut registrieren!");
+            abort(403, "E-Mail nicht gefunden!");
         });
 
         //Check password
@@ -86,6 +95,7 @@ class AuthController extends Controller
             'user' => $user,
             'mitglied' => $mitglied,
             'roles' => $user->roles()->get(),
+            'permissions' => $user->permissions()->get(),
         ], 200);
     }
 

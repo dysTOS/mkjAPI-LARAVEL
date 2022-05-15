@@ -63,4 +63,12 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('/addnoten', [NotenController::class, 'attachNoten']);
     Route::post('/removenoten', [NotenController::class, 'detachNoten']);
     Route::get('/notenausrueckung/{id}', [NotenController::class, 'getNotenOfAusrueckung']);
+
+    Route::get('/roles', [RoleController::class, 'getAllRoles']);
+    Route::get('/roles/{id}', [RoleController::class, 'getUserRoles']);
+    Route::get('/permissions', [RoleController::class, 'getAllPermissions']);
+    Route::get('permissions/{id}', [RoleController::class, 'getPermissionsForRole']);
+    Route::post('/role', [RoleController::class, 'createRole']);
+    Route::put('role/{id}', [RoleController::class, 'updateRole']);
+    Route::delete('role/{id}', [RoleController::class, 'deleteRole']);
 });

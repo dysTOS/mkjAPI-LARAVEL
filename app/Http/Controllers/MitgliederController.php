@@ -10,6 +10,15 @@ use Validator;
 
 class MitgliederController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:read mitglieder', ['only' => ['getAll','getAllActive', 'getMitgliederOfAusrueckung', 'search', 'updateOwnMitgliedData']]);
+        $this->middleware('permission:edit mitglieder', ['only' => ['create','update', 'getSingle']]);
+        $this->middleware('permission:delete mitglieder', ['only' => ['destroy']]);
+        $this->middleware('permission:assign mitglieder', ['only' => ['attachMitglied', 'detachMitglied']]);
+    }
+
+
     public function attachMitglied(Request $request){
         $fields = $request->validate([
             'mitglied_id' => 'required',
