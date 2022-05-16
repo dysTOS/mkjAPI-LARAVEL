@@ -71,4 +71,5 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('/role', [RoleController::class, 'createRole']);
     Route::put('role/{id}', [RoleController::class, 'updateRole']);
     Route::delete('role/{id}', [RoleController::class, 'deleteRole']);
+    Route::post('roles/assign/{id}', [RoleController::class, 'assignRolesToUser']);
 });

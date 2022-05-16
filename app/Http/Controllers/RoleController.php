@@ -22,6 +22,7 @@ class RoleController extends Controller
         $this->middleware('permission:read role', ['only' => ['getAllRoles','getAllPermissions', 'getPermissionsForRole']]);
         $this->middleware('permission:edit role', ['only' => ['createRole','updateRole']]);
         $this->middleware('permission:delete role', ['only' => ['deleteRole']]);
+        $this->middleware('permission:assign role', ['only' => ['assignRolesToUser']]);
     }
 
     /**
@@ -39,11 +40,23 @@ class RoleController extends Controller
         return Permission::all();
     }
 
-    public function getUserRoles($id){
+    public function getUserRoles($id)
+    {
         $user = User::where('id', $id)->first();
-        $roles = $user->roles();
+        return $user->roles()->get();
+    }
 
-        return $user;
+    public function assignRolesToUser(Request $request, $id)
+    {
+        $this->validate($request, [
+            'roles' => 'required',
+        ]);
+        $user = User::where('id', $id)->first();
+        if(!$user){
+            abort(300, 'Kein User-Account gefunden! Das Mitglied muss sich zuerst registrieren!');
+        }
+        $user->syncRoles($request->input('roles'));
+        return $user->roles()->get();
     }
 
     /**
