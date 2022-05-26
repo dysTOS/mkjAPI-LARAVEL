@@ -80,7 +80,7 @@ class AuthController extends Controller
             'user' => $user,
             'mitglied' => $mitglied,
             'roles' => $user->roles()->get(),
-            'permissions' => $user->permissions()->get(),
+            'permissions' => $user->getAllPermissions(),
             'token' => $token
         ];
 
@@ -95,7 +95,7 @@ class AuthController extends Controller
             'user' => $user,
             'mitglied' => $mitglied,
             'roles' => $user->roles()->get(),
-            'permissions' => $user->permissions()->get(),
+            'permissions' => $user->getAllPermissions(),
         ], 200);
     }
 
