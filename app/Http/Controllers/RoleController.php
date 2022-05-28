@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use DB;
 
 class RoleController extends Controller
@@ -19,8 +18,9 @@ class RoleController extends Controller
      */
     function __construct()
     {
+        $this->middleware('permission:create role', ['only' => ['createRole']]);
         $this->middleware('permission:read role', ['only' => ['getAllRoles','getAllPermissions', 'getPermissionsForRole']]);
-        $this->middleware('permission:edit role', ['only' => ['createRole','updateRole']]);
+        $this->middleware('permission:edit role', ['only' => ['updateRole']]);
         $this->middleware('permission:delete role', ['only' => ['deleteRole']]);
         $this->middleware('permission:assign role', ['only' => ['assignRolesToUser']]);
     }
@@ -32,7 +32,10 @@ class RoleController extends Controller
      */
     public function getAllRoles()
     {
-        return Role::all();
+        $roles = Role::all()->filter(function($role){
+            return $role->name != 'super-admin';
+        })->values();
+        return $roles;
     }
 
     public function getAllPermissions()
@@ -44,6 +47,12 @@ class RoleController extends Controller
     {
         $user = User::where('id', $id)->first();
         return $user->roles()->get();
+    }
+
+    public function getUserPermissions($id)
+    {
+        $user = User::where('id', $id)->first();
+        return $user->getAllPermissions();
     }
 
     public function assignRolesToUser(Request $request, $id)

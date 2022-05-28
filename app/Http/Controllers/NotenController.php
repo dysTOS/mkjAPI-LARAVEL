@@ -11,8 +11,9 @@ class NotenController extends Controller
 {
     function __construct()
     {
+        $this->middleware('permission:create noten', ['only' => ['create']]);
         $this->middleware('permission:read noten', ['only' => ['getAll','search', 'getNotenOfAusrueckung']]);
-        $this->middleware('permission:edit noten', ['only' => ['create','update']]);
+        $this->middleware('permission:edit noten', ['only' => ['update']]);
         $this->middleware('permission:delete noten', ['only' => ['destroy']]);
         $this->middleware('permission:assign noten', ['only' => ['attachNoten', 'detachNoten']]);
     }
@@ -28,7 +29,7 @@ class NotenController extends Controller
         $ausrueckung = Ausrueckung::find($fields['ausrueckung_id']);
 
         if($ausrueckung->noten()->get()->contains($noten)){
-            throw new \Exception('Stück bereits zugewiesen!');
+            abort(403,'Stück bereits zugewiesen!');
         }
         $ausrueckung->noten()->attach($noten);
 

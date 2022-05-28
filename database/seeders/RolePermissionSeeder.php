@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
 class RolePermissionSeeder extends Seeder
@@ -19,30 +19,34 @@ class RolePermissionSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // AUTH permissions
-        Permission::create(['name' => 'delete user']);
+        // AUSRUECKUNGEN permissions
+        Permission::create(['name' => 'create ausrueckungen']);
+        Permission::create(['name' => 'read ausrueckungen']);
+        Permission::create(['name' => 'update ausrueckungen']);
+        Permission::create(['name' => 'delete ausrueckungen']);
 
-        // ROLE permissions
-        Permission::create(['name' => 'read role']);
-        Permission::create(['name' => 'edit role']);
-        Permission::create(['name' => 'delete role']);
+        // MITGLIEDER permissions
+        Permission::create(['name' => 'create mitglieder']);
+        Permission::create(['name' => 'read mitglieder']);
+        Permission::create(['name' => 'update mitglieder']);
+        Permission::create(['name' => 'delete mitglieder']);
+        Permission::create(['name' => 'assign mitglieder']);
 
         // NOTEN permissions
+        Permission::create(['name' => 'create noten']);
         Permission::create(['name' => 'read noten']);
         Permission::create(['name' => 'edit noten']);
         Permission::create(['name' => 'delete noten']);
         Permission::create(['name' => 'assign noten']);
 
-        // MITGLIEDER permissions
-        Permission::create(['name' => 'read mitglieder']);
-        Permission::create(['name' => 'edit mitglieder']);
-        Permission::create(['name' => 'delete mitglieder']);
-        Permission::create(['name' => 'assign mitglieder']);
+        // ROLE permissions
+        Permission::create(['name' => 'create role']);
+        Permission::create(['name' => 'read role']);
+        Permission::create(['name' => 'edit role']);
+        Permission::create(['name' => 'delete role']);
 
-        // AUSRUECKUNGEN permissions
-        Permission::create(['name' => 'read ausrueckungen']);
-        Permission::create(['name' => 'edit ausrueckungen']);
-        Permission::create(['name' => 'delete ausrueckungen']);
+        // AUTH permissions
+        Permission::create(['name' => 'delete user']);
 
         // create roles and assign existing permissions
         $role1 = Role::create(['name' => 'Mitglied']);

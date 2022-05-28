@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -39,10 +40,7 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (\Spatie\Permission\Exceptions\UnauthorizedException $e, $request) {
-            return response()->json([
-                'responseMessage' => 'Keine Berechtigung!',
-                'responseStatus'  => 403,
-            ]);
+            abort(403, "Keine Berechtigung!");
         });
     }
 }

@@ -12,8 +12,9 @@ class MitgliederController extends Controller
 {
     function __construct()
     {
+        $this->middleware('permission:create mitglieder', ['only' => ['create']]);
         $this->middleware('permission:read mitglieder', ['only' => ['getAll','getAllActive', 'getMitgliederOfAusrueckung', 'search', 'updateOwnMitgliedData']]);
-        $this->middleware('permission:edit mitglieder', ['only' => ['create','update', 'getSingle']]);
+        $this->middleware('permission:update mitglieder', ['only' => ['update', 'getSingle']]);
         $this->middleware('permission:delete mitglieder', ['only' => ['destroy']]);
         $this->middleware('permission:assign mitglieder', ['only' => ['attachMitglied', 'detachMitglied']]);
     }
@@ -120,6 +121,8 @@ class MitgliederController extends Controller
             'telefonMobil' => $request['telefonMobil'],
             'email' => $request['email'],
             'beruf' => $request['beruf'],
+            'eintrittDatum' => $request['eintrittDatum'],
+            'austrittDatum' => $request['austrittDatum']
         ));
 
         return $mitglied;

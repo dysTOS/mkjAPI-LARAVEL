@@ -67,6 +67,7 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::get('/roles', [RoleController::class, 'getAllRoles']);
     Route::get('/roles/{id}', [RoleController::class, 'getUserRoles']);
     Route::get('/permissions', [RoleController::class, 'getAllPermissions']);
+    Route::get('/permissions/{id}', [RoleController::class, 'getUserPermissions']);
     Route::get('permissions/{id}', [RoleController::class, 'getPermissionsForRole']);
     Route::post('/role', [RoleController::class, 'createRole']);
     Route::put('role/{id}', [RoleController::class, 'updateRole']);
