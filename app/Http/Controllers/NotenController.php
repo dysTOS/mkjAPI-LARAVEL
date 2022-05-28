@@ -13,7 +13,7 @@ class NotenController extends Controller
     {
         $this->middleware('permission:create noten', ['only' => ['create']]);
         $this->middleware('permission:read noten', ['only' => ['getAll','search', 'getNotenOfAusrueckung']]);
-        $this->middleware('permission:edit noten', ['only' => ['update']]);
+        $this->middleware('permission:update noten', ['only' => ['update']]);
         $this->middleware('permission:delete noten', ['only' => ['destroy']]);
         $this->middleware('permission:assign noten', ['only' => ['attachNoten', 'detachNoten']]);
     }

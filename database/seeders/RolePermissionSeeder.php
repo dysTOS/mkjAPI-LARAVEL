@@ -35,24 +35,52 @@ class RolePermissionSeeder extends Seeder
         // NOTEN permissions
         Permission::create(['name' => 'create noten']);
         Permission::create(['name' => 'read noten']);
-        Permission::create(['name' => 'edit noten']);
+        Permission::create(['name' => 'update noten']);
         Permission::create(['name' => 'delete noten']);
         Permission::create(['name' => 'assign noten']);
 
         // ROLE permissions
         Permission::create(['name' => 'create role']);
         Permission::create(['name' => 'read role']);
-        Permission::create(['name' => 'edit role']);
+        Permission::create(['name' => 'update role']);
         Permission::create(['name' => 'delete role']);
+        Permission::create(['name' => 'assign role']);
 
         // AUTH permissions
         Permission::create(['name' => 'delete user']);
 
         // create roles and assign existing permissions
-        $role1 = Role::create(['name' => 'Mitglied']);
-        $role1->givePermissionTo('read noten');
-        $role1->givePermissionTo('read ausrueckungen');
-        $role1->givePermissionTo('read mitglieder');
+        $mitglied = Role::create(['name' => 'Mitglied']);
+        $mitglied->givePermissionTo('read noten');
+        $mitglied->givePermissionTo('read ausrueckungen');
+        $mitglied->givePermissionTo('read mitglieder');
+
+        $notenarchiv = Role::create(['name' => 'Notenarchiv']);
+        $notenarchiv->givePermissionTo('create noten');
+        $notenarchiv->givePermissionTo('update noten');
+        $notenarchiv->givePermissionTo('delete noten');
+
+        $vorstand = Role::create(['name' => 'Mitgliederverwaltung']);
+        $vorstand->givePermissionTo('create mitglieder');
+        $vorstand->givePermissionTo('update mitglieder');
+        $vorstand->givePermissionTo('delete mitglieder');
+
+        $vorstand = Role::create(['name' => 'Terminverwaltung']);
+        $vorstand->givePermissionTo('create ausrueckungen');
+        $vorstand->givePermissionTo('update ausrueckungen');
+        $vorstand->givePermissionTo('delete ausrueckungen');
+
+        $vorstand = Role::create(['name' => 'Anwesenheits/Stück-Erfassung']);
+        $vorstand->givePermissionTo('assign mitglieder');
+        $vorstand->givePermissionTo('assign noten');
+
+        $administrator = Role::create(['name' => 'Administration']);
+        $administrator->givePermissionTo('create role');
+        $administrator->givePermissionTo('read role');
+        $administrator->givePermissionTo('update role');
+        $administrator->givePermissionTo('delete role');
+        $administrator->givePermissionTo('assign role');
+        $administrator->givePermissionTo('delete user');
 
 
         Role::create(['name' => 'super-admin']);
