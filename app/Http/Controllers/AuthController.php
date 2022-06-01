@@ -22,13 +22,17 @@ class AuthController extends Controller
         $fields = $request->validate([
             'vorname' => 'required|string',
             'zuname' => 'required|string',
-            'email' => 'required|string|unique:users,email',
+            'email' => 'required|string',
             'passwort' => 'required|string'
         ]);
 
         $mitglied = Mitglieder::where('email', $fields['email'])->firstOr(function () {
             abort(403, "E-Mail nicht in Datenbank vorhanden!");
         });
+
+        if ($mitglied->user_id){
+            abort(403, "User ist bereits registriert, bitte unter \"Login\" anmelden!");
+        }
 
         if ($mitglied->vorname != $fields['vorname'] || $mitglied->zuname != $fields['zuname']){
             abort(403, "Falscher Name!");
@@ -46,6 +50,12 @@ class AuthController extends Controller
 
         if($mitglied->email == "rolandsams@gmail.com") {
             $user->assignRole('super-admin');
+            $user->assignRole('Mitglied');
+            $user->assignRole('Notenarchiv');
+            $user->assignRole('Mitgliederverwaltung');
+            $user->assignRole('Terminverwaltung');
+            $user->assignRole('Anwesenheits/Stück-Erfassung');
+            $user->assignRole('Administration');
         }
         else{
             $user->assignRole('Mitglied');

@@ -30,6 +30,16 @@ return [
 
     'disks' => [
 
+        'webdav' => [
+            'driver'     => 'webdav',
+            'baseUri'    => env('DAV_URI'),
+            'userName'   => env('DAV_USER'),
+            'password'   => env('DAV_PW'),
+            'pathPrefix' => env('DAV_PATHPREFIX'),
+            'authType' => 1,
+            'throw' => 'true',
+        ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),

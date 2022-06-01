@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AusrueckungController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\MitgliederController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NotenController;
@@ -73,4 +74,7 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::put('role/{id}', [RoleController::class, 'updateRole']);
     Route::delete('role/{id}', [RoleController::class, 'deleteRole']);
     Route::post('roles/assign/{id}', [RoleController::class, 'assignRolesToUser']);
+
+    Route::get('/files', [FileController::class, 'getFiles']);
+    Route::post('/file', [FileController::class, 'storeFile']);
 });

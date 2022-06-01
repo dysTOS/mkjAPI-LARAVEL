@@ -163,7 +163,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
-
+        Pbmedia\FilesystemProviders\WebDAVServiceProvider::class,
         /*
          * Package Service Providers...
          */
