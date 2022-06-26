@@ -16,9 +16,9 @@ class CreateAusrueckungsTable extends Migration
         Schema::create('ausrueckungen', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->string('name');
-            $table->string('beschreibung')->nullable();
+            $table->text('beschreibung')->nullable();
             $table->boolean('oeffentlich')->default(true);
-            $table->string('infoMusiker')->nullable();
+            $table->text('infoMusiker')->nullable();
             $table->string('ort')->nullable();
             $table->string('treffzeit')->nullable();
             $table->string('kategorie');

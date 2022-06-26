@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             //AusrueckungenSeeder::class,
             //MitgliederSeeder::class,
-            RolePermissionSeeder::class
+            //RolePermissionSeeder::class,
+            KonzerteMappenSeeder::class
         ]);
     }
 }

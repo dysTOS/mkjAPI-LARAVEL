@@ -16,6 +16,18 @@ class Noten extends Model
             'ausrueckung_noten', 'noten_id', 'ausrueckung_id');
     }
 
+    public function konzerte()
+    {
+        return $this->belongsToMany(Konzert::class,
+            'konzert_noten', 'noten_id', 'konzert_id');
+    }
+
+    public function mappen()
+    {
+        return $this->belongsToMany(Konzert::class,
+            'mappe_noten', 'noten_id', 'mappe_id');
+    }
+
     protected $table = 'noten';
     protected $fillable = [
         'inventarId',

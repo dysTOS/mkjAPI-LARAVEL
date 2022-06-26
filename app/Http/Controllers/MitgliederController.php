@@ -19,7 +19,6 @@ class MitgliederController extends Controller
         $this->middleware('permission:assign mitglieder', ['only' => ['attachMitglied', 'detachMitglied']]);
     }
 
-
     public function attachMitglied(Request $request){
         $fields = $request->validate([
             'mitglied_id' => 'required',

@@ -64,6 +64,18 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('/addnoten', [NotenController::class, 'attachNoten']);
     Route::post('/removenoten', [NotenController::class, 'detachNoten']);
     Route::get('/notenausrueckung/{id}', [NotenController::class, 'getNotenOfAusrueckung']);
+    Route::get('/notenmappen', [NotenController::class, 'getNotenmappen']);
+    Route::post('/notenmappen', [NotenController::class, 'createNotenmappe']);
+    Route::put('/notenmappen/{id}', [NotenController::class, 'updateNotenmappe']);
+    Route::delete('/notenmappen/{id}', [NotenController::class, 'destroyNotenmappe']);
+    Route::post('/notenmappenattach', [NotenController::class, 'notenmappeAttach']);
+    Route::post('/notenmappendetach', [NotenController::class, 'notenmappeDetach']);
+    Route::get('/konzerte', [NotenController::class, 'getKonzerte']);
+    Route::post('/konzerte', [NotenController::class, 'createKonzert']);
+    Route::put('/konzerte/{id}', [NotenController::class, 'updateKonzert']);
+    Route::delete('/konzerte/{id}', [NotenController::class, 'destroyKonzert']);
+    Route::post('/konzertattach', [NotenController::class, 'konzertAttach']);
+    Route::post('/konzertdetach', [NotenController::class, 'konzertDetach']);
 
     Route::get('/roles', [RoleController::class, 'getAllRoles']);
     Route::get('/roles/{id}', [RoleController::class, 'getUserRoles']);
