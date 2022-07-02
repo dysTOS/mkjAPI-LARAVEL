@@ -13,11 +13,12 @@ class Notenmappe extends Model
     public function noten()
     {
         return $this->belongsToMany(Noten::class, 'mappe_noten',
-            'mappe_id', 'noten_id');
+            'mappe_id', 'noten_id')->withPivot('verzeichnisNr')->withTimestamps();
     }
 
     protected $table = 'notenmappen';
     protected $fillable = [
-        'name'
+        'name',
+        'hatVerzeichnis'
     ];
 }

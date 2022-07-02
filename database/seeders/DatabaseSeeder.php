@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             //AusrueckungenSeeder::class,
             //MitgliederSeeder::class,
             //RolePermissionSeeder::class,
-            KonzerteMappenSeeder::class
+            MappenSeeder::class
         ]);
     }
 }
