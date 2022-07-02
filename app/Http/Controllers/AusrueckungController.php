@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Ausrueckung;
-
+use Illuminate\Http\Request;
 use Validator;
 
 class AusrueckungController extends Controller
@@ -12,7 +11,7 @@ class AusrueckungController extends Controller
     function __construct()
     {
         $this->middleware('permission:create ausrueckungen', ['only' => ['create']]);
-        $this->middleware('permission:read ausrueckungen', ['only' => ['getAll','search', 'getFiltered', 'getNextActual', 'getSingle']]);
+        $this->middleware('permission:read ausrueckungen', ['only' => ['getAll', 'search', 'getFiltered', 'getNextActual', 'getSingle']]);
         $this->middleware('permission:update ausrueckungen', ['only' => ['update']]);
         $this->middleware('permission:delete ausrueckungen', ['only' => ['destroy']]);
     }
@@ -87,6 +86,6 @@ class AusrueckungController extends Controller
 
     public function search($name)
     {
-        return Ausrueckung::where('name', 'like', '%'.$name.'%')->get();
+        return Ausrueckung::where('name', 'like', '%' . $name . '%')->get();
     }
 }

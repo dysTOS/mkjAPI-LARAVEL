@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Ausrueckung;
+use Jsvrcek\ICS\CalendarExport;
+use Jsvrcek\ICS\CalendarStream;
+use Jsvrcek\ICS\Model\Calendar;
+use Jsvrcek\ICS\Model\CalendarEvent;
+use Jsvrcek\ICS\Utility\Formatter;
+
+class CalendarSubController extends Controller
+{
+    public function getSubscription()
+    {
+        $calendar = new Calendar();
+        $calendar->setProdId('MKJ Kalender');
+        $timezone = config('app.timezone');
+        $timeZone = new \DateTimeZone($timezone);
+        $calendar->setTimezone($timeZone);
+        $calendar->setCustomHeaders([
+            'X-WR-TIMEZONE' => $timezone, // Support e.g. Google Calendar -> https://blog.jonudell.net/2011/10/17/x-wr-timezone-considered-harmful/
+            'X-WR-CALNAME' => 'Calendar Name', // https://en.wikipedia.org/wiki/ICalendar
+            'X-PUBLISHED-TTL' => 'PT15M' // update calendar every 15 minutes
+        ]);
+
+        $actualYear = date('Y') . "-01-01";
+        $events = Ausrueckung::where('vonDatum', '>=', $actualYear)->orderBy('vonDatum', 'asc')->get();
+
+        foreach ($events as $event) {
+            $calendarEvent = new CalendarEvent();
+
+            $vonDateTime = $event->vonDatum;
+            $bisDateTime = $event->bisDatum;
+            if ($event->vonZeit) {
+                $vonDateTime = $vonDateTime . " " . $event->vonZeit;
+            }
+            if ($event->bisZeit) {
+                $bisDateTime = $bisDateTime . " " . $event->bisZeit;
+            }
+            if (!$vonDateTime) {
+                $calendarEvent->setAllDay(true);
+            }
+
+            $calendarEvent->setStart(new \DateTime($vonDateTime))
+                ->setEnd(new \DateTime($bisDateTime))
+                ->setSummary($event->name)
+                ->setUid($event->id);
+            $calendar->addEvent($calendarEvent);
+        }
+
+        $calendarExport = new CalendarExport(new CalendarStream, new Formatter());
+        $calendarExport->addCalendar($calendar);
+
+        return response()->attachment($calendarExport->getStream(), 'mkjcalendar', 'text/calendar', 'ics');
+    }
+}

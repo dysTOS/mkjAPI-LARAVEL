@@ -28,6 +28,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/nextausrueckungpublic', [AusrueckungController::class, 'getNextActualPublic']);
 Route::get('/ausrueckungenaktuellpublic', [AusrueckungController::class, 'getActualYearPublic']);
+Route::get('/calendarsub', [\App\Http\Controllers\CalendarSubController::class, 'getSubscription']);
 
 
 //Protected Routes

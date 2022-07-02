@@ -9,6 +9,7 @@
         "barryvdh/laravel-ide-helper": "^2.11.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "jsvrcek/ics": "^0.8.4",
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.12",
         "laravel/tinker": "^2.5",

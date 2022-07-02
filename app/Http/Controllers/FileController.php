@@ -15,10 +15,13 @@ class FileController extends Controller
         return response(['path' => $path]);
     }
 
-    public function getFiles(){
-        $headers = ['Content-Type: image/png'];
+    public function getFiles()
+    {
+        $headers = ['Content-Type: image/png',
+            'Content-Disposition' => 'attachment; filename="mkj.png"'
+        ];
 
-        return Storage::disk('webdav')->download('41Gp0px5MRR71mS4DApr2aPgfOM1YXNqymF08jvV.png', 'test.png', $headers);
+        return response()->attachment(Storage::disk('webdav')->get('41Gp0px5MRR71mS4DApr2aPgfOM1YXNqymF08jvV.png'), 'mkjcalendar', 'image/png', 'png');
 
     }
 }

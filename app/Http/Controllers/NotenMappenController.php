@@ -54,10 +54,16 @@ class NotenMappenController extends Controller
         $noten = Noten::find($fields['noten_id']);
         $mappe = Notenmappe::find($fields['mappe_id']);
 
+        if($mappe->hatVerzeichnis){
+            $request->validate([
+                'verzeichnisNr' => 'required'
+            ]);
+        }
+
         if($mappe->noten()->get()->contains($noten)){
             abort(403,'Stück bereits zugewiesen!');
         }
-        $mappe->noten()->attach($noten, ['verzeichnisNr' => $fields['verzeichnisNr']]);
+        $mappe->noten()->attach($noten, ['verzeichnisNr' => $request['verzeichnisNr']]);
 
         return response([
             'success' => $mappe->noten()->get()->contains($noten),
@@ -79,4 +85,5 @@ class NotenMappenController extends Controller
             'message' => 'Musikstück '.$noten->titel.' entfernt!'
         ], 200);
     }
+
 }

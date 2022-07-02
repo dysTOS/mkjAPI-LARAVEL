@@ -17,10 +17,10 @@ class DatabaseSeeder extends Seeder
         // \App\Models\ausrueckung::factory(10)->create();
 
         $this->call([
-            //AusrueckungenSeeder::class,
+            AusrueckungenSeeder::class,
             //MitgliederSeeder::class,
             //RolePermissionSeeder::class,
-            MappenSeeder::class
+//            MappenSeeder::class
         ]);
     }
 }

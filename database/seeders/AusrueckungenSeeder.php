@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Helper\Helper\Helper;
+use App\Helper\Helper;
 use Faker\Provider\DateTime;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Date;
@@ -21,7 +21,7 @@ class AusrueckungenSeeder extends Seeder
     {
 
             $table = 'ausrueckungen';
-            $file = base_path("/seeders/$table".".csv"); // TODO: change to actual path
+            $file = "E:/7_Programmierung/8_PWA/resources/db66831_$table".".csv";
             $records = Helper::import_CSV($file);
 
             foreach ($records as $key => $record) {
