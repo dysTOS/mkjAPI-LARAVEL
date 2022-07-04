@@ -6,6 +6,7 @@ use App\Http\Controllers\MitgliederController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NotenController;
 use App\Http\Controllers\NotenMappenController;
+use App\Http\Controllers\PushNotificationsController;
 use App\Http\Controllers\RoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -85,4 +86,7 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
 
     Route::get('/files', [FileController::class, 'getFiles']);
     Route::post('/file', [FileController::class, 'storeFile']);
+
+    Route::post('/pushsub', [PushNotificationsController::class, 'storeSubscription']);
+    Route::get('/push', [PushNotificationsController::class, 'push']);
 });

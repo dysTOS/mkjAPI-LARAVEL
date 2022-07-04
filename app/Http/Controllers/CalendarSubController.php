@@ -15,12 +15,14 @@ class CalendarSubController extends Controller
     {
         $calendar = new Calendar();
         $calendar->setProdId('MKJ Kalender');
+        $calendar->setName('mkjAPP');
+        $calendar->setColor('#006600');
         $timezone = config('app.timezone');
         $timeZone = new \DateTimeZone($timezone);
         $calendar->setTimezone($timeZone);
         $calendar->setCustomHeaders([
             'X-WR-TIMEZONE' => $timezone, // Support e.g. Google Calendar -> https://blog.jonudell.net/2011/10/17/x-wr-timezone-considered-harmful/
-            'X-WR-CALNAME' => 'Calendar Name', // https://en.wikipedia.org/wiki/ICalendar
+            'X-WR-CALNAME' => 'mkjAPP', // https://en.wikipedia.org/wiki/ICalendar
             'X-PUBLISHED-TTL' => 'PT15M' // update calendar every 15 minutes
         ]);
 
@@ -39,12 +41,17 @@ class CalendarSubController extends Controller
                 $bisDateTime = $bisDateTime . " " . $event->bisZeit;
             }
             if (!$vonDateTime) {
-                $calendarEvent->setAllDay(true);
+                $calendarEvent->setAllDay(true)
+                    ->setCustomProperties([
+                        'X-MICROSOFT-CDO-ALLDAYEVENT' => true
+                    ]);
             }
 
             $calendarEvent->setStart(new \DateTime($vonDateTime))
                 ->setEnd(new \DateTime($bisDateTime))
                 ->setSummary($event->name)
+                ->setDescription($event->infoMusiker)
+                ->addLocation($event->ort)
                 ->setUid($event->id);
             $calendar->addEvent($calendarEvent);
         }
