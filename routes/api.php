@@ -29,7 +29,9 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/nextausrueckungpublic', [AusrueckungController::class, 'getNextActualPublic']);
 Route::get('/ausrueckungenaktuellpublic', [AusrueckungController::class, 'getActualYearPublic']);
+
 Route::get('/calendarsub', [\App\Http\Controllers\CalendarSubController::class, 'getSubscription']);
+Route::get('/push', [PushNotificationsController::class, 'push']);
 
 
 //Protected Routes
@@ -88,5 +90,4 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('/file', [FileController::class, 'storeFile']);
 
     Route::post('/pushsub', [PushNotificationsController::class, 'storeSubscription']);
-    Route::get('/push', [PushNotificationsController::class, 'push']);
 });
