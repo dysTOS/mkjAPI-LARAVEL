@@ -7,6 +7,7 @@ use Jsvrcek\ICS\CalendarExport;
 use Jsvrcek\ICS\CalendarStream;
 use Jsvrcek\ICS\Model\Calendar;
 use Jsvrcek\ICS\Model\CalendarEvent;
+use Jsvrcek\ICS\Model\Description\Location;
 use Jsvrcek\ICS\Utility\Formatter;
 
 class CalendarSubController extends Controller
@@ -14,8 +15,8 @@ class CalendarSubController extends Controller
     public function getSubscription()
     {
         $calendar = new Calendar();
-        $calendar->setProdId('MKJ Kalender');
-        $calendar->setName('mkjAPP');
+        $calendar->setProdId('mkjAPP');
+        $calendar->setName('MK Jainzen Kalender');
         $calendar->setColor('#006600');
         $timezone = config('app.timezone');
         $timeZone = new \DateTimeZone($timezone);
@@ -23,7 +24,7 @@ class CalendarSubController extends Controller
         $calendar->setCustomHeaders([
             'X-WR-TIMEZONE' => $timezone, // Support e.g. Google Calendar -> https://blog.jonudell.net/2011/10/17/x-wr-timezone-considered-harmful/
             'X-WR-CALNAME' => 'mkjAPP', // https://en.wikipedia.org/wiki/ICalendar
-            'X-PUBLISHED-TTL' => 'PT15M' // update calendar every 15 minutes
+            'X-PUBLISHED-TTL' => 'PT60M' // update calendar every 15 minutes
         ]);
 
         $actualYear = date('Y') . "-01-01";
@@ -47,11 +48,13 @@ class CalendarSubController extends Controller
                     ]);
             }
 
+            $location = new Location();
+            $location->setName($event->ort);
             $calendarEvent->setStart(new \DateTime($vonDateTime))
                 ->setEnd(new \DateTime($bisDateTime))
                 ->setSummary($event->name)
                 ->setDescription($event->infoMusiker)
-                ->addLocation($event->ort)
+                ->addLocation($location)
                 ->setUid($event->id);
             $calendar->addEvent($calendarEvent);
         }
