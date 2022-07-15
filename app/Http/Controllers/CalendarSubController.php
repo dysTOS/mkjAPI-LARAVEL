@@ -48,14 +48,21 @@ class CalendarSubController extends Controller
                     ]);
             }
 
-            $location = new Location();
-            $location->setName($event->ort);
             $calendarEvent->setStart(new \DateTime($vonDateTime))
                 ->setEnd(new \DateTime($bisDateTime))
-                ->setSummary($event->name)
                 ->setDescription($event->infoMusiker)
-                ->addLocation($location)
                 ->setUid($event->id);
+
+            if($event->status == 'ersatztermin'){
+                $calendarEvent->setSummary($event->name . ' - Ersatztermin');
+            }else{
+                $calendarEvent->setSummary($event->name);
+            }
+
+            $location = new Location();
+            $location->setName($event->ort);
+            $calendarEvent->addLocation($location);
+
             $calendar->addEvent($calendarEvent);
         }
 
