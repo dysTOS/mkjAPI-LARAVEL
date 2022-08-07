@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AusrueckungController;
+use App\Http\Controllers\CalendarSubController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MitgliederController;
 use App\Http\Controllers\AuthController;
@@ -8,9 +9,7 @@ use App\Http\Controllers\NotenController;
 use App\Http\Controllers\NotenMappenController;
 use App\Http\Controllers\PushNotificationsController;
 use App\Http\Controllers\RoleController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Laravel\Sanctum\Contracts\HasAbilities;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +29,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/nextausrueckungpublic', [AusrueckungController::class, 'getNextActualPublic']);
 Route::get('/ausrueckungenaktuellpublic', [AusrueckungController::class, 'getActualYearPublic']);
 
-Route::get('/calendarsub', [\App\Http\Controllers\CalendarSubController::class, 'getSubscription']);
+Route::get('/calendarsub', [CalendarSubController::class, 'getSubscription']);
+Route::get('/calendarsub/{id}', [CalendarSubController::class, 'getSubscription']);
 Route::get('/push', [PushNotificationsController::class, 'push']);
 
 
