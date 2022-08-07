@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ausrueckung;
-use App\Models\Konzert;
 use App\Models\Noten;
-use App\Models\Notenmappe;
 use Illuminate\Http\Request;
-use function PHPUnit\Framework\throwException;
 
 class NotenController extends Controller
 {

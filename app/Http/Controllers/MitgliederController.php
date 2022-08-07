@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ausrueckung;
-use App\Models\Noten;
 use Illuminate\Http\Request;
 use App\Models\Mitglieder;
 use Validator;
