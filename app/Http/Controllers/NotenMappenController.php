@@ -11,11 +11,10 @@ class NotenMappenController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:create notenmappe', ['only' => ['createNotenmappe']]);
-        $this->middleware('permission:read notenmappe', ['only' => ['getNotenmappen']]);
-        $this->middleware('permission:update notenmappe', ['only' => ['updateNotenmappe']]);
-        $this->middleware('permission:delete notenmappe', ['only' => ['destroyNotenmappe']]);
-        $this->middleware('permission:assign notenmappe', ['only' => ['notenmappeAttach', 'notenmappeDetach']]);
+        $this->middleware('permission:notenmappe_read', ['only' => ['getNotenmappen']]);
+        $this->middleware('permission:notenmappe_save', ['only' => ['createNotenmappe', 'updateNotenmappe']]);
+        $this->middleware('permission:notenmappe_delete', ['only' => ['destroyNotenmappe']]);
+        $this->middleware('permission:notenmappe_assign', ['only' => ['notenmappeAttach', 'notenmappeDetach']]);
     }
 
     public function getNotenmappen()

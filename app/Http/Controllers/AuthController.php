@@ -14,7 +14,7 @@ class AuthController extends Controller
 
     function __construct()
     {
-        $this->middleware('permission:delete user', ['only' => ['deleteUser']]);
+        $this->middleware('permission:user_delete', ['only' => ['deleteUser']]);
     }
 
     public function register(Request $request)

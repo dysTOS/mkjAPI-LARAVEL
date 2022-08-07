@@ -18,11 +18,10 @@ class RoleController extends Controller
      */
     function __construct()
     {
-        $this->middleware('permission:create role', ['only' => ['createRole']]);
-        $this->middleware('permission:read role', ['only' => ['getAllRoles','getAllPermissions', 'getPermissionsForRole']]);
-        $this->middleware('permission:edit role', ['only' => ['updateRole']]);
-        $this->middleware('permission:delete role', ['only' => ['deleteRole']]);
-        $this->middleware('permission:assign role', ['only' => ['assignRolesToUser']]);
+        $this->middleware('permission:role_read', ['only' => ['getAllRoles','getAllPermissions', 'getPermissionsForRole']]);
+        $this->middleware('permission:role_save', ['only' => ['createRole', 'updateRole']]);
+        $this->middleware('permission:role_delete', ['only' => ['deleteRole']]);
+        $this->middleware('permission:role_assign', ['only' => ['assignRolesToUser']]);
     }
 
     /**
@@ -34,13 +33,13 @@ class RoleController extends Controller
     {
         $roles = Role::all()->filter(function($role){
             return $role->name != 'super-admin';
-        })->values();
+        })->sortBy('name')->values();
         return $roles;
     }
 
     public function getAllPermissions()
     {
-        return Permission::all();
+        return Permission::all()->sortBy('name')->values();
     }
 
     public function getUserRoles($id)

@@ -12,11 +12,10 @@ class MitgliederController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:create mitglieder', ['only' => ['create']]);
-        $this->middleware('permission:read mitglieder', ['only' => ['getAll','getAllActive', 'getMitgliederOfAusrueckung', 'search', 'updateOwnMitgliedData']]);
-        $this->middleware('permission:update mitglieder', ['only' => ['update', 'getSingle']]);
-        $this->middleware('permission:delete mitglieder', ['only' => ['destroy']]);
-        $this->middleware('permission:assign mitglieder', ['only' => ['attachMitglied', 'detachMitglied']]);
+        $this->middleware('permission:mitglieder_read', ['only' => ['getAll','getAllActive', 'getMitgliederOfAusrueckung', 'search', 'updateOwnMitgliedData']]);
+        $this->middleware('permission:mitglieder_save', ['only' => ['create', 'update', 'getSingle']]);
+        $this->middleware('permission:mitglieder_delete', ['only' => ['destroy']]);
+        $this->middleware('permission:mitglieder_assign', ['only' => ['attachMitglied', 'detachMitglied']]);
     }
 
     public function attachMitglied(Request $request){

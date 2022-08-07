@@ -10,10 +10,9 @@ class AusrueckungController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:create ausrueckungen', ['only' => ['create']]);
-        $this->middleware('permission:read ausrueckungen', ['only' => ['getAll', 'search', 'getFiltered', 'getNextActual', 'getSingle']]);
-        $this->middleware('permission:update ausrueckungen', ['only' => ['update']]);
-        $this->middleware('permission:delete ausrueckungen', ['only' => ['destroy']]);
+        $this->middleware('permission:ausrueckungen_read', ['only' => ['getAll', 'search', 'getFiltered', 'getNextActual', 'getSingle']]);
+        $this->middleware('permission:ausrueckungen_save', ['only' => ['create', 'update']]);
+        $this->middleware('permission:ausrueckungen_delete', ['only' => ['destroy']]);
     }
 
     public function getActualYearPublic()
