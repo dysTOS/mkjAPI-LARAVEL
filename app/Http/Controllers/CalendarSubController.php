@@ -16,6 +16,13 @@ class CalendarSubController extends Controller
     public function getSubscription($id = null)
     {
         $user = User::where('id', $id)->first();
+        $actualYear = date('Y') . "-01-01";
+
+        if($user){
+            $events = Ausrueckung::where('vonDatum', '>=', $actualYear)->orderBy('vonDatum', 'asc')->get();
+        }else {
+            $events = Ausrueckung::where('oeffentlich', true)->where('vonDatum', '>=', $actualYear)->orderBy('vonDatum', 'asc')->get();
+        }
 
         $calendar = new Calendar();
         $calendar->setProdId('mkjAPP');
@@ -30,21 +37,13 @@ class CalendarSubController extends Controller
             'X-PUBLISHED-TTL' => 'PT60M' // update calendar every 60 minutes
         ]);
 
-        $actualYear = date('Y') . "-01-01";
-
-        if($user){
-            $events = Ausrueckung::where('vonDatum', '>=', $actualYear)->orderBy('vonDatum', 'asc')->get();
-        }else {
-            $events = Ausrueckung::where('oeffentlich', true)->where('vonDatum', '>=', $actualYear)->orderBy('vonDatum', 'asc')->get();
-        }
-
         foreach ($events as $event) {
             $calendarEvent = new CalendarEvent();
 
             $vonDateTime = $event->vonDatum;
             $bisDateTime = $event->bisDatum;
-            if ($event->vonZeit) {
-                $vonDateTime = $vonDateTime . " " . $event->vonZeit;
+            if ($event->treffzeit) {
+                $vonDateTime = $vonDateTime . " " . $event->treffzeit;
             }
             if ($event->bisZeit) {
                 $bisDateTime = $bisDateTime . " " . $event->bisZeit;
