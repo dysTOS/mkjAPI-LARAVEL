@@ -37,9 +37,19 @@ class PushNotification extends Notification
     public function toWebPush($notifiable, $notification)
     {
         return (new WebPushMessage)
-            ->title('I\'m Notification Title')
-//            ->icon('/notification-icon.png')
-            ->body('Great, Push Notifications work!')
-            ->action('View App', 'notification_action');
+            ->title('Info')
+            ->icon('assets\mkjICONS\Favicon_J\favicon-96x96.png')
+            ->body('Eine Ausrückung wurde aktualisiert!')
+            ->action('Zur Ausrueckung', 'zur_ausrueckung')
+            ->options(['TTL' => 1000])
+            ->data(['id' => $notification->id])
+         ->vibrate([100,200,100]);
+        // ->badge()
+        // ->dir()
+        // ->image()
+        // ->lang()
+        // ->renotify()
+        // ->requireInteraction()
+        // ->tag()
     }
 }
