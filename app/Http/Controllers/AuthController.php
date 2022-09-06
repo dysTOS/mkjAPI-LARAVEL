@@ -66,7 +66,7 @@ class AuthController extends Controller
     }
 
     public function testGulaschCloudLogin(Request $request){
-        return response(null, 201);
+        return response(null, 200)->header('WWW-Authenticate','Basic realm="REALM"');
     }
 
     public function login(Request $request)
