@@ -33,6 +33,8 @@ Route::get('/calendarsub', [CalendarSubController::class, 'getSubscription']);
 Route::get('/calendarsub/{id}', [CalendarSubController::class, 'getSubscription']);
 Route::get('/push', [PushNotificationsController::class, 'push']);
 
+Route::get('/testlogin', [AuthController::class, 'testGulaschCloudLogin']);
+
 
 //Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function (){

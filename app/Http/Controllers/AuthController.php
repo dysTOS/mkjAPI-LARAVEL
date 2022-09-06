@@ -65,6 +65,10 @@ class AuthController extends Controller
         ], 201);
     }
 
+    public function testGulaschCloudLogin(Request $request){
+        return response(null, 201);
+    }
+
     public function login(Request $request)
     {
         $fields = $request->validate([
