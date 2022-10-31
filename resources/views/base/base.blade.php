@@ -5,14 +5,14 @@
     </head>
 
     <body>
-<div class="container">
-   <header class="row">
+<div class="container-fluid">
+   <header class="row w100">
        @include('includes.header')
    </header>
-   <div id="main" class="row">
+   <div id="main" class="row" style="height: calc(100% - 50px)">
            @yield('content')
    </div>
-   <footer class="row">
+   <footer class="row text-center fixed-bottom" >
        @include('includes.footer')
    </footer>
 </div>

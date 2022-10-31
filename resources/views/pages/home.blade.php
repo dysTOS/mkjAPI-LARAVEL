@@ -1,4 +1,10 @@
 @extends('base.base')
+@section('title', 'Home')
 @section('content')
-   i am the home page
+
+
+<div>
+ {{$nextAusrueckung}}
+</div>
+
 @stop

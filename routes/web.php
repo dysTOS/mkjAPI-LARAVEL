@@ -1,5 +1,6 @@
 <?php
 
+namespace App\Http\ViewControllers;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,11 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function()
+Route::get('/', [HomeViewController::class, 'getHomeData']);
+Route::get('/termine', [HomeViewController::class, 'getTermineData']);
+
+Route::get('/kontakt', function()
 {
-   return View::make('pages.home');
-});
-Route::get('/about', function()
-{
-   return View::make('pages.contact');
+   return view('pages.kontakt');
 });
