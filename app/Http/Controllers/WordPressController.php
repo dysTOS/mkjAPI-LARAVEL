@@ -50,8 +50,8 @@ class WordPressController extends Controller
 
             $rest_api_url = "https://mk-jainzen.at/wp-json/jwt-auth/v1/token";
                $data_string = json_encode([
-                              'username'    => 'webadmin',
-                              'password'  => 'gmrmkjrs&1928/3',
+                              'username'    => env('MKJ-WP-USER'),
+                              'password'  => env('MKJ-WP-PW'),
 
                           ]);
 
