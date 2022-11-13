@@ -9,6 +9,7 @@ use App\Http\Controllers\NotenController;
 use App\Http\Controllers\NotenMappenController;
 use App\Http\Controllers\PushNotificationsController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\WordPressController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,7 +34,7 @@ Route::get('/calendarsub', [CalendarSubController::class, 'getSubscription']);
 Route::get('/calendarsub/{id}', [CalendarSubController::class, 'getSubscription']);
 Route::get('/push', [PushNotificationsController::class, 'push']);
 
-Route::get('/testlogin', [AuthController::class, 'testGulaschCloudLogin']);
+Route::get('/savepost', [WordPressController::class, 'savepost']);
 
 
 //Protected Routes

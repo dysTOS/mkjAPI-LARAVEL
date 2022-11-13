@@ -11,11 +11,7 @@ use DB;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     function __construct()
     {
         $this->middleware('permission:role_read', ['only' => ['getAllRoles','getAllPermissions', 'getPermissionsForRole']]);
