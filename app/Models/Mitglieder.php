@@ -22,6 +22,11 @@ class Mitglieder extends Model
             'ausrueckung_mitglied', 'mitglied_id', 'ausrueckung_id');
     }
 
+    public function gruppen()
+    {
+        return $this->belongsToMany(Gruppe::class, 'mitglied_gruppe', 'mitglied_id', 'gruppen_id')->withTimestamps();
+    }
+
 
     protected $table = 'mitglieder';
     protected $fillable = [

@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Constants;
+
+class PermissionMap
+{
+    public const AUSRUECKUNG_READ = "ausrueckungen_read";
+    public const AUSRUECKUNG_SAVE = "ausrueckungen_save";
+    public const AUSRUECKUNG_DELETE = "ausrueckungen_delete";
+    public const MITGLIEDER_READ = "mitglieder_read";
+    public const MITGLIEDER_SAVE = "mitglieder_save";
+    public const MITGLIEDER_DELETE = "mitglieder_delete";
+    public const MITGLIEDER_ASSIGN = "mitglieder_assign";
+    public const GRUPPEN_READ = "gruppen_read";
+    public const GRUPPEN_SAVE = "gruppen_save";
+    public const GRUPPEN_DELETE = "gruppen_delete";
+    public const GRUPPEN_ASSIGN = "gruppen_assign";
+    public const NOTENMAPPE_READ = "notenmappe_read";
+    public const NOTENMAPPE_SAVE = "notenmappe_save";
+    public const NOTENMAPPE_ASSIGN = "notenmappe_assign";
+    public const NOTENMAPPE_DELETE = "notenmappe_delete";
+    public const NOTEN_READ = "noten_read";
+    public const NOTEN_SAVE = "noten_save";
+    public const NOTEN_DELETE = "noten_delete";
+    public const NOTEN_ASSIGN = "noten_assign";
+    public const ROLE_READ = "role_read";
+    public const ROLE_SAVE = "role_save";
+    public const ROLE_DELETE = "role_delete";
+    public const ROLE_ASSIGN = "role_assign";
+    public const USER_DELETE = "user_delete";
+}

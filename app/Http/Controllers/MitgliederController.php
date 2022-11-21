@@ -23,8 +23,8 @@ class MitgliederController extends Controller
             'ausrueckung_id' => 'required'
         ]);
 
-        $mitglied = Mitglieder::find($fields['mitglied_id']);
-        $ausrueckung = Ausrueckung::find($fields['ausrueckung_id']);
+        $mitglied = Mitglieder::findOrFail($fields['mitglied_id']);
+        $ausrueckung = Ausrueckung::findOrFail($fields['ausrueckung_id']);
         $ausrueckung->mitglieder()->attach($mitglied);
 
         return response([
@@ -38,8 +38,8 @@ class MitgliederController extends Controller
             'ausrueckung_id' => 'required'
         ]);
 
-        $mitglied = Mitglieder::find($fields['mitglied_id']);
-        $ausrueckung = Ausrueckung::find($fields['ausrueckung_id']);
+        $mitglied = Mitglieder::findOrFail($fields['mitglied_id']);
+        $ausrueckung = Ausrueckung::findOrFail($fields['ausrueckung_id']);
         $ausrueckung->mitglieder()->detach($mitglied);
 
         return response([
@@ -49,12 +49,15 @@ class MitgliederController extends Controller
     }
     public function getAll()
     {
-        return Mitglieder::all();
+        $mitglieder = Mitglieder::all();
+        $mitglieder->load('gruppen');
+        return $mitglieder;
     }
 
     public function getAllActive()
     {
-        return Mitglieder::where('aktiv', true)->get();
+        $mitglieder =  Mitglieder::where('aktiv', true)->get();
+        return $mitglieder->load('gruppen');
     }
 
     public function getMitgliederOfAusrueckung($id){

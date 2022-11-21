@@ -115,9 +115,9 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-        return [
+        return response([
             'success' => true
-        ];
+        ]);
     }
 
     public function deleteUser(Request $request)
@@ -128,8 +128,8 @@ class AuthController extends Controller
         $user = User::where('email', $fields['email'])->first();
         $user->tokens()->delete();
         User::destroy($user->id);
-        return [
+        return response([
             'success' => true
-        ];
+        ]);
     }
 }

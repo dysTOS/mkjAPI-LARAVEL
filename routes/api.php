@@ -5,11 +5,13 @@ use App\Http\Controllers\CalendarSubController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MitgliederController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GruppenController;
 use App\Http\Controllers\NotenController;
 use App\Http\Controllers\NotenMappenController;
 use App\Http\Controllers\PushNotificationsController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\WordPressController;
+use App\Http\Controllers\XXXTestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +38,10 @@ Route::get('/push', [PushNotificationsController::class, 'push']);
 
 Route::get('/savepost', [WordPressController::class, 'savepost']);
 
+Route::get('/test', [XXXTestController::class, 'testGet']);
+Route::post('/test', [XXXTestController::class, 'testPost']);
+Route::put('/test', [XXXTestController::class, 'testPut']);
+Route::delete('/test/{id}', [XXXTestController::class, 'testDelete']);
 
 //Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function (){
@@ -63,6 +69,15 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('/addmitglied', [MitgliederController::class, 'attachMitglied']);
     Route::post('/removemitglied', [MitgliederController::class, 'detachMitglied']);
     Route::get('/mitgliederausrueckung/{id}', [MitgliederController::class, 'getMitgliederOfAusrueckung']);
+
+    Route::post('/gruppen/all', [GruppenController::class, 'getAllGruppen']);
+Route::post('/gruppen/save', [GruppenController::class, 'saveGruppe']);
+Route::delete('/gruppen/{id}', [GruppenController::class, 'deleteGruppe']);
+Route::post('/gruppen/gruppenleiter', [GruppenController::class, 'getGruppenLeiter']);
+Route::post('/gruppen/mitgliederofgruppe', [GruppenController::class, 'getMitgliederOfGruppe']);
+Route::post('/gruppen/gruppenofmitglied', [GruppenController::class, 'getGruppenOfMitglied']);
+Route::post('/gruppen/addmitglied', [GruppenController::class, 'addMitgliedToGruppe']);
+Route::post('/gruppen/removemitglied', [GruppenController::class, 'removeMitgliedFromGruppe']);
 
     Route::get('/noten', [NotenController::class, 'getAll']);
     Route::get('/noten/search/{name}', [NotenController::class, 'search']);

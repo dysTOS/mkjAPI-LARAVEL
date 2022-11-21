@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\ConfigController;
-use App\Models\Config;
 
 class WordPressController extends Controller
 {
@@ -50,10 +48,11 @@ class WordPressController extends Controller
 
             $rest_api_url = "https://mk-jainzen.at/wp-json/jwt-auth/v1/token";
                $data_string = json_encode([
-                              'username'    => env('MKJ-WP-USER'),
-                              'password'  => env('MKJ-WP-PW'),
+                              'username'    => env('MKJ_WP_USER'),
+                              'password'  => env('MKJ_WP_PW'),
 
                           ]);
+
 
               $ch = curl_init();
               curl_setopt($ch, CURLOPT_URL, $rest_api_url);
