@@ -60,7 +60,7 @@ class GruppenController extends Controller
             $gruppen->load('gruppenleiter');
         }
 
-        return $gruppen;
+        return $gruppen->load('ausrueckungen');
     }
 
     public static function saveGruppe(Request $request)

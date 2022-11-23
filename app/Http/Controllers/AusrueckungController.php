@@ -42,8 +42,10 @@ class AusrueckungController extends Controller
             'bisFilter' => 'required',
         ]);
 
-        return Ausrueckung::where('vonDatum', '>=', $request->get('vonFilter'))
+        $ausrueckungen = Ausrueckung::where('vonDatum', '>=', $request->get('vonFilter'))
             ->where('vonDatum', '<=', $request->get('bisFilter'))->get();
+
+        return $ausrueckungen->load('gruppe');
     }
 
     public function getNextActual()

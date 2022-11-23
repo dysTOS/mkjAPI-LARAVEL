@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Ausrueckung;
 use Illuminate\Http\Request;
 use App\Models\Mitglieder;
-use Validator;
+use App\Models\User;
+use App\Constants\PermissionMap;
 
 class MitgliederController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:mitglieder_read', ['only' => ['getAll','getAllActive', 'getMitgliederOfAusrueckung', 'search', 'updateOwnMitgliedData']]);
-        $this->middleware('permission:mitglieder_save', ['only' => ['create', 'update', 'getSingle']]);
-        $this->middleware('permission:mitglieder_delete', ['only' => ['destroy']]);
-        $this->middleware('permission:mitglieder_assign', ['only' => ['attachMitglied', 'detachMitglied']]);
+        $this->middleware('permission:'. PermissionMap::MITGLIEDER_READ, ['only' => ['getAll','getAllActive', 'getMitgliederOfAusrueckung', 'search', 'updateOwnMitgliedData']]);
+        $this->middleware('permission:'. PermissionMap::MITGLIEDER_SAVE, ['only' => ['create', 'update', 'getSingle']]);
+        $this->middleware('permission:'. PermissionMap::MITGLIEDER_DELETE, ['only' => ['destroy']]);
+        $this->middleware('permission:'. PermissionMap::MITGLIEDER_ASSIGN, ['only' => ['attachMitglied', 'detachMitglied']]);
     }
 
     public function attachMitglied(Request $request){
@@ -130,6 +131,14 @@ class MitgliederController extends Controller
 
     public function destroy($id)
     {
+        $mitglied = Mitglieder::findOrFail($id);
+        $user = User::find($mitglied->user_id);
+
+        if($user){
+            $user->tokens()->delete();
+            User::destroy($user->id);
+        }
+
         Mitglieder::destroy($id);
     }
 

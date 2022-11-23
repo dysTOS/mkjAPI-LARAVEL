@@ -22,6 +22,11 @@ class Ausrueckung extends Model
             'ausrueckung_id', 'mitglied_id');
     }
 
+    public function gruppe()
+    {
+        return $this->belongsTo(Gruppe::class);
+    }
+
     protected $table = 'ausrueckungen';
     protected $fillable = [
         'name',
@@ -36,5 +41,6 @@ class Ausrueckung extends Model
         'bisDatum',
         'vonZeit',
         'bisZeit',
+        'gruppe_id'
     ];
 }

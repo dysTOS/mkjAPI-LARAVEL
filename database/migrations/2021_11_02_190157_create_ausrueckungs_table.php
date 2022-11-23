@@ -27,7 +27,16 @@ class CreateAusrueckungsTable extends Migration
             $table->date('bisDatum');
             $table->string('vonZeit')->nullable();
             $table->string('bisZeit')->nullable();
+
+            $table->uuid('gruppe_id')->nullable();
+            $table->foreign('gruppe_id')
+            ->references('id')
+            ->on('gruppen')
+            ->onDelete('cascade');
+
             $table->timestamps();
+
+
 
         });
     }

@@ -21,6 +21,10 @@ class Gruppe extends Model
             'mitglied_gruppe', 'gruppen_id', 'mitglied_id')->withTimestamps();
     }
 
+    public function ausrueckungen()
+{
+    return $this->hasMany(Ausrueckung::class, 'gruppe_id');
+}
 
 
 
