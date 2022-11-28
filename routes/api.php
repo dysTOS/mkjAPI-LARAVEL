@@ -66,18 +66,21 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('/mitglieder', [MitgliederController::class, 'create']);
     Route::put('/mitglieder/{id}', [MitgliederController::class, 'update']);
     Route::delete('/mitglieder/{id}', [MitgliederController::class, 'destroy']);
-    Route::post('/addmitglied', [MitgliederController::class, 'attachMitglied']);
-    Route::post('/removemitglied', [MitgliederController::class, 'detachMitglied']);
+    Route::post('/addmitglied', [MitgliederController::class, 'attachMitgliedToAusrueckung']);
+    Route::post('/removemitglied', [MitgliederController::class, 'detachMitgliedFromAusrueckung']);
+    Route::post('/addmitgliedgruppe', [MitgliederController::class, 'attachMitgliedToGruppe']);
+    Route::post('/removemitgliedgruppe', [MitgliederController::class, 'detachMitgliedFromGruppe']);
     Route::get('/mitgliederausrueckung/{id}', [MitgliederController::class, 'getMitgliederOfAusrueckung']);
 
     Route::post('/gruppen/all', [GruppenController::class, 'getAllGruppen']);
-Route::post('/gruppen/save', [GruppenController::class, 'saveGruppe']);
-Route::delete('/gruppen/{id}', [GruppenController::class, 'deleteGruppe']);
-Route::post('/gruppen/gruppenleiter', [GruppenController::class, 'getGruppenLeiter']);
-Route::post('/gruppen/mitgliederofgruppe', [GruppenController::class, 'getMitgliederOfGruppe']);
-Route::post('/gruppen/gruppenofmitglied', [GruppenController::class, 'getGruppenOfMitglied']);
-Route::post('/gruppen/addmitglied', [GruppenController::class, 'addMitgliedToGruppe']);
-Route::post('/gruppen/removemitglied', [GruppenController::class, 'removeMitgliedFromGruppe']);
+    Route::post('/gruppen/gruppe', [GruppenController::class, 'getGruppe']);
+    Route::post('/gruppen/save', [GruppenController::class, 'saveGruppe']);
+    Route::delete('/gruppen/{id}', [GruppenController::class, 'deleteGruppe']);
+    Route::post('/gruppen/gruppenleiter', [GruppenController::class, 'getGruppenLeiter']);
+    Route::post('/gruppen/mitgliederofgruppe', [GruppenController::class, 'getMitgliederOfGruppe']);
+    Route::post('/gruppen/gruppenofmitglied', [GruppenController::class, 'getGruppenOfMitglied']);
+    Route::post('/gruppen/addmitglied', [GruppenController::class, 'addMitgliedToGruppe']);
+    Route::post('/gruppen/removemitglied', [GruppenController::class, 'removeMitgliedFromGruppe']);
 
     Route::get('/noten', [NotenController::class, 'getAll']);
     Route::get('/noten/search/{name}', [NotenController::class, 'search']);

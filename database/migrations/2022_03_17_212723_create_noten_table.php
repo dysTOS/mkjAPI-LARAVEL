@@ -25,6 +25,7 @@ class CreateNotenTable extends Migration
             $table->string('ausgeliehenVon')->nullable();
             $table->string('anmerkungen')->nullable();
             $table->string('aufbewahrungsort')->nullable();
+            $table->text('links')->nullable();
             $table->timestamps();
         });
     }

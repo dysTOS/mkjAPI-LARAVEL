@@ -17,6 +17,7 @@ class CreateGruppenTable extends Migration
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->string('name')->unique();
             $table->uuid('gruppenleiter_mitglied_id')->nullable();
+            $table->char('color',10)->nullable();
             $table->timestamps();
 
             $table->foreign('gruppenleiter_mitglied_id')

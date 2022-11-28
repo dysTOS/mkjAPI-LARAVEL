@@ -6,6 +6,7 @@ use App\Models\Ausrueckung;
 use Illuminate\Http\Request;
 use App\Models\Mitglieder;
 use App\Models\User;
+use App\Models\Gruppe;
 use App\Constants\PermissionMap;
 
 class MitgliederController extends Controller
@@ -15,39 +16,9 @@ class MitgliederController extends Controller
         $this->middleware('permission:'. PermissionMap::MITGLIEDER_READ, ['only' => ['getAll','getAllActive', 'getMitgliederOfAusrueckung', 'search', 'updateOwnMitgliedData']]);
         $this->middleware('permission:'. PermissionMap::MITGLIEDER_SAVE, ['only' => ['create', 'update', 'getSingle']]);
         $this->middleware('permission:'. PermissionMap::MITGLIEDER_DELETE, ['only' => ['destroy']]);
-        $this->middleware('permission:'. PermissionMap::MITGLIEDER_ASSIGN, ['only' => ['attachMitglied', 'detachMitglied']]);
+        $this->middleware('permission:'. PermissionMap::MITGLIEDER_ASSIGN, ['only' => ['attachMitgliedToAusrueckung', 'detachMitgliedFromAusrueckung','attachMitgliedToGruppe', 'detachMitgliedFromGruppe']]);
     }
 
-    public function attachMitglied(Request $request){
-        $fields = $request->validate([
-            'mitglied_id' => 'required',
-            'ausrueckung_id' => 'required'
-        ]);
-
-        $mitglied = Mitglieder::findOrFail($fields['mitglied_id']);
-        $ausrueckung = Ausrueckung::findOrFail($fields['ausrueckung_id']);
-        $ausrueckung->mitglieder()->attach($mitglied);
-
-        return response([
-            'success' => $ausrueckung->mitglieder()->get()->contains($mitglied),
-            'message' => 'Mitglied '.$mitglied->vorname.' '.$mitglied->zuname.' zugewiesen!'
-        ], 200);
-    }
-    public function detachMitglied(Request $request){
-        $fields = $request->validate([
-            'mitglied_id' => 'required',
-            'ausrueckung_id' => 'required'
-        ]);
-
-        $mitglied = Mitglieder::findOrFail($fields['mitglied_id']);
-        $ausrueckung = Ausrueckung::findOrFail($fields['ausrueckung_id']);
-        $ausrueckung->mitglieder()->detach($mitglied);
-
-        return response([
-            'success' => !$ausrueckung->mitglieder()->get()->contains($mitglied),
-            'message' => 'Mitglied '.$mitglied->vorname.' '.$mitglied->zuname.' entfernt!'
-        ], 200);
-    }
     public function getAll()
     {
         $mitglieder = Mitglieder::all();
@@ -146,5 +117,68 @@ class MitgliederController extends Controller
     {
         return Mitglieder::where('zuname', 'like', '%'.$name.'%')
             ->orWhere('vorname', 'like', '%'.$name.'%')->get();
+    }
+
+    public function attachMitgliedToAusrueckung(Request $request){
+        $fields = $request->validate([
+            'mitglied_id' => 'required',
+            'ausrueckung_id' => 'required'
+        ]);
+
+        $mitglied = Mitglieder::findOrFail($fields['mitglied_id']);
+        $ausrueckung = Ausrueckung::findOrFail($fields['ausrueckung_id']);
+        $ausrueckung->mitglieder()->attach($mitglied);
+
+        return response([
+            'success' => $ausrueckung->mitglieder()->get()->contains($mitglied),
+            'message' => 'Mitglied '.$mitglied->vorname.' '.$mitglied->zuname.' zugewiesen!'
+        ], 200);
+    }
+
+    public function detachMitgliedFromAusrueckung(Request $request){
+        $fields = $request->validate([
+            'mitglied_id' => 'required',
+            'ausrueckung_id' => 'required'
+        ]);
+
+        $mitglied = Mitglieder::findOrFail($fields['mitglied_id']);
+        $ausrueckung = Ausrueckung::findOrFail($fields['ausrueckung_id']);
+        $ausrueckung->mitglieder()->detach($mitglied);
+
+        return response([
+            'success' => !$ausrueckung->mitglieder()->get()->contains($mitglied),
+            'message' => 'Mitglied '.$mitglied->vorname.' '.$mitglied->zuname.' entfernt!'
+        ], 200);
+    }
+
+    public function attachMitgliedToGruppe(Request $request){
+        $fields = $request->validate([
+            'mitglied_id' => 'required',
+            'gruppe_id' => 'required'
+        ]);
+
+        $mitglied = Mitglieder::findOrFail($fields['mitglied_id']);
+        $gruppe = Gruppe::findOrFail($fields['gruppe_id']);
+        $gruppe->mitglieder()->attach($mitglied);
+
+        return response([
+            'success' => $gruppe->mitglieder()->get()->contains($mitglied),
+            'message' => 'Mitglied '.$mitglied->vorname.' '.$mitglied->zuname.' nach '. $gruppe->name.' zugewiesen!'
+        ], 200);
+    }
+    public function detachMitgliedFromGruppe(Request $request){
+        $fields = $request->validate([
+            'mitglied_id' => 'required',
+            'gruppe_id' => 'required'
+        ]);
+
+        $mitglied = Mitglieder::findOrFail($fields['mitglied_id']);
+        $gruppe = Gruppe::findOrFail($fields['gruppe_id']);
+        $gruppe->mitglieder()->detach($mitglied);
+
+        return response([
+            'success' => !$gruppe->mitglieder()->get()->contains($mitglied),
+            'message' => 'Mitglied '.$mitglied->vorname.' '.$mitglied->zuname.' von '. $gruppe->name.' entfernt!'
+        ], 200);
     }
 }

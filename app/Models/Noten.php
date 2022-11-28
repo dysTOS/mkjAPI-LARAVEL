@@ -33,6 +33,7 @@ class Noten extends Model
         'ausgeliehenAb',
         'ausgeliehenVon',
         'anmerkungen',
-        'aufbewahrungsort'
+        'aufbewahrungsort',
+        'links'
     ];
 }

@@ -22,15 +22,16 @@ class Gruppe extends Model
     }
 
     public function ausrueckungen()
-{
-    return $this->hasMany(Ausrueckung::class, 'gruppe_id');
-}
+    {
+        return $this->hasMany(Ausrueckung::class, 'gruppe_id');
+    }
 
 
 
     protected $table = 'gruppen';
     protected $fillable = [
         'name',
-        'gruppenleiter_mitglied_id'
+        'gruppenleiter_mitglied_id',
+        'color'
     ];
 }

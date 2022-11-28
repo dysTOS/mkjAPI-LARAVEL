@@ -11,7 +11,7 @@ class GruppenController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:'. PermissionMap::GRUPPEN_READ, ['only' => ['getAllGruppen','getGruppenLeiter','getMitgliederOfGruppe','getGruppenOfMitglied']]);
+        $this->middleware('permission:'. PermissionMap::GRUPPEN_READ, ['only' => ['getAllGruppen','getGruppeById', 'getGruppenLeiter','getMitgliederOfGruppe','getGruppenOfMitglied']]);
         $this->middleware('permission:'. PermissionMap::GRUPPEN_SAVE, ['only' => ['saveGruppe']]);
         $this->middleware('permission:'. PermissionMap::GRUPPEN_DELETE, ['only' => ['deleteGruppe']]);
         $this->middleware('permission:'. PermissionMap::GRUPPEN_ASSIGN, ['only' => ['addMitgliedToGruppe', 'removeMitgliedFromGruppe']]);
@@ -61,6 +61,15 @@ class GruppenController extends Controller
         }
 
         return $gruppen->load('ausrueckungen');
+    }
+
+    public static function getGruppe(Request $request)
+    {
+        $request->validate([
+            'id' => 'required'
+        ]);
+
+        return Gruppe::find($request->id);
     }
 
     public static function saveGruppe(Request $request)
