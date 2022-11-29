@@ -59,8 +59,16 @@ class GruppenController extends Controller
         if($request['includeGruppenleiter']){
             $gruppen->load('gruppenleiter');
         }
+        if($request['includeTermine']){
+            $gruppen->load('ausrueckungen');
+        }
 
-        return $gruppen->load('ausrueckungen');
+        $count = $gruppen->count();
+
+        return response([
+            'totalCount' => $count,
+            'values' => $gruppen
+        ], 200);
     }
 
     public static function getGruppe(Request $request)
@@ -69,7 +77,7 @@ class GruppenController extends Controller
             'id' => 'required'
         ]);
 
-        return Gruppe::find($request->id);
+        return Gruppe::find($request->id)->load('mitglieder')->load('gruppenleiter');
     }
 
     public static function saveGruppe(Request $request)
