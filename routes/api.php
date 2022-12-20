@@ -9,6 +9,7 @@ use App\Http\Controllers\GruppenController;
 use App\Http\Controllers\NotenController;
 use App\Http\Controllers\NotenMappenController;
 use App\Http\Controllers\PushNotificationsController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\WordPressController;
 use App\Http\Controllers\XXXTestController;
@@ -48,6 +49,9 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('/user', [AuthController::class, 'getCurrentUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/deleteuser', [AuthController::class, 'deleteUser']);
+
+    Route::get('/reports', [ReportsController::class, 'getAll']);
+    Route::post('/reports', [ReportsController::class, 'save']);
 
     Route::get('/ausrueckungen', [AusrueckungController::class, 'getAll']);
     Route::get('/ausrueckungen/{id}', [AusrueckungController::class, 'getSingle']);

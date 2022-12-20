@@ -41,9 +41,15 @@ class CreateMitgliederTable extends Migration
             $table->string('eintrittDatum')->nullable();
             $table->string('austrittDatum')->nullable();
             $table->timestamps();
-
-
         });
+        Schema::table('users', function(Blueprint $table)
+        {
+            $table->foreign('mitglied_id')
+                ->references('id')
+                ->on('mitglieder')
+                ->onDelete('cascade');
+        });
+
 
         /*DB::table('mitglieder')->insert([
             'vorname' => 'Roland',

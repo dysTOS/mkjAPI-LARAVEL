@@ -36,6 +36,15 @@ class CreateGruppenTable extends Migration
 
             $table->timestamps();
         });
+
+        Schema::table('ausrueckungen', function(Blueprint $table)
+        {
+            $table->foreign('gruppe_id')
+                ->references('id')
+                ->on('gruppen')
+                ->onDelete('cascade');
+        });
+
     }
 
     /**
