@@ -15,7 +15,7 @@ class XXXTestController extends Controller
 
     public function testPost(Request $request){
         //test your shit here Rolando
-        return GruppenController::getAllGruppen($request);
+        return response([], 200);
     }
 
     public function testPut(Request $request){
