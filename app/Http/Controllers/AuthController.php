@@ -83,7 +83,7 @@ class AuthController extends Controller
 
         //Check password
         if (!Hash::check($fields['passwort'], $user->passwort)) {
-            abort(403, "Falsches Passwort!");
+            abort(403, "Zugangsdaten inkorrekt!");
         }
 
         $mitglied = Mitglieder::where('user_id', $user->id)->first();
