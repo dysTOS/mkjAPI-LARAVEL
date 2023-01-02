@@ -37,15 +37,26 @@ class AusrueckungController extends Controller
 
     public function getFiltered(Request $request)
     {
-        $request->validate([
-            'vonFilter' => 'required',
-            'bisFilter' => 'required',
-        ]);
+        $filter = $request->get('filter');
 
-        $ausrueckungen = Ausrueckung::where('vonDatum', '>=', $request->get('vonFilter'))
-            ->where('vonDatum', '<=', $request->get('bisFilter'))->get();
+        $ausrueckungen = Ausrueckung::when(
+                $filter, function($query, $filter){
+                    foreach($filter as $f){
+                        if($f){
+                            $query->where($f['filterField'], $f['operator'], $f['value']);
+                        }
+                    }
+                return $query;
+                }
+            )
+            ->skip($request->get('skip') ?? 0)
+            ->take($request->get('take') ?? PHP_INT_MAX)
+            ->get();
 
-        return $ausrueckungen->load('gruppe');
+        return response([
+            'values' => $ausrueckungen->load('gruppe'),
+            'totalCount' => $ausrueckungen->count()],
+            200);
     }
 
     public function getNextActual()
