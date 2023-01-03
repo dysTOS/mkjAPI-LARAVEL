@@ -91,15 +91,18 @@ class AusrueckungController extends Controller
         $actualDate = date("Y-m-d");
         $gruppen = Mitglieder::where('user_id', $request->user()->id)->first()->gruppen()->get();
         return Ausrueckung::when(
-            $gruppen, function($query, $gruppen){
-            foreach($gruppen as $gruppe){
-                if($gruppe){
-                    $query->orWhere('gruppe_id', '=', $gruppe['id']);
+                $gruppen, function($query, $gruppen){
+                foreach($gruppen as $gruppe){
+                    if($gruppe){
+                        $query->orWhere('gruppe_id', '=', $gruppe['id']);
+                    }
                 }
+                return $query->orWhere('gruppe_id', '=', null);
             }
-            return $query->orWhere('gruppe_id', '=', null);
-        }
-        )->where('vonDatum', '>=', $actualDate)->oldest('vonDatum')->first();
+        )
+            ->where('vonDatum', '>=', $actualDate)
+            ->oldest('vonDatum')
+            ->first();
     }
 
     public function create(Request $request)
