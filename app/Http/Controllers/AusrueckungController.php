@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ausrueckung;
+use App\Models\Mitglieder;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -19,34 +20,60 @@ class AusrueckungController extends Controller
     {
         $actualYear = date('Y') . "-01-01";
         return Ausrueckung::where('oeffentlich', true)
-            ->where('vonDatum', '>=', $actualYear)->orderBy('vonDatum', 'asc')->get();
+            ->where('gruppe_id', '=', null)
+            ->where('vonDatum', '>=', $actualYear)
+            ->orderBy('vonDatum', 'asc')
+            ->get();
     }
 
     public function getNextActualPublic()
     {
         $actualDate = date("Y-m-d");
-        return Ausrueckung::where('vonDatum', '>=', $actualDate)->where('oeffentlich', true)
+        return Ausrueckung::where('vonDatum', '>=', $actualDate)
+            ->where('oeffentlich', true)
+            ->where('gruppe_id', '=', null)
             ->oldest('vonDatum')->first();
     }
 
 
-    public function getAll()
+    public function getAll(Request $request)
     {
-        return Ausrueckung::all();
+        $gruppen = Mitglieder::where('user_id', $request->user()->id)->first()->gruppen()->get();
+        return Ausrueckung::when(
+            $gruppen, function($query, $gruppen){
+            foreach($gruppen as $gruppe){
+                if($gruppe){
+                    $query->orWhere('gruppe_id', '=', $gruppe['id']);
+                }
+            }
+            return $query->orWhere('gruppe_id', '=', null);
+        }
+        )->get();
     }
 
     public function getFiltered(Request $request)
     {
-        $filter = $request->get('filter');
+        $filter = $request->get('filterAnd');
+        $gruppen = Mitglieder::where('user_id', $request->user()->id)->first()->gruppen()->get();
 
         $ausrueckungen = Ausrueckung::when(
+            $gruppen, function($query, $gruppen){
+            foreach($gruppen as $gruppe){
+                if($gruppe){
+                    $query->orWhere('gruppe_id', '=', $gruppe['id']);
+                }
+            }
+            return $query->orWhere('gruppe_id', '=', null);
+            }
+            )
+            ->when(
                 $filter, function($query, $filter){
                     foreach($filter as $f){
                         if($f){
                             $query->where($f['filterField'], $f['operator'], $f['value']);
                         }
                     }
-                return $query;
+                    return $query;
                 }
             )
             ->skip($request->get('skip') ?? 0)
@@ -59,10 +86,20 @@ class AusrueckungController extends Controller
             200);
     }
 
-    public function getNextActual()
+    public function getNextActual(Request $request)
     {
         $actualDate = date("Y-m-d");
-        return Ausrueckung::where('vonDatum', '>=', $actualDate)->oldest('vonDatum')->first();
+        $gruppen = Mitglieder::where('user_id', $request->user()->id)->first()->gruppen()->get();
+        return Ausrueckung::when(
+            $gruppen, function($query, $gruppen){
+            foreach($gruppen as $gruppe){
+                if($gruppe){
+                    $query->orWhere('gruppe_id', '=', $gruppe['id']);
+                }
+            }
+            return $query->orWhere('gruppe_id', '=', null);
+        }
+        )->where('vonDatum', '>=', $actualDate)->oldest('vonDatum')->first();
     }
 
     public function create(Request $request)
@@ -95,7 +132,10 @@ class AusrueckungController extends Controller
         Ausrueckung::destroy($id);
     }
 
-
+    /**
+     * @deprecated check if used || implement gruppen pre-filter
+     * @param $name
+     * @return mixed*/
     public function search($name)
     {
         return Ausrueckung::where('name', 'like', '%' . $name . '%')->get();

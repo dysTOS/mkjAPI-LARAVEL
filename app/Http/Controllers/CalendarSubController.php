@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ausrueckung;
+use App\Models\Mitglieder;
 use App\Models\User;
 use Jsvrcek\ICS\CalendarExport;
 use Jsvrcek\ICS\CalendarStream;
@@ -13,13 +14,23 @@ use Jsvrcek\ICS\Utility\Formatter;
 
 class CalendarSubController extends Controller
 {
-    public function getSubscription($id = null)
+    public static function getSubscription($id = null)
     {
         $user = User::where('id', $id)->first();
         $actualYear = date('Y') . "-01-01";
 
         if($user){
-            $events = Ausrueckung::where('vonDatum', '>=', $actualYear)->orderBy('vonDatum', 'asc')->get();
+            $gruppen = Mitglieder::where('user_id', $user->id)->first()->gruppen()->get();
+            $events = Ausrueckung::when(
+                $gruppen, function($query, $gruppen){
+                foreach($gruppen as $gruppe){
+                    if($gruppe){
+                        $query->orWhere('gruppe_id', '=', $gruppe['id']);
+                    }
+                }
+                return $query->orWhere('gruppe_id', '=', null);
+            }
+            )->where('vonDatum', '>=', $actualYear)->orderBy('vonDatum', 'asc')->get();
         }else {
             $events = Ausrueckung::where('oeffentlich', true)->where('vonDatum', '>=', $actualYear)->orderBy('vonDatum', 'asc')->get();
         }
