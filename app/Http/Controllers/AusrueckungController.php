@@ -45,7 +45,6 @@ class AusrueckungController extends Controller
                 if($gruppe){
                     $query->orWhere('gruppe_id', '=', $gruppe['id']);
                 }
-
             }
             return $query->orWhere('gruppe_id', '=', null);
         }
