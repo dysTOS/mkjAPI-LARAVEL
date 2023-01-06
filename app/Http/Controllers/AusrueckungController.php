@@ -20,6 +20,7 @@ class AusrueckungController extends Controller
     {
         $actualYear = date('Y') . "-01-01";
         return Ausrueckung::where('oeffentlich', true)
+            ->where('status', '!=', 'abgesagt')
             ->where('gruppe_id', '=', null)
             ->where('vonDatum', '>=', $actualYear)
             ->orderBy('vonDatum', 'asc')
@@ -30,6 +31,7 @@ class AusrueckungController extends Controller
     {
         $actualDate = date("Y-m-d");
         return Ausrueckung::where('vonDatum', '>=', $actualDate)
+            ->where('status', '!=', 'abgesagt')
             ->where('oeffentlich', true)
             ->where('gruppe_id', '=', null)
             ->oldest('vonDatum')->first();
@@ -88,19 +90,25 @@ class AusrueckungController extends Controller
 
     public function getNextActual(Request $request)
     {
-        $actualDate = date("Y-m-d");
         $gruppen = Mitglieder::where('user_id', $request->user()->id)->first()->gruppen()->get();
         return Ausrueckung::when(
                 $gruppen, function($query, $gruppen){
-                foreach($gruppen as $gruppe){
-                    if($gruppe){
-                        $query->orWhere('gruppe_id', '=', $gruppe['id']);
-                    }
+                    $actualDate = date("Y-m-d");
+                    $query->where('vonDatum', '>=', $actualDate);
+                    $query->where(function($query) use ($gruppen){
+                        foreach($gruppen as $gruppe){
+                            if($gruppe){
+                                $query->orWhere('gruppe_id', '=', $gruppe['id']);
+                            }
+                        }
+                        return $query->orWhere('gruppe_id', '=', null);
+                    });
+                },
+                function($query){
+                    $actualDate = date("Y-m-d");
+                    $query->where('vonDatum', '>=', $actualDate);
                 }
-                return $query->orWhere('gruppe_id', '=', null);
-            }
-        )
-            ->where('vonDatum', '>=', $actualDate)
+            )
             ->oldest('vonDatum')
             ->first();
     }
