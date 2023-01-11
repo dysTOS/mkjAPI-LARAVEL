@@ -94,6 +94,7 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('/addnoten', [NotenController::class, 'attachNoten']);
     Route::post('/removenoten', [NotenController::class, 'detachNoten']);
     Route::get('/notenausrueckung/{id}', [NotenController::class, 'getNotenOfAusrueckung']);
+    Route::post('/notenmappe', [NotenMappenController::class, 'getNotenmappe']);
     Route::get('/notenmappen', [NotenMappenController::class, 'getNotenmappen']);
     Route::post('/notenmappen', [NotenMappenController::class, 'createNotenmappe']);
     Route::put('/notenmappen/{id}', [NotenMappenController::class, 'updateNotenmappe']);

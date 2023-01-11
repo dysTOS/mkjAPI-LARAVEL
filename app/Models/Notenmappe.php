@@ -19,6 +19,7 @@ class Notenmappe extends Model
     protected $table = 'notenmappen';
     protected $fillable = [
         'name',
-        'hatVerzeichnis'
+        'hatVerzeichnis',
+        'color'
     ];
 }
