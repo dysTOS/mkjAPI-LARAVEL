@@ -28,7 +28,7 @@ class NotenMappenController extends Controller
             'id' => 'required'
         ]);
         $mappe = Notenmappe::find($fields['id']);
-        return $mappe->load('noten')->get();
+        return $mappe->load('noten');
     }
 
     public function createNotenmappe(Request $request)
