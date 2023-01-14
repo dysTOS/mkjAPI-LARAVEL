@@ -90,6 +90,8 @@ class AusrueckungController extends Controller
 
     public function getNextActual(Request $request)
     {
+        $skip = $request->get('skip') ?? 0;
+
         $gruppen = Mitglieder::where('user_id', $request->user()->id)->first()->gruppen()->get();
         return Ausrueckung::when(
                 $gruppen, function($query, $gruppen){
@@ -110,7 +112,7 @@ class AusrueckungController extends Controller
                 }
             )
             ->oldest('vonDatum')
-            ->first();
+            ->get()->offsetGet($skip);
     }
 
     public function create(Request $request)
