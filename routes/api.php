@@ -56,7 +56,6 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::get('/ausrueckungen', [AusrueckungController::class, 'getAll']);
     Route::get('/ausrueckungen/{id}', [AusrueckungController::class, 'getSingle']);
     Route::post('/nextausrueckung', [AusrueckungController::class, 'getNextActual']);
-    Route::get('/ausrueckungen/search/{name}', [AusrueckungController::class, 'search']);
     Route::post('/ausrueckungenfiltered', [AusrueckungController::class, 'getFiltered']);
     Route::post('/ausrueckungen', [AusrueckungController::class, 'create']);
     Route::put('/ausrueckungen/{id}', [AusrueckungController::class, 'update']);

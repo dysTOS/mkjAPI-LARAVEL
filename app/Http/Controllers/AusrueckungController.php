@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\PermissionMap;
 use App\Models\Ausrueckung;
 use App\Models\Mitglieder;
 use Illuminate\Http\Request;
@@ -21,7 +22,6 @@ class AusrueckungController extends Controller
         $actualYear = date('Y') . "-01-01";
         return Ausrueckung::where('oeffentlich', true)
             ->where('status', '!=', 'abgesagt')
-            ->where('gruppe_id', '=', null)
             ->where('vonDatum', '>=', $actualYear)
             ->orderBy('vonDatum', 'asc')
             ->get();
@@ -33,7 +33,6 @@ class AusrueckungController extends Controller
         return Ausrueckung::where('vonDatum', '>=', $actualDate)
             ->where('status', '!=', 'abgesagt')
             ->where('oeffentlich', true)
-            ->where('gruppe_id', '=', null)
             ->oldest('vonDatum')->first();
     }
 
@@ -91,8 +90,8 @@ class AusrueckungController extends Controller
     public function getNextActual(Request $request)
     {
         $skip = $request->get('skip') ?? 0;
-
         $gruppen = Mitglieder::where('user_id', $request->user()->id)->first()->gruppen()->get();
+
         return Ausrueckung::when(
                 $gruppen, function($query, $gruppen){
                     $actualDate = date("Y-m-d");
@@ -106,6 +105,7 @@ class AusrueckungController extends Controller
                         return $query->orWhere('gruppe_id', '=', null);
                     });
                 },
+                //if $gruppen is null
                 function($query){
                     $actualDate = date("Y-m-d");
                     $query->where('vonDatum', '>=', $actualDate);
@@ -140,17 +140,8 @@ class AusrueckungController extends Controller
         return $ausrueckung;
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Ausrueckung::destroy($id);
-    }
-
-    /**
-     * @deprecated check if used || implement gruppen pre-filter
-     * @param $name
-     * @return mixed*/
-    public function search($name)
-    {
-        return Ausrueckung::where('name', 'like', '%' . $name . '%')->get();
+        return Ausrueckung::destroy($id);
     }
 }
