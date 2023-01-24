@@ -11,6 +11,7 @@ use App\Http\Controllers\NotenMappenController;
 use App\Http\Controllers\PushNotificationsController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StatistikController;
 use App\Http\Controllers\WordPressController;
 use App\Http\Controllers\XXXTestController;
 use Illuminate\Support\Facades\Route;
@@ -110,6 +111,8 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::put('role/{id}', [RoleController::class, 'updateRole']);
     Route::delete('role/{id}', [RoleController::class, 'deleteRole']);
     Route::post('roles/assign/{id}', [RoleController::class, 'assignRolesToUser']);
+
+    Route::get('/statistik/termine', [StatistikController::class, 'getTermine']);
 
     Route::get('/files', [FileController::class, 'getFiles']);
     Route::post('/file', [FileController::class, 'storeFile']);
