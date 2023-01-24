@@ -16,4 +16,12 @@ class StatistikController extends Controller
                  ->select('kategorie as label', DB::raw('count(*) as count'))
                  ->get();
     }
+
+    public static function getNoten(Request $request)
+    {
+        return DB::table('noten')
+                ->groupBy('gattung')
+                 ->select('gattung as label', DB::raw('count(*) as count'))
+                 ->get();
+    }
 }

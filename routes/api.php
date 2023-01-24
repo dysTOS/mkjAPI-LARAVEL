@@ -113,6 +113,7 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('roles/assign/{id}', [RoleController::class, 'assignRolesToUser']);
 
     Route::get('/statistik/termine', [StatistikController::class, 'getTermine']);
+    Route::get('/statistik/noten', [StatistikController::class, 'getNoten']);
 
     Route::get('/files', [FileController::class, 'getFiles']);
     Route::post('/file', [FileController::class, 'storeFile']);
