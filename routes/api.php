@@ -112,8 +112,9 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::delete('role/{id}', [RoleController::class, 'deleteRole']);
     Route::post('roles/assign/{id}', [RoleController::class, 'assignRolesToUser']);
 
-    Route::get('/statistik/termine', [StatistikController::class, 'getTermine']);
+    Route::post('/statistik/termine', [StatistikController::class, 'getTermine']);
     Route::get('/statistik/noten', [StatistikController::class, 'getNoten']);
+    Route::get('/statistik/mitglieder', [StatistikController::class, 'getMitglieder']);
 
     Route::get('/files', [FileController::class, 'getFiles']);
     Route::post('/file', [FileController::class, 'storeFile']);
