@@ -11,7 +11,7 @@ class NotenController extends Controller
     function __construct()
     {
 
-        $this->middleware('permission:noten_read', ['only' => ['getAll','search', 'getNotenOfAusrueckung']]);
+        $this->middleware('permission:noten_read', ['only' => ['getAll','getNotenById', 'search', 'getNotenOfAusrueckung']]);
         $this->middleware('permission:noten_save', ['only' => ['create', 'update']]);
         $this->middleware('permission:noten_delete', ['only' => ['destroy']]);
         $this->middleware('permission:noten_assign', ['only' => ['attachNoten', 'detachNoten']]);
@@ -55,6 +55,11 @@ class NotenController extends Controller
 
     public function getAll(){
         return Noten::all();
+    }
+
+    public static function getNotenById(Request $request, $id)
+    {
+        return Noten::find($id);
     }
 
     public function getNotenOfAusrueckung($id){

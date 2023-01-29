@@ -93,8 +93,6 @@ class MitgliederController extends Controller
             'telefonMobil' => $request['telefonMobil'],
             'email' => $request['email'],
             'beruf' => $request['beruf'],
-            'eintrittDatum' => $request['eintrittDatum'],
-            'austrittDatum' => $request['austrittDatum']
         ));
 
         return $mitglied;

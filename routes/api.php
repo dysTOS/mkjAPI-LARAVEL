@@ -87,6 +87,7 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('/gruppen/removemitglied', [GruppenController::class, 'removeMitgliedFromGruppe']);
 
     Route::get('/noten', [NotenController::class, 'getAll']);
+    Route::get('/noten/{id}', [NotenController::class, 'getNotenById']);
     Route::get('/noten/search/{name}', [NotenController::class, 'search']);
     Route::post('/noten', [NotenController::class, 'create']);
     Route::put('/noten/{id}', [NotenController::class, 'update']);
