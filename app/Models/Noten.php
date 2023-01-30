@@ -18,8 +18,8 @@ class Noten extends Model
 
     public function mappen()
     {
-        return $this->belongsToMany(Konzert::class,
-            'mappe_noten', 'noten_id', 'mappe_id');
+        return $this->belongsToMany(Notenmappe::class,
+            'mappe_noten', 'noten_id', 'mappe_id')->withPivot('verzeichnisNr');
     }
 
     protected $table = 'noten';

@@ -17,6 +17,16 @@ class StatistikController extends Controller
             ->get();
     }
 
+    public static function getMitgliederGeschlecht(Request $request)
+    {
+        return DB::table('mitglieder')
+            ->where('aktiv', true)
+            ->groupBy('geschlecht')
+            ->select('geschlecht AS label', DB::raw('COUNT(*) as count'))
+            ->get();
+
+    }
+
     public static function getTermine(Request $request)
     {
         $yearStart = date($request->year) . "-01-01";

@@ -63,13 +63,18 @@ class NotenMappenController extends Controller
         $mappe = Notenmappe::find($fields['mappe_id']);
 
         if($mappe->hatVerzeichnis){
-            $request->validate([
+            $fields = $request->validate([
                 'verzeichnisNr' => 'required'
             ]);
+
+            if($mappe->noten()->wherePivot('verzeichnisNr', $fields['verzeichnisNr'])->first())
+            {
+                abort(403, 'Verzeichnis Nr. ist bereits vergeben!');
+            }
         }
 
         if($mappe->noten()->get()->contains($noten)){
-            abort(403,'Stück bereits zugewiesen!');
+            abort(403,'Stück ist bereits zugewiesen!');
         }
         $mappe->noten()->attach($noten, ['verzeichnisNr' => $request['verzeichnisNr']]);
 
