@@ -55,19 +55,10 @@ class AusrueckungController extends Controller
     public function getFiltered(Request $request)
     {
         $filter = $request->get('filterAnd');
-        $gruppen = Mitglieder::where('user_id', $request->user()->id)->first()->gruppen()->get();
+        $mitglied = Mitglieder::where('user_id', $request->user()->id)->first();
+        $gruppen = $mitglied->gruppen()->get();
 
         $ausrueckungen = Ausrueckung::when(
-            $gruppen, function($query, $gruppen){
-            foreach($gruppen as $gruppe){
-                if($gruppe){
-                    $query->orWhere('gruppe_id', '=', $gruppe['id']);
-                }
-            }
-            return $query->orWhere('gruppe_id', '=', null);
-            }
-            )
-            ->when(
                 $filter, function($query, $filter){
                     foreach($filter as $f){
                         if($f){
@@ -76,10 +67,23 @@ class AusrueckungController extends Controller
                     }
                     return $query;
                 }
-            )
+            )->when(
+                $gruppen, function($query, $gruppen){
+                    $query->where(function($query) use ($gruppen) {
+                        foreach($gruppen as $gruppe){
+                            if($gruppe){
+                                $query->orWhere('gruppe_id', '=', $gruppe['id']);
+                            }
+                        }
+                        return $query->orWhere('gruppe_id', '=', null);
+                    });
+                }
+                )
             ->skip($request->get('skip') ?? 0)
             ->take($request->get('take') ?? PHP_INT_MAX)
             ->get();
+
+
 
         return response([
             'values' => $ausrueckungen->load('gruppe'),
