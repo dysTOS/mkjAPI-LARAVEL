@@ -41,12 +41,13 @@ Route::get('/push', [PushNotificationsController::class, 'push']);
 Route::get('/savepost', [WordPressController::class, 'savepost']);
 
 Route::get('/test', [XXXTestController::class, 'testGet']);
-Route::post('/test', [XXXTestController::class, 'testPost']);
-Route::put('/test', [XXXTestController::class, 'testPut']);
-Route::delete('/test/{id}', [XXXTestController::class, 'testDelete']);
 
 //Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function (){
+    Route::post('/test', [XXXTestController::class, 'testPost']);
+    Route::put('/test', [XXXTestController::class, 'testPut']);
+    Route::delete('/test/{id}', [XXXTestController::class, 'testDelete']);
+
     Route::post('/user', [AuthController::class, 'getCurrentUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/deleteuser', [AuthController::class, 'deleteUser']);
@@ -59,6 +60,7 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('/nextausrueckung', [AusrueckungController::class, 'getNextActual']);
     Route::post('/ausrueckungenfiltered', [AusrueckungController::class, 'getFiltered']);
     Route::post('/ausrueckungen', [AusrueckungController::class, 'create']);
+    Route::post('/saveterminbyleiter', [AusrueckungController::class, 'saveTerminByGruppenleiter']);
     Route::put('/ausrueckungen/{id}', [AusrueckungController::class, 'update']);
     Route::delete('/ausrueckungen/{id}', [AusrueckungController::class, 'destroy']);
 

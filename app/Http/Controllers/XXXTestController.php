@@ -29,7 +29,7 @@ class XXXTestController extends Controller
 
     public function testPost(Request $request){
         //test your shit here Rolando
-        return response([], 200);
+        return AusrueckungController::saveTerminByGruppenleiter($request);
     }
 
     public function testPut(Request $request){

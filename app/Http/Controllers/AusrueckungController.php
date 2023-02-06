@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\PermissionMap;
 use App\Models\Ausrueckung;
+use App\Models\Gruppe;
 use App\Models\Mitglieder;
 use Illuminate\Http\Request;
 use Validator;
@@ -15,6 +15,32 @@ class AusrueckungController extends Controller
         $this->middleware('permission:ausrueckungen_read', ['only' => ['getAll', 'search', 'getFiltered', 'getNextActual', 'getSingle']]);
         $this->middleware('permission:ausrueckungen_save', ['only' => ['create', 'update']]);
         $this->middleware('permission:ausrueckungen_delete', ['only' => ['destroy']]);
+        $this->middleware('permission:termin_gruppenleiter_save', ['only' => ['saveTerminByGruppenleiter']]);
+    }
+
+    public static function saveTerminByGruppenleiter(Request $request)
+    {
+        $request->validate([
+            'gruppe_id' => 'required'
+        ]);
+
+        $termin = Ausrueckung::find($request->id);
+        if($termin && $termin->gruppe_id != $request->gruppe_id){
+            abort(403, "Dieser Termin wurde nicht für diese Gruppe erstellt!");
+        }
+
+        $mitglied = Mitglieder::where('user_id', $request->user()->id)->first();
+        $gruppe = Gruppe::where('gruppenleiter_mitglied_id', '=', $mitglied->id)->where('id', '=', $request->gruppe_id)->first();
+        if(!$gruppe){
+            abort(403, "Der Termin muss der richtigen Gruppe zugewiesen werden!");
+        }
+
+        if($termin){
+            return AusrueckungController::update($request, $request->id);
+        }else{
+            return AusrueckungController::create($request);
+        }
+
     }
 
     public function getActualYearPublic()
@@ -119,7 +145,7 @@ class AusrueckungController extends Controller
             ->get()->offsetGet($skip);
     }
 
-    public function create(Request $request)
+    public static function create(Request $request)
     {
         $request->validate([
             'name' => 'required',
@@ -137,7 +163,7 @@ class AusrueckungController extends Controller
         return Ausrueckung::find($id);
     }
 
-    public function update(Request $request, $id)
+    public static function update(Request $request, $id)
     {
         $ausrueckung = Ausrueckung::find($id);
         $ausrueckung->update($request->all());

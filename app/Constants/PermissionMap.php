@@ -4,9 +4,10 @@ namespace App\Constants;
 
 class PermissionMap
 {
-    public const AUSRUECKUNG_READ = "ausrueckungen_read";
-    public const AUSRUECKUNG_SAVE = "ausrueckungen_save";
-    public const AUSRUECKUNG_DELETE = "ausrueckungen_delete";
+    public const TERMIN_READ = "ausrueckungen_read";
+    public const TERMIN_SAVE = "ausrueckungen_save";
+    public const TERMIN_DELETE = "ausrueckungen_delete";
+    public const TERMIN_GRUPPENLEITER_SAVE = "termin_gruppenleiter_save";
     public const MITGLIEDER_READ = "mitglieder_read";
     public const MITGLIEDER_SAVE = "mitglieder_save";
     public const MITGLIEDER_DELETE = "mitglieder_delete";
