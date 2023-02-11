@@ -9,6 +9,19 @@ use Illuminate\Http\Request;
 
 class StatistikController extends Controller
 {
+    public static function getTermineNachGruppen(Request $request)
+    {
+        $yearStart = date($request->year) . "-01-01";
+        $yearEnd = date($request->year) . "-12-31";
+
+        return Ausrueckung::
+                where('vonDatum', '>=', $yearStart)
+                ->where('bisDatum', '<', $yearEnd)
+                ->get()
+                ->countBy('gruppe.name');
+
+    }
+
     public static function getMitglieder(Request $request)
     {
         return DB::table('mitglieder')

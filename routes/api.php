@@ -116,6 +116,7 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('roles/assign/{id}', [RoleController::class, 'assignRolesToUser']);
 
     Route::post('/statistik/termine', [StatistikController::class, 'getTermine']);
+    Route::post('/statistik/terminegruppen', [StatistikController::class, 'getTermineNachGruppen']);
     Route::get('/statistik/noten', [StatistikController::class, 'getNoten']);
     Route::get('/statistik/mitglieder', [StatistikController::class, 'getMitglieder']);
     Route::get('/statistik/mitgliedergeschlecht', [StatistikController::class, 'getMitgliederGeschlecht']);
