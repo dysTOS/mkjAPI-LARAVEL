@@ -21,7 +21,7 @@ class MitgliederController extends Controller
 
     public function getAll()
     {
-        $mitglieder = Mitglieder::all()->orderBy('zuname', 'asc')->get();
+        $mitglieder = Mitglieder::query()->orderBy('zuname', 'asc')->get();
         return $mitglieder->load('gruppen');
     }
 
