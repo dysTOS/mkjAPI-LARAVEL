@@ -21,14 +21,14 @@ class MitgliederController extends Controller
 
     public function getAll()
     {
-        $mitglieder = Mitglieder::all();
+        $mitglieder = Mitglieder::all()->orderBy('zuname', 'asc');
         $mitglieder->load('gruppen');
         return $mitglieder;
     }
 
     public function getAllActive()
     {
-        $mitglieder =  Mitglieder::where('aktiv', true)->get();
+        $mitglieder =  Mitglieder::where('aktiv', true)->orderBy('zuname', 'asc')->get();
         return $mitglieder->load('gruppen');
     }
 
