@@ -43,7 +43,6 @@ class MitgliederController extends Controller
         $request->validate([
             'vorname' => 'required',
             'zuname' => 'required',
-            'email' => 'required',
         ]);
 
         return Mitglieder::create($request->all());
