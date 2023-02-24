@@ -65,6 +65,7 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::delete('/ausrueckungen/{id}', [AusrueckungController::class, 'destroy']);
 
     Route::get('/mitglieder', [MitgliederController::class, 'getAll']);
+    Route::get('/mitgliedernextgeb', [MitgliederController::class, 'getNextGeburtstag']);
     Route::get('/mitgliederaktiv', [MitgliederController::class, 'getAllActive']);
     Route::post('/mitgliedselbst', [MitgliederController::class, 'updateOwnMitgliedData']);
     Route::get('/mitglieder/{id}', [MitgliederController::class, 'getSingle']);

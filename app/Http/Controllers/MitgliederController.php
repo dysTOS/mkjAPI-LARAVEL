@@ -8,6 +8,7 @@ use App\Models\Mitglieder;
 use App\Models\User;
 use App\Models\Gruppe;
 use App\Constants\PermissionMap;
+use Illuminate\Support\Carbon;
 
 class MitgliederController extends Controller
 {
@@ -57,6 +58,19 @@ class MitgliederController extends Controller
         $mitglied = Mitglieder::find($id);
         $mitglied->update($request->all());
         return $mitglied;
+    }
+
+    public static function getNextGeburtstag(Request $request)
+    {
+        $date = now();
+        return Mitglieder::whereMonth('geburtsdatum', '>', $date->month)
+            ->orWhere(function ($query) use ($date) {
+                $query->whereMonth('geburtsdatum', '=', $date->month)
+                    ->whereDay('geburtsdatum', '>=', $date->day);
+            })
+            ->orderByRaw("DAYOFMONTH('geburtsdatum') ASC")
+           ->take(3)
+        ->get();
     }
 
     public function updateOwnMitgliedData(Request $request)
