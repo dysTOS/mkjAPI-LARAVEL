@@ -51,7 +51,13 @@ class GruppenController extends Controller
 
     public static function getAllGruppen(Request $request)
     {
-        $gruppen = Gruppe::all();
+        if($request['nurRegister']){
+            $gruppen = Gruppe::where('register', true)->orderBy('name')->get();
+        }else{
+            $gruppen = Gruppe::all();
+        }
+
+
 
         if($request['includeMitglieder']){
             $gruppen->load('mitglieder');

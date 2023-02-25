@@ -27,7 +27,7 @@ class CreateNotenmappenTables extends Migration
             $table->uuid('noten_id');
             $table->foreign('noten_id')->references('id')->on('noten')->onDelete('cascade');
             $table->string('verzeichnisNr')->nullable();
-            $table->char('color', 10)->nullable();
+
             $table->primary(['mappe_id', 'noten_id']);
 
             $table->timestamps();

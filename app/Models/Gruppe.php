@@ -32,6 +32,7 @@ class Gruppe extends Model
     protected $fillable = [
         'name',
         'gruppenleiter_mitglied_id',
+        'register',
         'color'
     ];
 }
