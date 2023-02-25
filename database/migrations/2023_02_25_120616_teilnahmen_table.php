@@ -15,15 +15,19 @@ class TeilnahmenTable extends Migration
     {
         Schema::create('teilnahmen', function (Blueprint $table) {
             $table->uuid('mitglied_id');
-            $table->foreign('mitglied_id')->references('id')->on('mitglieder')->onDelete('cascade');
 
             $table->uuid('termin_id');
-            $table->foreign('termin_id')->references('id')->on('ausrueckungen')->onDelete('cascade');
             $table->string('status')->nullable();
 
             $table->primary(['mitglied_id', 'termin_id']);
 
             $table->timestamps();
+        });
+
+        Schema::table('teilnahmen', function(Blueprint $table)
+        {
+            $table->foreign('mitglied_id')->references('id')->on('mitglieder')->onDelete('cascade');
+            $table->foreign('termin_id')->references('id')->on('ausrueckungen')->onDelete('cascade');
         });
     }
 

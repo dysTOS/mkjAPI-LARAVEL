@@ -12,6 +12,7 @@ use App\Http\Controllers\PushNotificationsController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StatistikController;
+use App\Http\Controllers\TeilnahmenController;
 use App\Http\Controllers\WordPressController;
 use App\Http\Controllers\XXXTestController;
 use Illuminate\Support\Facades\Route;
@@ -78,6 +79,10 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('/addmitgliedgruppe', [MitgliederController::class, 'attachMitgliedToGruppe']);
     Route::post('/removemitgliedgruppe', [MitgliederController::class, 'detachMitgliedFromGruppe']);
     Route::get('/mitgliederausrueckung/{id}', [MitgliederController::class, 'getMitgliederOfAusrueckung']);
+
+    Route::post('/teilnahme', [TeilnahmenController::class, 'updateTeilnahme']);
+    Route::post('/teilnahmeremove', [TeilnahmenController::class, 'removeTeilnahme']);
+    Route::post('/teilnahmestatus', [TeilnahmenController::class, 'getTeilnahmeStatus']);
 
     Route::post('/gruppen/all', [GruppenController::class, 'getAllGruppen']);
     Route::post('/gruppen/gruppe', [GruppenController::class, 'getGruppe']);

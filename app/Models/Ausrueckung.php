@@ -22,6 +22,12 @@ class Ausrueckung extends Model
             'ausrueckung_id', 'mitglied_id');
     }
 
+    public function teilnahmen()
+    {
+        return $this->belongsToMany(Mitglieder::class, 'teilnahmen',
+            'termin_id', 'mitglied_id')->withPivot('status')->withTimestamps();
+    }
+
     public function gruppe()
     {
         return $this->belongsTo(Gruppe::class);
