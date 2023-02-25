@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Mitglieder;
 use App\Models\Ausrueckung;
+use App\Models\Gruppe;
 use Illuminate\Support\Facades\DB;
 
 class TeilnahmenController extends Controller
@@ -24,6 +25,21 @@ class TeilnahmenController extends Controller
             ->where('termin_id', '=', $ausrueckung->id)
             ->where('mitglied_id', '=', $mitglied->id)
             ->first();
+    }
+
+    public function getTeilnahmenForTermin(Request $request)
+    {
+        $fields = $request->validate([
+            'termin_id' => 'required',
+        ]);
+
+        return Gruppe::where('register', true)->with([
+            'mitglieder.teilnahmen' => function ($query) use ($fields) {
+                $query->where('termin_id', $fields['termin_id']);
+            }
+        ])->orderBy('name')->get();
+
+
     }
 
     public function updateTeilnahme(Request $request){

@@ -81,6 +81,7 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::get('/mitgliederausrueckung/{id}', [MitgliederController::class, 'getMitgliederOfAusrueckung']);
 
     Route::post('/teilnahme', [TeilnahmenController::class, 'updateTeilnahme']);
+    Route::post('/teilnahmen', [TeilnahmenController::class, 'getTeilnahmenForTermin']);
     Route::post('/teilnahmeremove', [TeilnahmenController::class, 'removeTeilnahme']);
     Route::post('/teilnahmestatus', [TeilnahmenController::class, 'getTeilnahmeStatus']);
 

@@ -19,7 +19,7 @@ class NotenMappenController extends Controller
 
     public function getNotenmappen()
     {
-        return Notenmappe::all();
+        return Notenmappe::all()->load('noten');
     }
 
     public function getNotenmappe(Request $request)
