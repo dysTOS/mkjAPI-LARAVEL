@@ -33,6 +33,11 @@ class Mitglieder extends Model
         return $this->belongsToMany(Gruppe::class, 'mitglied_gruppe', 'mitglied_id', 'gruppen_id')->withTimestamps();
     }
 
+    public function instrumente()
+    {
+        return $this->hasMany(Instrument::class, 'instrument_id');
+    }
+
 
     protected $table = 'mitglieder';
     protected $fillable = [

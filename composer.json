@@ -62,7 +62,8 @@
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
-        "platform-check": false
+        "platform-check": false,
+        "disable-tls": false
     },
     "minimum-stability": "dev",
     "prefer-stable": true

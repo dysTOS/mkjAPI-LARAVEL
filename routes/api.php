@@ -95,6 +95,13 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('/gruppen/addmitglied', [GruppenController::class, 'addMitgliedToGruppe']);
     Route::post('/gruppen/removemitglied', [GruppenController::class, 'removeMitgliedFromGruppe']);
 
+    Route::get('/instrumente', [InstrumenteController::class, 'getAll']);
+    Route::get('/instrumente/{id}', [InstrumenteController::class, 'getInstrumentById']);
+    Route::post('/instrumente', [InstrumenteController::class, 'save']);
+    Route::delete('/instrumente/{id}', [InstrumenteController::class, 'destroy']);
+    Route::post('/addinstrument', [InstrumenteController::class, 'attachInstrument']);
+    Route::post('/removeinstrument', [InstrumenteController::class, 'detachInstrument']);
+
     Route::get('/noten', [NotenController::class, 'getAll']);
     Route::get('/noten/{id}', [NotenController::class, 'getNotenById']);
     Route::get('/noten/search/{name}', [NotenController::class, 'search']);
