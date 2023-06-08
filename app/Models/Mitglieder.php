@@ -35,7 +35,7 @@ class Mitglieder extends Model
 
     public function instrumente()
     {
-        return $this->hasMany(Instrument::class, 'instrument_id');
+        return $this->hasMany(Instrument::class, 'mitglied_id');
     }
 
 

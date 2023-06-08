@@ -18,11 +18,10 @@ class TeilnahmenController extends Controller
 
         $user = $request->user();
         $mitglied = Mitglieder::findOrFail($user->mitglied_id);
-        $ausrueckung = Ausrueckung::findOrFail($fields['termin_id']);
 
         return DB::table('teilnahmen')
             ->select('status')
-            ->where('termin_id', '=', $ausrueckung->id)
+            ->where('termin_id', '=', $fields['termin_id'])
             ->where('mitglied_id', '=', $mitglied->id)
             ->first();
     }
@@ -38,8 +37,6 @@ class TeilnahmenController extends Controller
                 $query->where('termin_id', $fields['termin_id']);
             }
         ])->orderBy('name')->get();
-
-
     }
 
     public function updateTeilnahme(Request $request){

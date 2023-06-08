@@ -42,13 +42,13 @@ class CreateMitgliederTable extends Migration
             $table->string('austrittDatum')->nullable();
             $table->timestamps();
         });
-        Schema::table('users', function(Blueprint $table)
+        /*Schema::table('users', function(Blueprint $table)
         {
             $table->foreign('mitglied_id')
                 ->references('id')
                 ->on('mitglieder')
                 ->onDelete('cascade');
-        });
+        });*/
 
 
         /*DB::table('mitglieder')->insert([

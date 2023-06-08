@@ -14,43 +14,15 @@ class InstrumentenController extends Controller
         $this->middleware('permission:instrumente_read', ['only' => ['getAll','getInstrumenteOfMitglied']]);
         $this->middleware('permission:instrumente_save', ['only' => ['save']]);
         $this->middleware('permission:instrumente_delete', ['only' => ['destroy']]);
-        $this->middleware('permission:instrumente_assign', ['only' => ['attachInstrument', 'detachInstrument']]);
     }
-
-    public function attachInstrument(Request $request)
-    {
-        $request->validate([
-            'mitglied_id' => 'required',
-            'instrument_id' => 'required'
-        ]);
-
-        $mitglied = Mitglieder::findOrFail($request->mitglied_id);
-        $instrument = Instrument::findOrFail($request->instrument_id);
-        $mitglied->instrumente()->attach($instrument);
-        return $mitglied->instrumente()->get();
-    }
-
-    public function detachInstrument(Request $request)
-    {
-        $request->validate([
-            'mitglied_id' => 'required',
-            'instrument_id' => 'required'
-        ]);
-
-        $mitglied = Mitglieder::findOrFail($request->mitglied_id);
-        $instrument = Instrument::findOrFail($request->instrument_id);
-        $mitglied->instrumente()->detach($instrument);
-        return $mitglied->instrumente()->get();
-    }
-
 
     public function getAll(){
-        return Instrument::all();
+        return Instrument::all()->load('mitglied');
     }
 
     public static function getInstrumentById(Request $request, $id)
     {
-        return Instrument::find($id);
+        return Instrument::find($id)->load('mitglied');
     }
 
     public function getInstrumenteOfMitglied($id){

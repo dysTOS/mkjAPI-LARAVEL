@@ -63,12 +63,16 @@ class MitgliederController extends Controller
     public static function getNextGeburtstage(Request $request)
     {
         $date = now();
-        return Mitglieder::where('aktiv', true)
-            ->whereMonth('geburtsdatum', '>', $date->month)
-            ->orWhere(function ($query) use ($date) {
-                $query->whereMonth('geburtsdatum', '=', $date->month)
-                    ->whereDay('geburtsdatum', '>=', $date->day);
-            })
+        return Mitglieder::where(function ($query){
+                        $query -> where('aktiv', true);
+                    })
+               ->where(function ($query) use ($date){
+                    $query->whereMonth('geburtsdatum', '>', $date->month)
+                    ->orWhere(function ($query) use ($date) {
+                        $query->whereMonth('geburtsdatum', '=', $date->month)
+                        ->whereDay('geburtsdatum', '>=', $date->day);
+                    });
+                 })
             ->orderByRaw("SUBSTRING(geburtsdatum, 6, 5)")
            ->take(3)
         ->get();

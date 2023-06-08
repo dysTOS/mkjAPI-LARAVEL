@@ -27,7 +27,6 @@ class PermissionMap
     public const INSTRUMENTE_READ = "instrumente_read";
     public const INSTRUMENTE_SAVE = "instrumente_save";
     public const INSTRUMENTE_DELETE = "instrumente_delete";
-    public const INSTRUMENTE_ASSIGN = "instrumente_assign";
     public const ROLE_READ = "role_read";
     public const ROLE_SAVE = "role_save";
     public const ROLE_DELETE = "role_delete";

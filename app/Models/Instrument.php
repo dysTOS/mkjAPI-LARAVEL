@@ -12,7 +12,7 @@ class Instrument extends Model
 
     public function mitglied()
     {
-        return $this->belongsTo(Mitglieder::class, 'instrument_id');
+        return $this->belongsTo(Mitglieder::class, 'mitglied_id', 'id');
     }
 
     protected $table = 'instrumente';
@@ -24,5 +24,6 @@ class Instrument extends Model
         'anmerkungen',
         'schaeden',
         'aufbewahrungsort',
+        'mitglied_id'
     ];
 }

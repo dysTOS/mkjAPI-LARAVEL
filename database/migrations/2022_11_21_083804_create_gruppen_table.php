@@ -24,7 +24,7 @@ class CreateGruppenTable extends Migration
             $table->foreign('gruppenleiter_mitglied_id')
                 ->references('id')
                 ->on('mitglieder')
-                ->onDelete('cascade');
+                ->onDelete('set null');
         });
 
         Schema::create('mitglied_gruppe', function (Blueprint $table) {
@@ -43,7 +43,7 @@ class CreateGruppenTable extends Migration
             $table->foreign('gruppe_id')
                 ->references('id')
                 ->on('gruppen')
-                ->onDelete('cascade');
+                ->onDelete('set null');
         });
 
     }

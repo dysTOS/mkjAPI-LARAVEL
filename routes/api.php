@@ -6,6 +6,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\MitgliederController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GruppenController;
+use App\Http\Controllers\InstrumentenController;
 use App\Http\Controllers\NotenController;
 use App\Http\Controllers\NotenMappenController;
 use App\Http\Controllers\PushNotificationsController;
@@ -95,12 +96,12 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('/gruppen/addmitglied', [GruppenController::class, 'addMitgliedToGruppe']);
     Route::post('/gruppen/removemitglied', [GruppenController::class, 'removeMitgliedFromGruppe']);
 
-    Route::get('/instrumente', [InstrumenteController::class, 'getAll']);
-    Route::get('/instrumente/{id}', [InstrumenteController::class, 'getInstrumentById']);
-    Route::post('/instrumente', [InstrumenteController::class, 'save']);
-    Route::delete('/instrumente/{id}', [InstrumenteController::class, 'destroy']);
-    Route::post('/addinstrument', [InstrumenteController::class, 'attachInstrument']);
-    Route::post('/removeinstrument', [InstrumenteController::class, 'detachInstrument']);
+    Route::get('/instrumente', [InstrumentenController::class, 'getAll']);
+    Route::get('/instrumente/{id}', [InstrumentenController::class, 'getInstrumentById']);
+    Route::post('/instrumente', [InstrumentenController::class, 'save']);
+    Route::delete('/instrumente/{id}', [InstrumentenController::class, 'destroy']);
+    Route::post('/addinstrument', [InstrumentenController::class, 'attachInstrument']);
+    Route::post('/removeinstrument', [InstrumentenController::class, 'detachInstrument']);
 
     Route::get('/noten', [NotenController::class, 'getAll']);
     Route::get('/noten/{id}', [NotenController::class, 'getNotenById']);
