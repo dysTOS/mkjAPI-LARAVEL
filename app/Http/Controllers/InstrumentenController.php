@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\PermissionMap;
 use App\Models\Instrument;
 use App\Models\Mitglieder;
 use Illuminate\Http\Request;
@@ -11,18 +12,18 @@ class InstrumentenController extends Controller
     function __construct()
     {
 
-        $this->middleware('permission:instrumente_read', ['only' => ['getAll','getInstrumenteOfMitglied']]);
-        $this->middleware('permission:instrumente_save', ['only' => ['save']]);
-        $this->middleware('permission:instrumente_delete', ['only' => ['destroy']]);
+        $this->middleware('permission:'. PermissionMap::INSTRUMENTE_READ, ['only' => ['getAll','getInstrumenteOfMitglied']]);
+        $this->middleware('permission:'. PermissionMap::INSTRUMENTE_SAVE, ['only' => ['save']]);
+        $this->middleware('permission:'. PermissionMap::INSTRUMENTE_DELETE, ['only' => ['destroy']]);
     }
 
     public function getAll(){
-        return Instrument::all()->load('mitglied');
+        return Instrument::all()->load('mitglied')->load('gruppe');
     }
 
     public static function getInstrumentById(Request $request, $id)
     {
-        return Instrument::find($id)->load('mitglied');
+        return Instrument::find($id)->load('mitglied')->load('gruppe');
     }
 
     public function getInstrumenteOfMitglied($id){

@@ -19,9 +19,8 @@ class CreateAusrueckungMitgliedTable extends Migration
 
             $table->uuid('mitglied_id')->index();
             $table->foreign('mitglied_id')->references('id')->on('mitglieder')->onDelete('cascade');
-            $table->string('status')->nullable();
 
-            /*$table->primary(['ausrueckung_id', 'mitglied_id']);*/
+            $table->primary(['ausrueckung_id', 'mitglied_id']);
         });
     }
 

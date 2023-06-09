@@ -16,15 +16,15 @@ class CreateGruppenTable extends Migration
         Schema::create('gruppen', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->string('name')->unique();
-            $table->uuid('gruppenleiter_mitglied_id')->nullable();
             $table->boolean('register')->nullable();
             $table->char('color',10)->nullable();
-            $table->timestamps();
-
-            $table->foreign('gruppenleiter_mitglied_id')
+            $table->foreignUuid('gruppenleiter_mitglied_id')
+                ->nullable()
                 ->references('id')
                 ->on('mitglieder')
                 ->onDelete('set null');
+            $table->timestamps();
+
         });
 
         Schema::create('mitglied_gruppe', function (Blueprint $table) {
@@ -38,13 +38,6 @@ class CreateGruppenTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('ausrueckungen', function(Blueprint $table)
-        {
-            $table->foreign('gruppe_id')
-                ->references('id')
-                ->on('gruppen')
-                ->onDelete('set null');
-        });
 
     }
 
@@ -55,7 +48,7 @@ class CreateGruppenTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gruppen');
         Schema::dropIfExists('mitglied_gruppe');
+        Schema::dropIfExists('gruppen');
     }
 }

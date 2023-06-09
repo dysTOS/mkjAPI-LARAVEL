@@ -20,7 +20,7 @@ class CreateAusrueckungNotenTable extends Migration
             $table->uuid('noten_id')->index();
             $table->foreign('noten_id')->references('id')->on('noten')->onDelete('cascade');
 
-            /*$table->primary(['ausrueckung_id', 'noten_id']);*/
+            $table->primary(['ausrueckung_id', 'noten_id']);
         });
     }
 

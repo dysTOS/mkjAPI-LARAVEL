@@ -100,8 +100,6 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::get('/instrumente/{id}', [InstrumentenController::class, 'getInstrumentById']);
     Route::post('/instrumente', [InstrumentenController::class, 'save']);
     Route::delete('/instrumente/{id}', [InstrumentenController::class, 'destroy']);
-    Route::post('/addinstrument', [InstrumentenController::class, 'attachInstrument']);
-    Route::post('/removeinstrument', [InstrumentenController::class, 'detachInstrument']);
 
     Route::get('/noten', [NotenController::class, 'getAll']);
     Route::get('/noten/{id}', [NotenController::class, 'getNotenById']);

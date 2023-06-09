@@ -26,6 +26,10 @@ class InstrumenteTable extends Migration
                 ->nullable()
                 ->constrained('mitglieder')
                 ->onDelete('set null');
+            $table->foreignUuid('gruppe_id')
+                ->nullable()
+                ->constrained('gruppen')
+                ->onDelete('set null');
             $table->timestamps();
         });
 

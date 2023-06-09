@@ -15,6 +15,11 @@ class Instrument extends Model
         return $this->belongsTo(Mitglieder::class, 'mitglied_id', 'id');
     }
 
+    public function gruppe()
+    {
+        return $this->belongsTo(Gruppe::class, 'gruppe_id', 'id');
+    }
+
     protected $table = 'instrumente';
     protected $fillable = [
         'marke',
@@ -24,6 +29,7 @@ class Instrument extends Model
         'anmerkungen',
         'schaeden',
         'aufbewahrungsort',
-        'mitglied_id'
+        'mitglied_id',
+        'gruppe_id'
     ];
 }
