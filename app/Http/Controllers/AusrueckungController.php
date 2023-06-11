@@ -45,10 +45,10 @@ class AusrueckungController extends Controller
 
     public function getActualYearPublic()
     {
-        $actualYear = date('Y') . "-01-01";
+        $actualDate = date("Y-m-d");
         return Ausrueckung::where('oeffentlich', true)
             ->where('status', '!=', 'abgesagt')
-            ->where('vonDatum', '>=', $actualYear)
+            ->where('vonDatum', '>=', $actualDate)
             ->orderBy('vonDatum', 'asc')
             ->get();
     }
