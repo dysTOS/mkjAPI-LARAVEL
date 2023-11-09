@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\PermissionMap;
 use App\Models\Ausrueckung;
 use App\Models\Noten;
 use App\Models\Notenmappe;
@@ -11,10 +12,10 @@ class NotenMappenController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:notenmappe_read', ['only' => ['getNotenmappen', 'getNotenmappe']]);
-        $this->middleware('permission:notenmappe_save', ['only' => ['createNotenmappe', 'updateNotenmappe']]);
-        $this->middleware('permission:notenmappe_delete', ['only' => ['destroyNotenmappe']]);
-        $this->middleware('permission:notenmappe_assign', ['only' => ['notenmappeAttach', 'notenmappeDetach']]);
+        $this->middleware('permission:' . PermissionMap::NOTENMAPPE_READ, ['only' => ['getNotenmappen', 'getNotenmappe']]);
+        $this->middleware('permission:' . PermissionMap::NOTENMAPPE_SAVE, ['only' => ['createNotenmappe', 'updateNotenmappe']]);
+        $this->middleware('permission:' . PermissionMap::NOTENMAPPE_DELETE, ['only' => ['destroyNotenmappe']]);
+        $this->middleware('permission:' . PermissionMap::NOTENMAPPE_ASSIGN, ['only' => ['notenmappeAttach', 'notenmappeDetach']]);
     }
 
     public function getNotenmappen()
@@ -52,7 +53,8 @@ class NotenMappenController extends Controller
         Notenmappe::destroy($id);
     }
 
-    public function notenmappeAttach(Request $request){
+    public function notenmappeAttach(Request $request)
+    {
 
         $fields = $request->validate([
             'noten_id' => 'required',
@@ -62,28 +64,29 @@ class NotenMappenController extends Controller
         $noten = Noten::find($fields['noten_id']);
         $mappe = Notenmappe::find($fields['mappe_id']);
 
-        if($mappe->hatVerzeichnis){
+        if ($mappe->hatVerzeichnis) {
             $fields = $request->validate([
                 'verzeichnisNr' => 'required'
             ]);
 
-            if($mappe->noten()->wherePivot('verzeichnisNr', $fields['verzeichnisNr'])->first())
-            {
+            if ($mappe->noten()->wherePivot('verzeichnisNr', $fields['verzeichnisNr'])->first()) {
                 abort(403, 'Verzeichnis Nr. ist bereits vergeben!');
             }
         }
 
-        if($mappe->noten()->get()->contains($noten)){
-            abort(403,'Stück ist bereits zugewiesen!');
+        if ($mappe->noten()->get()->contains($noten)) {
+            abort(403, 'Stück ist bereits zugewiesen!');
         }
         $mappe->noten()->attach($noten, ['verzeichnisNr' => $request['verzeichnisNr']]);
 
         return response([
             'success' => $mappe->noten()->get()->contains($noten),
-            'message' => 'Musikstück '.$noten->titel.' zugewiesen!'
+            'message' => 'Musikstück ' . $noten->titel . ' zugewiesen!'
         ], 200);
     }
-    public function notenmappeDetach(Request $request){
+
+    public function notenmappeDetach(Request $request)
+    {
         $fields = $request->validate([
             'noten_id' => 'required',
             'mappe_id' => 'required'
@@ -95,7 +98,7 @@ class NotenMappenController extends Controller
 
         return response([
             'success' => !$mappe->noten()->get()->contains($noten),
-            'message' => 'Musikstück '.$noten->titel.' entfernt!'
+            'message' => 'Musikstück ' . $noten->titel . ' entfernt!'
         ], 200);
     }
 

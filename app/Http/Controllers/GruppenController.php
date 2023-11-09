@@ -11,13 +11,14 @@ class GruppenController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:'. PermissionMap::GRUPPEN_READ, ['only' => ['getAllGruppen','getGruppeById', 'getGruppenLeiter','getMitgliederOfGruppe','getGruppenOfMitglied']]);
-        $this->middleware('permission:'. PermissionMap::GRUPPEN_SAVE, ['only' => ['saveGruppe']]);
-        $this->middleware('permission:'. PermissionMap::GRUPPEN_DELETE, ['only' => ['deleteGruppe']]);
-        $this->middleware('permission:'. PermissionMap::GRUPPEN_ASSIGN, ['only' => ['addMitgliedToGruppe', 'removeMitgliedFromGruppe']]);
+        $this->middleware('permission:' . PermissionMap::GRUPPEN_READ, ['only' => ['getAllGruppen', 'getGruppeById', 'getGruppenLeiter', 'getMitgliederOfGruppe', 'getGruppenOfMitglied']]);
+        $this->middleware('permission:' . PermissionMap::GRUPPEN_SAVE, ['only' => ['saveGruppe']]);
+        $this->middleware('permission:' . PermissionMap::GRUPPEN_DELETE, ['only' => ['deleteGruppe']]);
+        $this->middleware('permission:' . PermissionMap::GRUPPEN_ASSIGN, ['only' => ['addMitgliedToGruppe', 'removeMitgliedFromGruppe']]);
     }
 
-    public static function addMitgliedToGruppe(Request $request){
+    public static function addMitgliedToGruppe(Request $request)
+    {
         $fields = $request->validate([
             'gruppe_id' => 'required',
             'mitglied_id' => 'required',
@@ -29,11 +30,12 @@ class GruppenController extends Controller
 
         return response([
             'success' => $gruppe->mitglieder()->get()->contains($mitglied),
-            'message' => 'Mitglied '.$mitglied->vorname.' '.$mitglied->zuname.' zugewiesen!'
+            'message' => 'Mitglied ' . $mitglied->vorname . ' ' . $mitglied->zuname . ' zugewiesen!'
         ], 200);
     }
 
-    public static function removeMitgliedFromGruppe(Request $request){
+    public static function removeMitgliedFromGruppe(Request $request)
+    {
         $fields = $request->validate([
             'mitglied_id' => 'required',
             'gruppe_id' => 'required'
@@ -45,27 +47,26 @@ class GruppenController extends Controller
 
         return response([
             'success' => !$gruppe->mitglieder()->get()->contains($mitglied),
-            'message' => 'Mitglied '.$mitglied->vorname.' '.$mitglied->zuname.' entfernt!'
+            'message' => 'Mitglied ' . $mitglied->vorname . ' ' . $mitglied->zuname . ' entfernt!'
         ], 200);
     }
 
     public static function getAllGruppen(Request $request)
     {
-        if($request['nurRegister']){
+        if ($request['nurRegister']) {
             $gruppen = Gruppe::where('register', true)->orderBy('name')->get();
-        }else{
+        } else {
             $gruppen = Gruppe::all();
         }
 
 
-
-        if($request['includeMitglieder']){
+        if ($request['includeMitglieder']) {
             $gruppen->load('mitglieder');
         }
-        if($request['includeGruppenleiter']){
+        if ($request['includeGruppenleiter']) {
             $gruppen->load('gruppenleiter');
         }
-        if($request['includeTermine']){
+        if ($request['includeTermine']) {
             $gruppen->load('ausrueckungen');
         }
 
@@ -94,15 +95,15 @@ class GruppenController extends Controller
 
         $existentGruppe = null;
 
-        if($request['id']){
+        if ($request['id']) {
             $existentGruppe = Gruppe::find($request['id']);
         }
 
-        if($existentGruppe == null){
+        if ($existentGruppe == null) {
             $existentGruppe = Gruppe::where('name', '=', $request['name'])->first();
         }
 
-        if($existentGruppe){
+        if ($existentGruppe) {
             $existentGruppe->update($request->all());
             return $existentGruppe;
         }
@@ -115,7 +116,8 @@ class GruppenController extends Controller
         return Gruppe::destroy($id);
     }
 
-    public static function getGruppenLeiter(Request $request){
+    public static function getGruppenLeiter(Request $request)
+    {
         $request->validate([
             'id' => 'required'
         ]);
@@ -126,7 +128,8 @@ class GruppenController extends Controller
         return $gruppe->gruppenleiter()->get();
     }
 
-    public static function getMitgliederOfGruppe(Request $request){
+    public static function getMitgliederOfGruppe(Request $request)
+    {
         $request->validate([
             'id' => 'required'
         ]);
@@ -136,7 +139,8 @@ class GruppenController extends Controller
         return $gruppe->mitglieder()->get();
     }
 
-    public static function getGruppenOfMitglied(Request $request){
+    public static function getGruppenOfMitglied(Request $request)
+    {
         $request->validate([
             'id' => 'required'
         ]);

@@ -39,7 +39,8 @@ class TeilnahmenController extends Controller
         ])->orderBy('name')->get();
     }
 
-    public function updateTeilnahme(Request $request){
+    public function updateTeilnahme(Request $request)
+    {
         $fields = $request->validate([
             'termin_id' => 'required',
             'status' => 'required'
@@ -48,9 +49,9 @@ class TeilnahmenController extends Controller
         $user = $request->user();
         $mitglied = Mitglieder::findOrFail($user->mitglied_id);
         $ausrueckung = Ausrueckung::findOrFail($fields['termin_id']);
-        if($ausrueckung->teilnahmen()->get()->contains($mitglied)){
+        if ($ausrueckung->teilnahmen()->get()->contains($mitglied)) {
             $ausrueckung->teilnahmen()->updateExistingPivot($mitglied, ['status' => $fields['status']]);
-        }else{
+        } else {
             $ausrueckung->teilnahmen()->attach($mitglied, ['status' => $fields['status']]);
         }
 
@@ -60,7 +61,8 @@ class TeilnahmenController extends Controller
         ], 200);
     }
 
-    public function removeTeilnahme(Request $request){
+    public function removeTeilnahme(Request $request)
+    {
         $fields = $request->validate([
             'termin_id' => 'required',
         ]);

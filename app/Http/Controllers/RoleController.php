@@ -14,7 +14,7 @@ class RoleController extends Controller
 
     function __construct()
     {
-        $this->middleware('permission:role_read', ['only' => ['getAllRoles','getAllPermissions', 'getPermissionsForRole']]);
+        $this->middleware('permission:role_read', ['only' => ['getAllRoles', 'getAllPermissions', 'getPermissionsForRole']]);
         $this->middleware('permission:role_save', ['only' => ['createRole', 'updateRole']]);
         $this->middleware('permission:role_delete', ['only' => ['deleteRole']]);
         $this->middleware('permission:role_assign', ['only' => ['assignRolesToUser']]);
@@ -27,7 +27,7 @@ class RoleController extends Controller
      */
     public function getAllRoles()
     {
-        $roles = Role::all()->filter(function($role){
+        $roles = Role::all()->filter(function ($role) {
             return $role->name != 'super-admin';
         })->sortBy('name')->values();
         return $roles;
@@ -56,7 +56,7 @@ class RoleController extends Controller
             'roles' => 'required',
         ]);
         $user = User::where('id', $id)->first();
-        if(!$user){
+        if (!$user) {
             abort(300, 'Kein User-Account gefunden! Das Mitglied muss sich zuerst registrieren!');
         }
         $user->syncRoles($request->input('roles'));
@@ -66,7 +66,7 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function createRole(Request $request)
@@ -85,8 +85,8 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function updateRole(Request $request, $id)
@@ -108,13 +108,13 @@ class RoleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function getPermissionsForRole($id)
     {
-        $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
-            ->where("role_has_permissions.role_id",$id)
+        $rolePermissions = Permission::join("role_has_permissions", "role_has_permissions.permission_id", "=", "permissions.id")
+            ->where("role_has_permissions.role_id", $id)
             ->get();
 
         return $rolePermissions;
@@ -124,7 +124,7 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function deleteRole($id)

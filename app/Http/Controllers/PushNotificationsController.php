@@ -16,10 +16,11 @@ class PushNotificationsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function storeSubscription(Request $request){
-        $this->validate($request,[
-            'endpoint'    => 'required',
-            'keys.auth'   => 'required',
+    public function storeSubscription(Request $request)
+    {
+        $this->validate($request, [
+            'endpoint' => 'required',
+            'keys.auth' => 'required',
             'keys.p256dh' => 'required'
         ]);
         $endpoint = $request->endpoint;
@@ -28,15 +29,16 @@ class PushNotificationsController extends Controller
         $user = $request->user();
         $user->updatePushSubscription($endpoint, $key, $token);
 
-        return response()->json(['success' => true],200);
+        return response()->json(['success' => true], 200);
     }
 
     /**
      * Send Push Notifications to all users.
      *
      */
-    public function push(){
-        Notification::send(User::all(),new PushNotification());
-        return response()->json(['success' => true],200);
+    public function push()
+    {
+        Notification::send(User::all(), new PushNotification());
+        return response()->json(['success' => true], 200);
     }
 }

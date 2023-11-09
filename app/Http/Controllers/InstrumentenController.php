@@ -12,12 +12,13 @@ class InstrumentenController extends Controller
     function __construct()
     {
 
-        $this->middleware('permission:'. PermissionMap::INSTRUMENTE_READ, ['only' => ['getAll','getInstrumenteOfMitglied']]);
-        $this->middleware('permission:'. PermissionMap::INSTRUMENTE_SAVE, ['only' => ['save']]);
-        $this->middleware('permission:'. PermissionMap::INSTRUMENTE_DELETE, ['only' => ['destroy']]);
+        $this->middleware('permission:' . PermissionMap::INSTRUMENTE_READ, ['only' => ['getAll', 'getInstrumenteOfMitglied']]);
+        $this->middleware('permission:' . PermissionMap::INSTRUMENTE_SAVE, ['only' => ['save']]);
+        $this->middleware('permission:' . PermissionMap::INSTRUMENTE_DELETE, ['only' => ['destroy']]);
     }
 
-    public function getAll(){
+    public function getAll()
+    {
         return Instrument::all()->load('mitglied')->load('gruppe');
     }
 
@@ -26,7 +27,8 @@ class InstrumentenController extends Controller
         return Instrument::find($id)->load('mitglied')->load('gruppe');
     }
 
-    public function getInstrumenteOfMitglied($id){
+    public function getInstrumenteOfMitglied($id)
+    {
         $mitglied = Mitglieder::find($id);
         return $mitglied->instrumente()->get();
     }
@@ -38,11 +40,11 @@ class InstrumentenController extends Controller
             'bezeichnung' => 'required'
         ]);
 
-        if($request->id){
+        if ($request->id) {
             $instrument = Instrument::find($request->id);
             $instrument->update($request->all());
             return $instrument;
-        }else{
+        } else {
             return Instrument::create($request->all());
         }
     }

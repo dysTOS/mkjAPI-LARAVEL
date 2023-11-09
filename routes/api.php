@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AusrueckungController;
 use App\Http\Controllers\CalendarSubController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MitgliederController;
 use App\Http\Controllers\AuthController;
@@ -32,20 +33,21 @@ use Illuminate\Support\Facades\Route;
 //Public Routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-
 Route::get('/nextausrueckungpublic', [AusrueckungController::class, 'getNextActualPublic']);
 Route::get('/ausrueckungenaktuellpublic', [AusrueckungController::class, 'getActualYearPublic']);
-
 Route::get('/calendarsub', [CalendarSubController::class, 'getSubscription']);
 Route::get('/calendarsub/{id}', [CalendarSubController::class, 'getSubscription']);
+Route::get('/namingconfig', [ConfigController::class, 'getUiNamingConfig']);
+
+//Test Routes
 Route::get('/push', [PushNotificationsController::class, 'push']);
-
 Route::get('/savepost', [WordPressController::class, 'savepost']);
-
 Route::get('/test', [XXXTestController::class, 'testGet']);
 
 //Protected Routes
-Route::group(['middleware' => ['auth:sanctum']], function (){
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/namingconfig', [ConfigController::class, 'setUiNamingConfig']);
+
     Route::post('/test', [XXXTestController::class, 'testPost']);
     Route::put('/test', [XXXTestController::class, 'testPut']);
     Route::delete('/test/{id}', [XXXTestController::class, 'testDelete']);

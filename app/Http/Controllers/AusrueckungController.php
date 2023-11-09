@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\PermissionMap;
 use App\Models\Ausrueckung;
 use App\Models\Gruppe;
 use App\Models\Mitglieder;
@@ -12,10 +13,10 @@ class AusrueckungController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:ausrueckungen_read', ['only' => ['getAll', 'search', 'getFiltered', 'getNextActual', 'getSingle']]);
-        $this->middleware('permission:ausrueckungen_save', ['only' => ['create', 'update']]);
-        $this->middleware('permission:ausrueckungen_delete', ['only' => ['destroy']]);
-        $this->middleware('permission:termin_gruppenleiter_save', ['only' => ['saveTerminByGruppenleiter']]);
+        $this->middleware('permission:'.PermissionMap::TERMIN_READ, ['only' => ['getAll', 'search', 'getFiltered', 'getNextActual', 'getSingle']]);
+        $this->middleware('permission:'.PermissionMap::TERMIN_SAVE, ['only' => ['create', 'update']]);
+        $this->middleware('permission:'.PermissionMap::TERMIN_DELETE, ['only' => ['destroy']]);
+        $this->middleware('permission:'.PermissionMap::TERMIN_GRUPPENLEITER_SAVE, ['only' => ['saveTerminByGruppenleiter']]);
     }
 
     public static function saveTerminByGruppenleiter(Request $request)

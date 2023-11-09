@@ -19,14 +19,14 @@ class CalendarSubController extends Controller
         $user = User::where('id', $id)->first();
         $actualYear = date('Y') . "-01-01";
 
-        if($user){
+        if ($user) {
             $gruppen = Mitglieder::where('user_id', $user->id)->first()->gruppen()->get();
             $events = Ausrueckung::where('vonDatum', '>=', $actualYear)
                 ->when(
-                    $gruppen, function($query, $gruppen){
-                    $query->where(function($query) use ($gruppen) {
-                        foreach($gruppen as $gruppe){
-                            if($gruppe){
+                    $gruppen, function ($query, $gruppen) {
+                    $query->where(function ($query) use ($gruppen) {
+                        foreach ($gruppen as $gruppe) {
+                            if ($gruppe) {
                                 $query->orWhere('gruppe_id', '=', $gruppe['id']);
                             }
                         }
@@ -35,7 +35,7 @@ class CalendarSubController extends Controller
                 }
                 )
                 ->get();
-        }else {
+        } else {
             $events = Ausrueckung::where('oeffentlich', true)->where('vonDatum', '>=', $actualYear)->get();
         }
 
@@ -77,9 +77,9 @@ class CalendarSubController extends Controller
                 ->setDescription($event->infoMusiker)
                 ->setUid($event->id);
 
-            if($event->status == 'ersatztermin'){
+            if ($event->status == 'ersatztermin') {
                 $calendarEvent->setSummary($event->name . ' - Ersatztermin');
-            }else{
+            } else {
                 $calendarEvent->setSummary($event->name);
             }
 

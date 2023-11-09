@@ -29,11 +29,11 @@ class AuthController extends Controller
             abort(403, "E-Mail nicht in Datenbank vorhanden!");
         });
 
-        if ($mitglied->user_id){
+        if ($mitglied->user_id) {
             abort(403, "User ist bereits registriert, bitte unter \"Login\" anmelden!");
         }
 
-        if ($mitglied->vorname != $fields['vorname'] || $mitglied->zuname != $fields['zuname']){
+        if ($mitglied->vorname != $fields['vorname'] || $mitglied->zuname != $fields['zuname']) {
             abort(403, "Falscher Name!");
         }
 
@@ -47,7 +47,7 @@ class AuthController extends Controller
         $mitglied->user_id = $user->id;
         $mitglied->save();
 
-        if($mitglied->email == "rolandsams@gmail.com") {
+        if ($mitglied->email == "rolandsams@gmail.com") {
             $user->assignRole('super-admin');
             $user->assignRole('Mitglied');
             $user->assignRole('Notenarchiv');
@@ -55,8 +55,7 @@ class AuthController extends Controller
             $user->assignRole('Terminverwaltung');
             $user->assignRole('Anwesenheits/Stück-Erfassung');
             $user->assignRole('Administration');
-        }
-        else{
+        } else {
             $user->assignRole('Mitglied');
         }
 
@@ -65,8 +64,9 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function testGulaschCloudLogin(Request $request){
-        return response(null, 403)->header('WWW-Authenticate','Basic realm="REALM"');
+    public function testGulaschCloudLogin(Request $request)
+    {
+        return response(null, 403)->header('WWW-Authenticate', 'Basic realm="REALM"');
     }
 
     public function login(Request $request)
@@ -101,7 +101,8 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
-    public function getCurrentUser(Request $request){
+    public function getCurrentUser(Request $request)
+    {
         $user = $request->user();
         $mitglied = Mitglieder::where('user_id', $user->id)->first();
 

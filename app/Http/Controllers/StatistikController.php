@@ -15,10 +15,10 @@ class StatistikController extends Controller
         $yearEnd = date($request->year) . "-12-31";
 
         return Ausrueckung::
-                where('vonDatum', '>=', $yearStart)
-                ->where('bisDatum', '<', $yearEnd)
-                ->get()
-                ->countBy('gruppe.name');
+        where('vonDatum', '>=', $yearStart)
+            ->where('bisDatum', '<', $yearEnd)
+            ->get()
+            ->countBy('gruppe.name');
 
     }
 
@@ -46,18 +46,18 @@ class StatistikController extends Controller
         $yearEnd = date($request->year) . "-12-31";
 
         return DB::table('ausrueckungen')
-                ->where('vonDatum', '>=', $yearStart)
-                ->where('bisDatum', '<', $yearEnd)
-                ->groupBy('kategorie')
-                 ->select('kategorie as label', DB::raw('count(*) as count'))
-                 ->get();
+            ->where('vonDatum', '>=', $yearStart)
+            ->where('bisDatum', '<', $yearEnd)
+            ->groupBy('kategorie')
+            ->select('kategorie as label', DB::raw('count(*) as count'))
+            ->get();
     }
 
     public static function getNoten(Request $request)
     {
         return DB::table('noten')
-                ->groupBy('gattung')
-                 ->select('gattung as label', DB::raw('count(*) as count'))
-                 ->get();
+            ->groupBy('gattung')
+            ->select('gattung as label', DB::raw('count(*) as count'))
+            ->get();
     }
 }

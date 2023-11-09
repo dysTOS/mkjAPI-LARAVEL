@@ -14,10 +14,10 @@ class MitgliederController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:'. PermissionMap::MITGLIEDER_READ, ['only' => ['getAll','getAllActive', 'getMitgliederOfAusrueckung', 'search', 'updateOwnMitgliedData']]);
-        $this->middleware('permission:'. PermissionMap::MITGLIEDER_SAVE, ['only' => ['create', 'update', 'getSingle']]);
-        $this->middleware('permission:'. PermissionMap::MITGLIEDER_DELETE, ['only' => ['destroy']]);
-        $this->middleware('permission:'. PermissionMap::MITGLIEDER_ASSIGN, ['only' => ['attachMitgliedToAusrueckung', 'detachMitgliedFromAusrueckung','attachMitgliedToGruppe', 'detachMitgliedFromGruppe']]);
+        $this->middleware('permission:' . PermissionMap::MITGLIEDER_READ, ['only' => ['getAll', 'getAllActive', 'getMitgliederOfAusrueckung', 'search', 'updateOwnMitgliedData']]);
+        $this->middleware('permission:' . PermissionMap::MITGLIEDER_SAVE, ['only' => ['create', 'update', 'getSingle']]);
+        $this->middleware('permission:' . PermissionMap::MITGLIEDER_DELETE, ['only' => ['destroy']]);
+        $this->middleware('permission:' . PermissionMap::MITGLIEDER_ASSIGN, ['only' => ['attachMitgliedToAusrueckung', 'detachMitgliedFromAusrueckung', 'attachMitgliedToGruppe', 'detachMitgliedFromGruppe']]);
     }
 
     public function getAll()
@@ -28,11 +28,12 @@ class MitgliederController extends Controller
 
     public function getAllActive()
     {
-        $mitglieder =  Mitglieder::where('aktiv', true)->orderBy('zuname', 'asc')->get();
+        $mitglieder = Mitglieder::where('aktiv', true)->orderBy('zuname', 'asc')->get();
         return $mitglieder->load('gruppen');
     }
 
-    public function getMitgliederOfAusrueckung($id){
+    public function getMitgliederOfAusrueckung($id)
+    {
         $ausrueckung = Ausrueckung::find($id);
         $mitglieder = $ausrueckung->mitglieder()->get();
         return $mitglieder;
@@ -63,19 +64,19 @@ class MitgliederController extends Controller
     public static function getNextGeburtstage(Request $request)
     {
         $date = now();
-        return Mitglieder::where(function ($query){
-                        $query -> where('aktiv', true);
-                    })
-               ->where(function ($query) use ($date){
-                    $query->whereMonth('geburtsdatum', '>', $date->month)
+        return Mitglieder::where(function ($query) {
+            $query->where('aktiv', true);
+        })
+            ->where(function ($query) use ($date) {
+                $query->whereMonth('geburtsdatum', '>', $date->month)
                     ->orWhere(function ($query) use ($date) {
                         $query->whereMonth('geburtsdatum', '=', $date->month)
-                        ->whereDay('geburtsdatum', '>=', $date->day);
+                            ->whereDay('geburtsdatum', '>=', $date->day);
                     });
-                 })
+            })
             ->orderByRaw("SUBSTRING(geburtsdatum, 6, 5)")
-           ->take(3)
-        ->get();
+            ->take(3)
+            ->get();
     }
 
     public function updateOwnMitgliedData(Request $request)
@@ -90,8 +91,7 @@ class MitgliederController extends Controller
         $user = $request->user();
         $mitglied = Mitglieder::where('id', '=', $user->mitglied_id)->first();
 
-        if($mitglied->id != $fields['id'])
-        {
+        if ($mitglied->id != $fields['id']) {
             abort(300, 'Keine Berechtigung!');
         }
 
@@ -120,7 +120,7 @@ class MitgliederController extends Controller
         $mitglied = Mitglieder::findOrFail($id);
         $user = User::find($mitglied->user_id);
 
-        if($user){
+        if ($user) {
             $user->tokens()->delete();
             User::destroy($user->id);
         }
@@ -130,11 +130,12 @@ class MitgliederController extends Controller
 
     public function search($name)
     {
-        return Mitglieder::where('zuname', 'like', '%'.$name.'%')
-            ->orWhere('vorname', 'like', '%'.$name.'%')->get();
+        return Mitglieder::where('zuname', 'like', '%' . $name . '%')
+            ->orWhere('vorname', 'like', '%' . $name . '%')->get();
     }
 
-    public function attachMitgliedToAusrueckung(Request $request){
+    public function attachMitgliedToAusrueckung(Request $request)
+    {
         $fields = $request->validate([
             'mitglied_id' => 'required',
             'ausrueckung_id' => 'required'
@@ -146,11 +147,12 @@ class MitgliederController extends Controller
 
         return response([
             'success' => $ausrueckung->mitglieder()->get()->contains($mitglied),
-            'message' => 'Mitglied '.$mitglied->vorname.' '.$mitglied->zuname.' zugewiesen!'
+            'message' => 'Mitglied ' . $mitglied->vorname . ' ' . $mitglied->zuname . ' zugewiesen!'
         ], 200);
     }
 
-    public function detachMitgliedFromAusrueckung(Request $request){
+    public function detachMitgliedFromAusrueckung(Request $request)
+    {
         $fields = $request->validate([
             'mitglied_id' => 'required',
             'ausrueckung_id' => 'required'
@@ -162,11 +164,12 @@ class MitgliederController extends Controller
 
         return response([
             'success' => !$ausrueckung->mitglieder()->get()->contains($mitglied),
-            'message' => 'Mitglied '.$mitglied->vorname.' '.$mitglied->zuname.' entfernt!'
+            'message' => 'Mitglied ' . $mitglied->vorname . ' ' . $mitglied->zuname . ' entfernt!'
         ], 200);
     }
 
-    public function attachMitgliedToGruppe(Request $request){
+    public function attachMitgliedToGruppe(Request $request)
+    {
         $fields = $request->validate([
             'mitglied_id' => 'required',
             'gruppe_id' => 'required'
@@ -178,10 +181,12 @@ class MitgliederController extends Controller
 
         return response([
             'success' => $gruppe->mitglieder()->get()->contains($mitglied),
-            'message' => 'Mitglied '.$mitglied->vorname.' '.$mitglied->zuname.' nach '. $gruppe->name.' zugewiesen!'
+            'message' => 'Mitglied ' . $mitglied->vorname . ' ' . $mitglied->zuname . ' nach ' . $gruppe->name . ' zugewiesen!'
         ], 200);
     }
-    public function detachMitgliedFromGruppe(Request $request){
+
+    public function detachMitgliedFromGruppe(Request $request)
+    {
         $fields = $request->validate([
             'mitglied_id' => 'required',
             'gruppe_id' => 'required'
@@ -193,7 +198,7 @@ class MitgliederController extends Controller
 
         return response([
             'success' => !$gruppe->mitglieder()->get()->contains($mitglied),
-            'message' => 'Mitglied '.$mitglied->vorname.' '.$mitglied->zuname.' von '. $gruppe->name.' entfernt!'
+            'message' => 'Mitglied ' . $mitglied->vorname . ' ' . $mitglied->zuname . ' von ' . $gruppe->name . ' entfernt!'
         ], 200);
     }
 }
