@@ -36,12 +36,13 @@ class ConfigController extends Controller
 
     public static function getUiNamingConfig()
     {
+        $baseConfig = new UiNamingConfig();
+        $baseConfig = $baseConfig->toJson();
         $config = ConfigController::getValueByKey('ui_naming_config');
         if ($config) {
-            return $config;
+            return json_encode(array_merge(json_decode($baseConfig, true),json_decode($config, true)));
         } else {
-            $config = new UiNamingConfig();
-            return $config->toJson();
+            return $baseConfig;
         }
     }
 
