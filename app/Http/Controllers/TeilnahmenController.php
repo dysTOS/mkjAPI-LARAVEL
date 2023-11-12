@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Mitglieder;
-use App\Models\Ausrueckung;
+use App\Models\Termin;
 use App\Models\Gruppe;
 use Illuminate\Support\Facades\DB;
 
@@ -48,7 +48,7 @@ class TeilnahmenController extends Controller
 
         $user = $request->user();
         $mitglied = Mitglieder::findOrFail($user->mitglied_id);
-        $ausrueckung = Ausrueckung::findOrFail($fields['termin_id']);
+        $ausrueckung = Termin::findOrFail($fields['termin_id']);
         if ($ausrueckung->teilnahmen()->get()->contains($mitglied)) {
             $ausrueckung->teilnahmen()->updateExistingPivot($mitglied, ['status' => $fields['status']]);
         } else {
@@ -69,7 +69,7 @@ class TeilnahmenController extends Controller
 
         $user = $request->user();
         $mitglied = Mitglieder::findOrFail($user->mitglied_id);
-        $ausrueckung = Ausrueckung::findOrFail($fields['termin_id']);
+        $ausrueckung = Termin::findOrFail($fields['termin_id']);
         $ausrueckung->teilnahmen()->detach($mitglied);
 
         return response([

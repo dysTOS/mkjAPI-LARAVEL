@@ -12,7 +12,7 @@ class Noten extends Model
 
     public function ausrueckung()
     {
-        return $this->belongsToMany(Ausrueckung::class,
+        return $this->belongsToMany(Termin::class,
             'ausrueckung_noten', 'noten_id', 'ausrueckung_id');
     }
 

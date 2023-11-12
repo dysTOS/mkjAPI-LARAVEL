@@ -23,7 +23,7 @@ class Gruppe extends Model
 
     public function ausrueckungen()
     {
-        return $this->hasMany(Ausrueckung::class, 'gruppe_id');
+        return $this->hasMany(Termin::class, 'gruppe_id');
     }
 
 

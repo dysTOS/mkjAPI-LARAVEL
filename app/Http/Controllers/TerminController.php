@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\PermissionMap;
-use App\Models\Ausrueckung;
+use App\Configurations\PermissionMap;
+use App\Models\Termin;
 use App\Models\Gruppe;
 use App\Models\Mitglieder;
 use Illuminate\Http\Request;
 use Validator;
 
-class AusrueckungController extends Controller
+class TerminController extends Controller
 {
     function __construct()
     {
@@ -25,7 +25,7 @@ class AusrueckungController extends Controller
             'gruppe_id' => 'required'
         ]);
 
-        $termin = Ausrueckung::find($request->id);
+        $termin = Termin::find($request->id);
         if($termin && $termin->gruppe_id != $request->gruppe_id){
             abort(403, "Dieser Termin wurde nicht für diese Gruppe erstellt!");
         }
@@ -37,9 +37,9 @@ class AusrueckungController extends Controller
         }
 
         if($termin){
-            return AusrueckungController::update($request, $request->id);
+            return TerminController::update($request, $request->id);
         }else{
-            return AusrueckungController::create($request);
+            return TerminController::create($request);
         }
 
     }
@@ -47,7 +47,7 @@ class AusrueckungController extends Controller
     public function getActualYearPublic()
     {
         $actualDate = date("Y-m-d");
-        return Ausrueckung::where('oeffentlich', true)
+        return Termin::where('oeffentlich', true)
             ->where('status', '!=', 'abgesagt')
             ->where('vonDatum', '>=', $actualDate)
             ->orderBy('vonDatum', 'asc')
@@ -57,7 +57,7 @@ class AusrueckungController extends Controller
     public function getNextActualPublic()
     {
         $actualDate = date("Y-m-d");
-        return Ausrueckung::where('vonDatum', '>=', $actualDate)
+        return Termin::where('vonDatum', '>=', $actualDate)
             ->where('status', '!=', 'abgesagt')
             ->where('oeffentlich', true)
             ->oldest('vonDatum')->first();
@@ -67,7 +67,7 @@ class AusrueckungController extends Controller
     public function getAll(Request $request)
     {
         $gruppen = Mitglieder::where('user_id', $request->user()->id)->first()->gruppen()->get();
-        return Ausrueckung::when(
+        return Termin::when(
             $gruppen, function($query, $gruppen){
             foreach($gruppen as $gruppe){
                 if($gruppe){
@@ -85,7 +85,7 @@ class AusrueckungController extends Controller
         $mitglied = Mitglieder::where('user_id', $request->user()->id)->first();
         $gruppen = $mitglied->gruppen()->get();
 
-        $ausrueckungen = Ausrueckung::when(
+        $ausrueckungen = Termin::when(
                 $filter, function($query, $filter){
                     foreach($filter as $f){
                         if($f){
@@ -123,7 +123,7 @@ class AusrueckungController extends Controller
         $skip = $request->get('skip') ?? 0;
         $gruppen = Mitglieder::where('user_id', $request->user()->id)->first()->gruppen()->get();
 
-        return Ausrueckung::when(
+        return Termin::when(
                 $gruppen, function($query, $gruppen){
                     $actualDate = date("Y-m-d");
                     $query->where('vonDatum', '>=', $actualDate);
@@ -156,23 +156,23 @@ class AusrueckungController extends Controller
             'bisDatum' => 'required'
         ]);
 
-        return Ausrueckung::create($request->all());
+        return Termin::create($request->all());
     }
 
     public function getSingle($id)
     {
-        return Ausrueckung::find($id);
+        return Termin::find($id);
     }
 
     public static function update(Request $request, $id)
     {
-        $ausrueckung = Ausrueckung::find($id);
+        $ausrueckung = Termin::find($id);
         $ausrueckung->update($request->all());
         return $ausrueckung;
     }
 
     public function destroy(Request $request, $id)
     {
-        return Ausrueckung::destroy($id);
+        return Termin::destroy($id);
     }
 }

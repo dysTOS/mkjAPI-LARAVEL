@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Mitglieder;
 use App\Models\Gruppe;
-use App\Constants\PermissionMap;
+use App\Configurations\PermissionMap;
 
 class GruppenController extends Controller
 {

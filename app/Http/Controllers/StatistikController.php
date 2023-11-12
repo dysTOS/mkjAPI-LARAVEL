@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ausrueckung;
+use App\Models\Termin;
 use App\Models\Gruppe;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ class StatistikController extends Controller
         $yearStart = date($request->year) . "-01-01";
         $yearEnd = date($request->year) . "-12-31";
 
-        return Ausrueckung::
+        return Termin::
         where('vonDatum', '>=', $yearStart)
             ->where('bisDatum', '<', $yearEnd)
             ->get()

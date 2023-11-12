@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\PermissionMap;
-use App\Models\Ausrueckung;
+use App\Configurations\PermissionMap;
+use App\Models\Termin;
 use App\Models\Noten;
 use App\Models\Notenmappe;
 use Illuminate\Http\Request;

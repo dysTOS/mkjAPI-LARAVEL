@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\PermissionMap;
+use App\Configurations\PermissionMap;
 use App\Models\Instrument;
 use App\Models\Mitglieder;
 use Illuminate\Http\Request;

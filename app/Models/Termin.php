@@ -6,7 +6,7 @@ use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ausrueckung extends Model
+class Termin extends Model
 {
     use HasFactory, Uuid;
 

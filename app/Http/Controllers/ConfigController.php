@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\PermissionMap;
-use App\Constants\UiNamingConfig;
+use App\Configurations\PermissionMap;
+use App\Configurations\UiNamingConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\PermissionMap;
-use App\Models\Ausrueckung;
+use App\Configurations\PermissionMap;
+use App\Models\Termin;
 use App\Models\Noten;
 use Illuminate\Http\Request;
 
@@ -27,7 +27,7 @@ class NotenController extends Controller
         ]);
 
         $noten = Noten::find($fields['noten_id']);
-        $ausrueckung = Ausrueckung::find($fields['ausrueckung_id']);
+        $ausrueckung = Termin::find($fields['ausrueckung_id']);
 
         if ($ausrueckung->noten()->get()->contains($noten)) {
             abort(403, 'Stück bereits zugewiesen!');
@@ -48,7 +48,7 @@ class NotenController extends Controller
         ]);
 
         $noten = Noten::find($fields['noten_id']);
-        $ausrueckung = Ausrueckung::find($fields['ausrueckung_id']);
+        $ausrueckung = Termin::find($fields['ausrueckung_id']);
         $ausrueckung->noten()->detach($noten);
 
         return response([
@@ -69,7 +69,7 @@ class NotenController extends Controller
 
     public function getNotenOfAusrueckung($id)
     {
-        $ausrueckung = Ausrueckung::find($id);
+        $ausrueckung = Termin::find($id);
         $noten = $ausrueckung->noten()->get();
         return $noten;
     }

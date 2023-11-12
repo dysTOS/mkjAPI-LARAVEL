@@ -33,6 +33,10 @@ class AuthController extends Controller
             abort(403, "User ist bereits registriert, bitte unter \"Login\" anmelden!");
         }
 
+        if($mitglied->aktiv != true){
+            abort(403, "Dein Account muss erst aktiviviert werden! Bitte kontaktiere deinen Administrator");
+        }
+
         if ($mitglied->vorname != $fields['vorname'] || $mitglied->zuname != $fields['zuname']) {
             abort(403, "Falscher Name!");
         }
@@ -87,6 +91,11 @@ class AuthController extends Controller
         }
 
         $mitglied = Mitglieder::where('user_id', $user->id)->first();
+
+        if($mitglied->aktiv != true){
+            abort(403, "Dein Account wurde deaktiviert! Bitte kontaktiere deinen Administrator!");
+        }
+
         $token = $user->createToken('mkjToken')->plainTextToken;
 
         $response = [

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AusrueckungController;
+use App\Http\Controllers\TerminController;
 use App\Http\Controllers\CalendarSubController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\FileController;
@@ -33,8 +33,8 @@ use Illuminate\Support\Facades\Route;
 //Public Routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/nextausrueckungpublic', [AusrueckungController::class, 'getNextActualPublic']);
-Route::get('/ausrueckungenaktuellpublic', [AusrueckungController::class, 'getActualYearPublic']);
+Route::get('/nextausrueckungpublic', [TerminController::class, 'getNextActualPublic']);
+Route::get('/ausrueckungenaktuellpublic', [TerminController::class, 'getActualYearPublic']);
 Route::get('/calendarsub', [CalendarSubController::class, 'getSubscription']);
 Route::get('/calendarsub/{id}', [CalendarSubController::class, 'getSubscription']);
 Route::get('/namingconfig', [ConfigController::class, 'getUiNamingConfig']);
@@ -59,14 +59,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/reports', [ReportsController::class, 'getAll']);
     Route::post('/reports', [ReportsController::class, 'save']);
 
-    Route::get('/ausrueckungen', [AusrueckungController::class, 'getAll']);
-    Route::get('/ausrueckungen/{id}', [AusrueckungController::class, 'getSingle']);
-    Route::post('/nextausrueckung', [AusrueckungController::class, 'getNextActual']);
-    Route::post('/ausrueckungenfiltered', [AusrueckungController::class, 'getFiltered']);
-    Route::post('/ausrueckungen', [AusrueckungController::class, 'create']);
-    Route::post('/saveterminbyleiter', [AusrueckungController::class, 'saveTerminByGruppenleiter']);
-    Route::put('/ausrueckungen/{id}', [AusrueckungController::class, 'update']);
-    Route::delete('/ausrueckungen/{id}', [AusrueckungController::class, 'destroy']);
+    Route::get('/ausrueckungen', [TerminController::class, 'getAll']);
+    Route::get('/ausrueckungen/{id}', [TerminController::class, 'getSingle']);
+    Route::post('/nextausrueckung', [TerminController::class, 'getNextActual']);
+    Route::post('/ausrueckungenfiltered', [TerminController::class, 'getFiltered']);
+    Route::post('/ausrueckungen', [TerminController::class, 'create']);
+    Route::post('/saveterminbyleiter', [TerminController::class, 'saveTerminByGruppenleiter']);
+    Route::put('/ausrueckungen/{id}', [TerminController::class, 'update']);
+    Route::delete('/ausrueckungen/{id}', [TerminController::class, 'destroy']);
 
     Route::get('/mitglieder', [MitgliederController::class, 'getAll']);
     Route::get('/mitgliedernextgeb', [MitgliederController::class, 'getNextGeburtstage']);

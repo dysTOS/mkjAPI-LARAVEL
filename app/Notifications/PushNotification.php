@@ -40,7 +40,7 @@ class PushNotification extends Notification
             ->title('Info')
             ->icon('assets\mkjICONS\Favicon_J\favicon-96x96.png')
             ->body('Eine Ausrückung wurde aktualisiert!')
-            ->action('Zur Ausrueckung', 'zur_ausrueckung')
+            ->action('Zur Termin', 'zur_ausrueckung')
             ->options(['TTL' => 1000])
             ->data(['id' => $notification->id])
          ->vibrate([100,200,100]);

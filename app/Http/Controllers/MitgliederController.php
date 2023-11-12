@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ausrueckung;
+use App\Models\Termin;
 use Illuminate\Http\Request;
 use App\Models\Mitglieder;
 use App\Models\User;
 use App\Models\Gruppe;
-use App\Constants\PermissionMap;
+use App\Configurations\PermissionMap;
 use Illuminate\Support\Carbon;
 
 class MitgliederController extends Controller
@@ -34,7 +34,7 @@ class MitgliederController extends Controller
 
     public function getMitgliederOfAusrueckung($id)
     {
-        $ausrueckung = Ausrueckung::find($id);
+        $ausrueckung = Termin::find($id);
         $mitglieder = $ausrueckung->mitglieder()->get();
         return $mitglieder;
     }
@@ -142,7 +142,7 @@ class MitgliederController extends Controller
         ]);
 
         $mitglied = Mitglieder::findOrFail($fields['mitglied_id']);
-        $ausrueckung = Ausrueckung::findOrFail($fields['ausrueckung_id']);
+        $ausrueckung = Termin::findOrFail($fields['ausrueckung_id']);
         $ausrueckung->mitglieder()->attach($mitglied);
 
         return response([
@@ -159,7 +159,7 @@ class MitgliederController extends Controller
         ]);
 
         $mitglied = Mitglieder::findOrFail($fields['mitglied_id']);
-        $ausrueckung = Ausrueckung::findOrFail($fields['ausrueckung_id']);
+        $ausrueckung = Termin::findOrFail($fields['ausrueckung_id']);
         $ausrueckung->mitglieder()->detach($mitglied);
 
         return response([

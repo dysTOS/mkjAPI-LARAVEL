@@ -18,13 +18,13 @@ class Mitglieder extends Model
 
     public function ausrueckungen()
     {
-        return $this->belongsToMany(Ausrueckung::class,
+        return $this->belongsToMany(Termin::class,
             'ausrueckung_mitglied', 'mitglied_id', 'ausrueckung_id');
     }
 
     public function teilnahmen()
     {
-        return $this->belongsToMany(Ausrueckung::class,
+        return $this->belongsToMany(Termin::class,
             'teilnahmen', 'mitglied_id', 'termin_id')->withPivot('status')->withTimestamps();
     }
 

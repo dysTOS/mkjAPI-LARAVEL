@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Constants;
+namespace App\Configurations;
 
 class UiNamingConfig
 {
@@ -12,8 +12,6 @@ class UiNamingConfig
     private $Notenmappen = 'Notenmappen';
     private $Instrumente = 'Instrumente';
     private $Statistiken = 'Statistiken';
-
-
 
     public function toJson() {
         return json_encode(get_object_vars($this));

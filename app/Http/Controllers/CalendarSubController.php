@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ausrueckung;
+use App\Models\Termin;
 use App\Models\Mitglieder;
 use App\Models\User;
 use Jsvrcek\ICS\CalendarExport;
@@ -21,7 +21,7 @@ class CalendarSubController extends Controller
 
         if ($user) {
             $gruppen = Mitglieder::where('user_id', $user->id)->first()->gruppen()->get();
-            $events = Ausrueckung::where('vonDatum', '>=', $actualYear)
+            $events = Termin::where('vonDatum', '>=', $actualYear)
                 ->when(
                     $gruppen, function ($query, $gruppen) {
                     $query->where(function ($query) use ($gruppen) {
@@ -36,7 +36,7 @@ class CalendarSubController extends Controller
                 )
                 ->get();
         } else {
-            $events = Ausrueckung::where('oeffentlich', true)->where('vonDatum', '>=', $actualYear)->get();
+            $events = Termin::where('oeffentlich', true)->where('vonDatum', '>=', $actualYear)->get();
         }
 
         $calendar = new Calendar();
