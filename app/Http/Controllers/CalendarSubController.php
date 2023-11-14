@@ -40,8 +40,8 @@ class CalendarSubController extends Controller
         }
 
         $calendar = new Calendar();
-        $calendar->setProdId('mkjAPP');
-        $calendar->setName('MK Jainzen Kalender');
+        $calendar->setProdId(env('APP_NAME', 'APP Kalender'));
+        $calendar->setName(env('APP_NAME', 'APP Kalender'));
         $calendar->setColor('#006600');
         $timezone = config('app.timezone');
         $timeZone = new \DateTimeZone($timezone);
@@ -93,6 +93,6 @@ class CalendarSubController extends Controller
         $calendarExport = new CalendarExport(new CalendarStream, new Formatter());
         $calendarExport->addCalendar($calendar);
 
-        return response()->attachment($calendarExport->getStream(), 'mkjcalendar', 'text/calendar', 'ics');
+        return response()->attachment($calendarExport->getStream(), 'app_calendar', 'text/calendar', 'ics');
     }
 }

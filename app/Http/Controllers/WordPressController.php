@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\ConfigController;
+use App\DAO\KeyValueConfigDAO;
 
 class WordPressController extends Controller
 {
@@ -42,7 +42,7 @@ class WordPressController extends Controller
 
     private function getWordPressJWT()
     {
-        $token = ConfigController::getValueByKey('wordpress_api_token');
+        $token = KeyValueConfigDAO::getValueByKey('wordpress_api_token');
         if ($token && $this->validateJWT($token)) {
             return $token;
         }
@@ -73,7 +73,7 @@ class WordPressController extends Controller
 //                   "user_nicename": "admin"
 
         $token = $result->token;
-        ConfigController::storeKeyValue('wordpress_api_token', $token);
+        KeyValueConfigDAO::storeKeyValue('wordpress_api_token', $token);
 
         return $token;
     }

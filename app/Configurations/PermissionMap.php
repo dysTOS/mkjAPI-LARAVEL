@@ -4,6 +4,16 @@ namespace App\Configurations;
 
 class PermissionMap
 {
+    //to be added
+    public const ADMIN = "admin";
+    public const ANSCHRIFTEN_READ = "anschriften_read";
+    public const ANSCHRIFTEN_SAVE = "anschriften_save";
+    public const ANSCHRIFTEN_DELETE = "anschriften_delete";
+    public const KASSABUCHUNGEN_READ = "kassabuchungen_read";
+    public const KASSABUCHUNGEN_SAVE = "kassabuchungen_save";
+    public const KASSABUCHUNGEN_DELETE = "kassabuchungen_delete";
+
+    //added
     public const TERMIN_READ = "ausrueckungen_read";
     public const TERMIN_SAVE = "ausrueckungen_save";
     public const TERMIN_DELETE = "ausrueckungen_delete";

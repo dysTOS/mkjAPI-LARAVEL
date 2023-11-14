@@ -11,13 +11,14 @@ use App\Http\Controllers\InstrumentenController;
 use App\Http\Controllers\NotenController;
 use App\Http\Controllers\NotenMappenController;
 use App\Http\Controllers\PushNotificationsController;
-use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StatistikController;
 use App\Http\Controllers\TeilnahmenController;
 use App\Http\Controllers\WordPressController;
 use App\Http\Controllers\XXXTestController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AnschriftenController;
+use App\Http\Controllers\KassabuchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,16 +38,34 @@ Route::get('/nextausrueckungpublic', [TerminController::class, 'getNextActualPub
 Route::get('/ausrueckungenaktuellpublic', [TerminController::class, 'getActualYearPublic']);
 Route::get('/calendarsub', [CalendarSubController::class, 'getSubscription']);
 Route::get('/calendarsub/{id}', [CalendarSubController::class, 'getSubscription']);
-Route::get('/namingconfig', [ConfigController::class, 'getUiNamingConfig']);
+Route::get('/configs', [ConfigController::class, 'getUiConfigs']);
 
 //Test Routes
 Route::get('/push', [PushNotificationsController::class, 'push']);
 Route::get('/savepost', [WordPressController::class, 'savepost']);
+
 Route::get('/test', [XXXTestController::class, 'testGet']);
+Route::post('/test', [XXXTestController::class, 'testPost']);
+Route::put('/test', [XXXTestController::class, 'testPut']);
+Route::delete('/test', [XXXTestController::class, 'testDelete']);
+
+//To be protected
+Route::get('/anschrift/list', [AnschriftenController::class, 'getList']);
+Route::get('/anschrift/{id}', [AnschriftenController::class, 'getById']);
+Route::post('/anschrift', [AnschriftenController::class, 'create']);
+Route::put('/anschrift/{id}', [AnschriftenController::class, 'update']);
+Route::delete('/anschrift/{id}', [AnschriftenController::class, 'delete']);
+
+Route::get('/kassabuchung/list', [KassabuchController::class, 'getList']);
+Route::get('/kassabuchung/{id}', [KassabuchController::class, 'getById']);
+Route::post('/kassabuchung', [KassabuchController::class, 'create']);
+Route::put('/kassabuchung/{id}', [KassabuchController::class, 'update']);
+Route::delete('/kassabuchung/{id}', [KassabuchController::class, 'delete']);
+
 
 //Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/namingconfig', [ConfigController::class, 'setUiNamingConfig']);
+    Route::post('/configs', [ConfigController::class, 'setUiConfigs']);
 
     Route::post('/test', [XXXTestController::class, 'testPost']);
     Route::put('/test', [XXXTestController::class, 'testPut']);
