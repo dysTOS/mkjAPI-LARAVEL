@@ -10,16 +10,27 @@ class Kassabuchung extends Model
 {
     use HasFactory, Uuid;
 
+    public function kassabuch()
+    {
+        return $this->belongsTo(Kassabuch::class, 'kassabuch_id', 'id');
+    }
+
+    public function anschrift()
+    {
+        return $this->hasOne(Anschrift::class, 'id', 'anschrift_id');
+    }
+
     protected $table = 'kassabuchungen';
     protected $fillable = [
         'typ',
         'nummer',
         'datum',
         'gesamtpreis',
-        'bezahlt',
+        'bezahltDatum',
         'positionen',
         'konditionen',
         'anmerkungen',
         'anschrift_id',
+        'kassabuch_id'
     ];
 }

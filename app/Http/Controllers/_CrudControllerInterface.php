@@ -1,7 +1,9 @@
 <?php
 
+namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
-interface CrudController{
+interface _CrudControllerInterface{
     public function getList(Request $request);
 
     public function getById(Request $request, $id);

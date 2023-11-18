@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KassabuchungController;
 use App\Http\Controllers\TerminController;
 use App\Http\Controllers\CalendarSubController;
 use App\Http\Controllers\ConfigController;
@@ -50,26 +51,28 @@ Route::put('/test', [XXXTestController::class, 'testPut']);
 Route::delete('/test', [XXXTestController::class, 'testDelete']);
 
 //To be protected
-Route::get('/anschrift/list', [AnschriftenController::class, 'getList']);
+Route::post('/anschrift/list', [AnschriftenController::class, 'getList']);
 Route::get('/anschrift/{id}', [AnschriftenController::class, 'getById']);
 Route::post('/anschrift', [AnschriftenController::class, 'create']);
 Route::put('/anschrift/{id}', [AnschriftenController::class, 'update']);
 Route::delete('/anschrift/{id}', [AnschriftenController::class, 'delete']);
 
-Route::get('/kassabuchung/list', [KassabuchController::class, 'getList']);
-Route::get('/kassabuchung/{id}', [KassabuchController::class, 'getById']);
-Route::post('/kassabuchung', [KassabuchController::class, 'create']);
-Route::put('/kassabuchung/{id}', [KassabuchController::class, 'update']);
-Route::delete('/kassabuchung/{id}', [KassabuchController::class, 'delete']);
+Route::post('/kassabuch/list', [KassabuchController::class, 'getList']);
+Route::get('/kassabuch/{id}', [KassabuchController::class, 'getById']);
+Route::post('/kassabuch', [KassabuchController::class, 'create']);
+Route::put('/kassabuch/{id}', [KassabuchController::class, 'update']);
+Route::delete('/kassabuch/{id}', [KassabuchController::class, 'delete']);
+
+Route::post('/kassabuchung/list', [KassabuchungController::class, 'getList']);
+Route::get('/kassabuchung/{id}', [KassabuchungController::class, 'getById']);
+Route::post('/kassabuchung', [KassabuchungController::class, 'create']);
+Route::put('/kassabuchung/{id}', [KassabuchungController::class, 'update']);
+Route::delete('/kassabuchung/{id}', [KassabuchungController::class, 'delete']);
 
 
 //Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/configs', [ConfigController::class, 'setUiConfigs']);
-
-    Route::post('/test', [XXXTestController::class, 'testPost']);
-    Route::put('/test', [XXXTestController::class, 'testPut']);
-    Route::delete('/test/{id}', [XXXTestController::class, 'testDelete']);
 
     Route::post('/user', [AuthController::class, 'getCurrentUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -131,13 +134,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/addnoten', [NotenController::class, 'attachNoten']);
     Route::post('/removenoten', [NotenController::class, 'detachNoten']);
     Route::get('/notenausrueckung/{id}', [NotenController::class, 'getNotenOfAusrueckung']);
-    Route::post('/notenmappe', [NotenMappenController::class, 'getNotenmappe']);
-    Route::get('/notenmappen', [NotenMappenController::class, 'getNotenmappen']);
-    Route::post('/notenmappen', [NotenMappenController::class, 'createNotenmappe']);
-    Route::put('/notenmappen/{id}', [NotenMappenController::class, 'updateNotenmappe']);
-    Route::delete('/notenmappen/{id}', [NotenMappenController::class, 'destroyNotenmappe']);
-    Route::post('/notenmappenattach', [NotenMappenController::class, 'notenmappeAttach']);
-    Route::post('/notenmappendetach', [NotenMappenController::class, 'notenmappeDetach']);
+
+    Route::post('/notenmappe/list', [NotenMappenController::class, 'getList']);
+    Route::get('/notenmappe/{id}', [NotenMappenController::class, 'getById']);
+    Route::post('/notenmappe', [NotenMappenController::class, 'create']);
+    Route::put('/notenmappe/{id}', [NotenMappenController::class, 'update']);
+    Route::delete('/notenmappe/{id}', [NotenMappenController::class, 'delete']);
+    Route::post('/notenmappe/attach', [NotenMappenController::class, 'attach']);
+    Route::post('/notenmappe/detach', [NotenMappenController::class, 'detach']);
 
     Route::get('/roles', [RoleController::class, 'getAllRoles']);
     Route::get('/roles/{id}', [RoleController::class, 'getUserRoles']);

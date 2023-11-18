@@ -18,14 +18,17 @@ class KassabuchungenTable extends Migration
             $table->string('typ', 2);
             $table->string('nummer', 8);
             $table->string('datum');
-            $table->boolean('bezahlt');
             $table->foreignUuid('anschrift_id')
                 ->nullable()
                 ->constrained('anschriften')
                 ->onDelete('set null');
+            $table->foreignUuid('kassabuch_id')
+                ->constrained('kassabuch')
+                ->onDelete('cascade');
             $table->double('gesamtpreis');
             $table->json('positionen')->nullable();
             $table->json('konditionen')->nullable();
+            $table->string('bezahltDatum')->nullable();
             $table->string('anmerkungen')->nullable();
             $table->timestamps();
         });

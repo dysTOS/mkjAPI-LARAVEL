@@ -8,31 +8,32 @@ use App\Models\Noten;
 use App\Models\Notenmappe;
 use Illuminate\Http\Request;
 
-class NotenMappenController extends Controller
+class NotenMappenController extends Controller implements _CrudControllerInterface
 {
     function __construct()
     {
-        $this->middleware('permission:' . PermissionMap::NOTENMAPPE_READ, ['only' => ['getNotenmappen', 'getNotenmappe']]);
-        $this->middleware('permission:' . PermissionMap::NOTENMAPPE_SAVE, ['only' => ['createNotenmappe', 'updateNotenmappe']]);
-        $this->middleware('permission:' . PermissionMap::NOTENMAPPE_DELETE, ['only' => ['destroyNotenmappe']]);
+        $this->middleware('permission:' . PermissionMap::NOTENMAPPE_READ, ['only' => ['getList', 'getById']]);
+        $this->middleware('permission:' . PermissionMap::NOTENMAPPE_SAVE, ['only' => ['create', 'update']]);
+        $this->middleware('permission:' . PermissionMap::NOTENMAPPE_DELETE, ['only' => ['delete']]);
         $this->middleware('permission:' . PermissionMap::NOTENMAPPE_ASSIGN, ['only' => ['notenmappeAttach', 'notenmappeDetach']]);
     }
 
-    public function getNotenmappen()
+    public function getList(Request $request)
     {
-        return Notenmappe::all()->load('noten');
+        $list = Notenmappe::all()->load('noten');
+        return response([
+            "totalCount" => $list->count(),
+            "values" => $list
+        ], 200);
     }
 
-    public function getNotenmappe(Request $request)
+    public function getById(Request $request, $id)
     {
-        $fields = $request->validate([
-            'id' => 'required'
-        ]);
-        $mappe = Notenmappe::find($fields['id']);
+        $mappe = Notenmappe::find($id);
         return $mappe->load('noten');
     }
 
-    public function createNotenmappe(Request $request)
+    public function create(Request $request)
     {
         $request->validate([
             'name' => 'required',
@@ -41,19 +42,20 @@ class NotenMappenController extends Controller
         return Notenmappe::create($request->all());
     }
 
-    public function updateNotenmappe(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $mappe = Notenmappe::find($id);
         $mappe->update($request->all());
         return $mappe;
     }
 
-    public function destroyNotenmappe($id)
+    public function delete(Request $request, $id)
     {
         Notenmappe::destroy($id);
     }
 
-    public function notenmappeAttach(Request $request)
+
+    public function attach(Request $request)
     {
 
         $fields = $request->validate([
@@ -85,7 +87,7 @@ class NotenMappenController extends Controller
         ], 200);
     }
 
-    public function notenmappeDetach(Request $request)
+    public function detach(Request $request)
     {
         $fields = $request->validate([
             'noten_id' => 'required',
@@ -101,5 +103,6 @@ class NotenMappenController extends Controller
             'message' => 'Musikstück ' . $noten->titel . ' entfernt!'
         ], 200);
     }
+
 
 }

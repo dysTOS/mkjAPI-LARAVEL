@@ -2,35 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anschrift;
 use CrudController;
 use Illuminate\Http\Request;
 
-class AnschriftenController extends Controller implements CrudController
+class AnschriftenController extends Controller implements _CrudControllerInterface
 {
 
 
     public function getList(Request $request)
     {
-        // TODO: Implement getList() method.
+        return Anschrift::all();
     }
 
     public function getById(Request $request, $id)
     {
-        // TODO: Implement getById() method.
+        return Anschrift::find($id);
     }
 
     public function create(Request $request)
     {
-        // TODO: Implement create() method.
+        $request->validate([
+            'zuname' => 'exclude_if:firma|required|string',
+            'vorname' => 'exclude_if:firma|required|string'
+        ]);
+
+        return Anschrift::create($request->all());
     }
 
     public function update(Request $request, $id)
     {
-        // TODO: Implement update() method.
+        $request->validate([
+            'zuname' => 'exclude_if:firma|required|string',
+            'vorname' => 'exclude_if:firma|required|string'
+        ]);
+
+        $anschrift = Anschrift::find($id);
+        $anschrift->update($request->all());
+        return $anschrift;
     }
 
     public function delete(Request $request, $id)
     {
-        // TODO: Implement delete() method.
+        return Anschrift::destroy($id);
     }
 }

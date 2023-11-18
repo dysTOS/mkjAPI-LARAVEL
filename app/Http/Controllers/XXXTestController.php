@@ -11,16 +11,21 @@ class XXXTestController extends Controller
     public function testGet(Request $request)
     {
         //test your shit here Rolando
-        $class = new TerminKategorien();
-        $naming = new UiNamingConfig();
-        return $naming->toJson();
-        return $class->config;
+//        $class = new TerminKategorien();
+//        $naming = new UiNamingConfig();
+//        return $naming->toJson();
+//        return $class->config;
+
+        $controller = new KassabuchController();
+        return $controller->getList($request);
     }
 
     public function testPost(Request $request)
     {
         //test your shit here Rolando
-        return TerminController::saveTerminByGruppenleiter($request);
+
+        $controller = new KassabuchungController();
+        return $controller->create($request);
     }
 
     public function testPut(Request $request)
