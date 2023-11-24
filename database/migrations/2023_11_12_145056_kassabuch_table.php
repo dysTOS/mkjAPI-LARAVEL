@@ -17,6 +17,7 @@ class KassabuchTable extends Migration
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->string('name')->unique();
             $table->boolean('aktiv')->default(false);
+            $table->double('kassastand')->default(0);
             $table->foreignUuid('gruppe_id')
                 ->nullable()
                 ->constrained('gruppen')

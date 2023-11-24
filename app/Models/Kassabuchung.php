@@ -12,12 +12,12 @@ class Kassabuchung extends Model
 
     public function kassabuch()
     {
-        return $this->belongsTo(Kassabuch::class, 'kassabuch_id', 'id');
+        return $this->belongsTo(Kassabuch::class, 'kassabuch_id');
     }
 
     public function anschrift()
     {
-        return $this->hasOne(Anschrift::class, 'id', 'anschrift_id');
+        return $this->belongsTo(Anschrift::class,  'anschrift_id');
     }
 
     protected $table = 'kassabuchungen';

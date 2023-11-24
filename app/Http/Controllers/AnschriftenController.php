@@ -46,4 +46,12 @@ class AnschriftenController extends Controller implements _CrudControllerInterfa
     {
         return Anschrift::destroy($id);
     }
+
+    public function search(Request $request, $searchString)
+    {
+        return Anschrift::where('firma', 'like', '%' . $searchString . '%')
+            ->orWhere('vorname', 'like', '%' . $searchString . '%')
+            ->orWhere('zuname', 'like', '%' . $searchString . '%')
+            ->get();
+    }
 }

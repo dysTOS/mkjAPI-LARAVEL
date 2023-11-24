@@ -10,6 +10,11 @@ class Anschrift extends Model
 {
     use HasFactory, Uuid;
 
+    public function kassabuchungen()
+    {
+        return $this->hasMany(Kassabuchung::class);
+    }
+
     protected $table = 'anschriften';
     protected $fillable = [
         'vorname',

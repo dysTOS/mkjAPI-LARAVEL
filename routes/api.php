@@ -56,6 +56,7 @@ Route::get('/anschrift/{id}', [AnschriftenController::class, 'getById']);
 Route::post('/anschrift', [AnschriftenController::class, 'create']);
 Route::put('/anschrift/{id}', [AnschriftenController::class, 'update']);
 Route::delete('/anschrift/{id}', [AnschriftenController::class, 'delete']);
+Route::get('/anschrift/search/{string}', [AnschriftenController::class, 'search']);
 
 Route::post('/kassabuch/list', [KassabuchController::class, 'getList']);
 Route::get('/kassabuch/{id}', [KassabuchController::class, 'getById']);
@@ -110,10 +111,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/teilnahmeremove', [TeilnahmenController::class, 'removeTeilnahme']);
     Route::post('/teilnahmestatus', [TeilnahmenController::class, 'getTeilnahmeStatus']);
 
-    Route::post('/gruppen/all', [GruppenController::class, 'getAllGruppen']);
-    Route::post('/gruppen/gruppe', [GruppenController::class, 'getGruppe']);
-    Route::post('/gruppen/save', [GruppenController::class, 'saveGruppe']);
-    Route::delete('/gruppen/{id}', [GruppenController::class, 'deleteGruppe']);
+    Route::post('/gruppen/list', [GruppenController::class, 'getList']);
+    Route::get('/gruppen/{id}', [GruppenController::class, 'getById']);
+    Route::post('/gruppen', [GruppenController::class, 'create']);
+    Route::put('/gruppen/{id}', [GruppenController::class, 'update']);
+    Route::delete('/gruppen/{id}', [GruppenController::class, 'delete']);
     Route::post('/gruppen/gruppenleiter', [GruppenController::class, 'getGruppenLeiter']);
     Route::post('/gruppen/mitgliederofgruppe', [GruppenController::class, 'getMitgliederOfGruppe']);
     Route::post('/gruppen/gruppenofmitglied', [GruppenController::class, 'getGruppenOfMitglied']);

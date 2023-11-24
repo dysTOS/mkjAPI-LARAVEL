@@ -7,14 +7,57 @@ use App\Models\Mitglieder;
 use App\Models\Gruppe;
 use App\Configurations\PermissionMap;
 
-class GruppenController extends Controller
+class GruppenController extends Controller implements _CrudControllerInterface
 {
     function __construct()
     {
-        $this->middleware('permission:' . PermissionMap::GRUPPEN_READ, ['only' => ['getAllGruppen', 'getGruppeById', 'getGruppenLeiter', 'getMitgliederOfGruppe', 'getGruppenOfMitglied']]);
-        $this->middleware('permission:' . PermissionMap::GRUPPEN_SAVE, ['only' => ['saveGruppe']]);
-        $this->middleware('permission:' . PermissionMap::GRUPPEN_DELETE, ['only' => ['deleteGruppe']]);
+        $this->middleware('permission:' . PermissionMap::GRUPPEN_READ, ['only' => ['getList', 'getById', 'getGruppenLeiter', 'getMitgliederOfGruppe', 'getGruppenOfMitglied']]);
+        $this->middleware('permission:' . PermissionMap::GRUPPEN_SAVE, ['only' => ['create', 'update']]);
+        $this->middleware('permission:' . PermissionMap::GRUPPEN_DELETE, ['only' => ['delete']]);
         $this->middleware('permission:' . PermissionMap::GRUPPEN_ASSIGN, ['only' => ['addMitgliedToGruppe', 'removeMitgliedFromGruppe']]);
+    }
+
+    public function getList(Request $request)
+    {
+        $gruppen = Gruppe::all();
+        $gruppen->load('mitglieder');
+        $gruppen->load('gruppenleiter');
+//        $gruppen->load('ausrueckungen');
+
+        $count = $gruppen->count();
+
+        return response([
+            'totalCount' => $count,
+            'values' => $gruppen
+        ], 200);
+    }
+
+    public function getById(Request $request, $id)
+    {
+        return Gruppe::find($request->id)->load('mitglieder')->load('gruppenleiter');
+    }
+
+    public function create(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+        ]);
+        return Gruppe::create($request->all());
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required',
+        ]);
+        $existentGruppe = Gruppe::find($request['id']);
+        return $existentGruppe->update($request->all());
+
+    }
+
+    public function delete(Request $request, $id)
+    {
+        return Gruppe::destroy($id);
     }
 
     public static function addMitgliedToGruppe(Request $request)
@@ -51,70 +94,6 @@ class GruppenController extends Controller
         ], 200);
     }
 
-    public static function getAllGruppen(Request $request)
-    {
-        if ($request['nurRegister']) {
-            $gruppen = Gruppe::where('register', true)->orderBy('name')->get();
-        } else {
-            $gruppen = Gruppe::all();
-        }
-
-
-        if ($request['includeMitglieder']) {
-            $gruppen->load('mitglieder');
-        }
-        if ($request['includeGruppenleiter']) {
-            $gruppen->load('gruppenleiter');
-        }
-        if ($request['includeTermine']) {
-            $gruppen->load('ausrueckungen');
-        }
-
-        $count = $gruppen->count();
-
-        return response([
-            'totalCount' => $count,
-            'values' => $gruppen
-        ], 200);
-    }
-
-    public static function getGruppe(Request $request)
-    {
-        $request->validate([
-            'id' => 'required'
-        ]);
-
-        return Gruppe::find($request->id)->load('mitglieder')->load('gruppenleiter');
-    }
-
-    public static function saveGruppe(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-        ]);
-
-        $existentGruppe = null;
-
-        if ($request['id']) {
-            $existentGruppe = Gruppe::find($request['id']);
-        }
-
-        if ($existentGruppe == null) {
-            $existentGruppe = Gruppe::where('name', '=', $request['name'])->first();
-        }
-
-        if ($existentGruppe) {
-            $existentGruppe->update($request->all());
-            return $existentGruppe;
-        }
-
-        return Gruppe::create($request->all());
-    }
-
-    public static function deleteGruppe(Request $request, $id)
-    {
-        return Gruppe::destroy($id);
-    }
 
     public static function getGruppenLeiter(Request $request)
     {

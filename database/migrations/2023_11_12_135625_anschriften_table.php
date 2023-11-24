@@ -15,13 +15,13 @@ class AnschriftenTable extends Migration
     {
         Schema::create('anschriften', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
-            $table->string('vorname');
-            $table->string('zuname');
+            $table->string('vorname')->nullable();
+            $table->string('zuname')->nullable();
             $table->string('anrede')->nullable();
             $table->string('titelVor')->nullable();
             $table->string('titelNach')->nullable();
             $table->string('geburtsdatum')->nullable();
-            $table->string('firma');
+            $table->string('firma')->nullable();
             $table->string('strasse')->nullable();
             $table->string('hausnummer')->nullable();
             $table->string('ort')->nullable();

@@ -19,7 +19,7 @@ class KassabuchController extends Controller implements _CrudControllerInterface
 
     public function getById(Request $request, $id)
     {
-        return Kassabuch::find($id)->load('grupppe')->load('kassabuchungen');
+        return Kassabuch::find($id)->load('gruppe')->load('kassabuchungen');
     }
 
     public function create(Request $request)
@@ -37,7 +37,7 @@ class KassabuchController extends Controller implements _CrudControllerInterface
             'name' => 'required',
         ]);
 
-        $kassabuch = Kassabuch::find($id);
+        $kassabuch = Kassabuch::findOrFail($id);
         $kassabuch->update($request->all());
         return $kassabuch;
     }
