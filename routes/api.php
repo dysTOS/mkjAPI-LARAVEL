@@ -51,24 +51,6 @@ Route::put('/test', [XXXTestController::class, 'testPut']);
 Route::delete('/test', [XXXTestController::class, 'testDelete']);
 
 //To be protected
-Route::post('/anschrift/list', [AnschriftenController::class, 'getList']);
-Route::get('/anschrift/{id}', [AnschriftenController::class, 'getById']);
-Route::post('/anschrift', [AnschriftenController::class, 'create']);
-Route::put('/anschrift/{id}', [AnschriftenController::class, 'update']);
-Route::delete('/anschrift/{id}', [AnschriftenController::class, 'delete']);
-Route::get('/anschrift/search/{string}', [AnschriftenController::class, 'search']);
-
-Route::post('/kassabuch/list', [KassabuchController::class, 'getList']);
-Route::get('/kassabuch/{id}', [KassabuchController::class, 'getById']);
-Route::post('/kassabuch', [KassabuchController::class, 'create']);
-Route::put('/kassabuch/{id}', [KassabuchController::class, 'update']);
-Route::delete('/kassabuch/{id}', [KassabuchController::class, 'delete']);
-
-Route::post('/kassabuchung/list', [KassabuchungController::class, 'getList']);
-Route::get('/kassabuchung/{id}', [KassabuchungController::class, 'getById']);
-Route::post('/kassabuchung', [KassabuchungController::class, 'create']);
-Route::put('/kassabuchung/{id}', [KassabuchungController::class, 'update']);
-Route::delete('/kassabuchung/{id}', [KassabuchungController::class, 'delete']);
 
 
 //Protected Routes
@@ -160,6 +142,25 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/statistik/noten', [StatistikController::class, 'getNoten']);
     Route::get('/statistik/mitglieder', [StatistikController::class, 'getMitglieder']);
     Route::get('/statistik/mitgliedergeschlecht', [StatistikController::class, 'getMitgliederGeschlecht']);
+
+    Route::post('/anschrift/list', [AnschriftenController::class, 'getList']);
+    Route::get('/anschrift/{id}', [AnschriftenController::class, 'getById']);
+    Route::post('/anschrift', [AnschriftenController::class, 'create']);
+    Route::put('/anschrift/{id}', [AnschriftenController::class, 'update']);
+    Route::delete('/anschrift/{id}', [AnschriftenController::class, 'delete']);
+    Route::get('/anschrift/search/{string}', [AnschriftenController::class, 'search']);
+
+    Route::post('/kassabuch/list', [KassabuchController::class, 'getList']);
+    Route::get('/kassabuch/{id}', [KassabuchController::class, 'getById']);
+    Route::post('/kassabuch', [KassabuchController::class, 'create']);
+    Route::put('/kassabuch/{id}', [KassabuchController::class, 'update']);
+    Route::delete('/kassabuch/{id}', [KassabuchController::class, 'delete']);
+
+    Route::post('/kassabuchung/list', [KassabuchungController::class, 'getList']);
+    Route::get('/kassabuchung/{id}', [KassabuchungController::class, 'getById']);
+    Route::post('/kassabuchung', [KassabuchungController::class, 'create']);
+    Route::put('/kassabuchung/{id}', [KassabuchungController::class, 'update']);
+    Route::delete('/kassabuchung/{id}', [KassabuchungController::class, 'delete']);
 
     Route::get('/files', [FileController::class, 'getFiles']);
     Route::post('/file', [FileController::class, 'storeFile']);

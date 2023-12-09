@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Configurations\PermissionMap;
 use App\Models\Kassabuch;
 use Illuminate\Http\Request;
 
 class KassabuchController extends Controller implements _CrudControllerInterface
 {
+    function __construct()
+    {
+        $this->middleware('permission:' . PermissionMap::KASSABUCH_READ, ['only' =>
+            ['getList', 'getById']]);
+        $this->middleware('permission:' . PermissionMap::KASSABUCH_SAVE, ['only' => ['create', 'update']]);
+        $this->middleware('permission:' . PermissionMap::KASSABUCH_DELETE, ['only' => ['delete']]);
+
+    }
 
     public function getList(Request $request)
     {

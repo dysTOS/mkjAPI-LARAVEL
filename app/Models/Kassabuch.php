@@ -25,6 +25,7 @@ class Kassabuch extends Model
         'name',
         'aktiv',
         'anmerkungen',
+        'kassastand',
         'color',
         'gruppe_id',
     ];

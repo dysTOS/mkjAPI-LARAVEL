@@ -4,7 +4,7 @@ namespace App\classes;
 
 class KassabuchungTyp
 {
-    public const EINGANGSRECHNUNG = 'er';
-    public const AUSGANGSRECHNUNG = 'ar';
+    public const EINNAHME = 'e';
+    public const AUSGABE = 'a';
 
 }

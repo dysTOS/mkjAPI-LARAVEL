@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Configurations\PermissionMap;
+use App\Events\KassabuchungUpdated;
 use App\Models\Anschrift;
 use App\Models\Kassabuch;
 use App\Models\Kassabuchung;
@@ -10,6 +12,15 @@ use phpDocumentor\Reflection\Types\Never_;
 
 class KassabuchungController extends Controller implements _CrudControllerInterface
 {
+    function __construct()
+    {
+        $this->middleware('permission:' . PermissionMap::KASSABUCHUNG_READ, ['only' =>
+            ['getList', 'getById']]);
+        $this->middleware('permission:' . PermissionMap::KASSABUCHUNG_SAVE, ['only' => ['create', 'update']]);
+        $this->middleware('permission:' . PermissionMap::KASSABUCHUNG_DELETE, ['only' => ['delete']]);
+
+    }
+
     public function getList(Request $request)
     {
         // TODO: Implement getList() method.
@@ -23,15 +34,12 @@ class KassabuchungController extends Controller implements _CrudControllerInterf
     public function create(Request $request)
     {
         $kassabuch = $this->validateKassabuch($request);
-        $anschrift = $this->validateBuchung($request);
+        $anschrift = $this->validateAnschrift($request);
 
-        $kassastand = $kassabuch->kassastand;
-        $kassabuch->kassastand = $kassastand + $request['gesamtpreis'];
         $request['anschrift_id'] = $anschrift->id;
         $buchung = Kassabuchung::create($request->all());
-        if ($buchung->id) {
-            $kassabuch->save();
-        }
+
+        KassabuchungUpdated::dispatch($kassabuch);
         return $buchung;
     }
 
@@ -39,24 +47,26 @@ class KassabuchungController extends Controller implements _CrudControllerInterf
     {
         $kassabuch = $this->validateKassabuch($request);
         $buchung = Kassabuchung::findOrFail($request['id']);
-        $anschrift = $this->validateBuchung($request);
+        $anschrift = $this->validateAnschrift($request);
 
-        $kassastandAlt = $kassabuch->kassastand;
-        $kassastandNeu = $kassastandAlt - $buchung->gesamtpreis + $request['gesamtpreis'];
-        $kassabuch->kassastand = $kassastandNeu;
         $request['anschrift_id'] = $anschrift->id;
         $buchung->update($request->all());
-        $kassabuch->save();
+
+        KassabuchungUpdated::dispatch($kassabuch);
         return $buchung;
     }
 
     public function delete(Request $request, $id)
     {
-        // TODO: Implement delete() method.
+        $buchung = Kassabuchung::findOrFail($id);
+        $kassabuch = Kassabuch::find($buchung->kassabuch_id);
+        $response = Kassabuchung::destroy($id);
+        KassabuchungUpdated::dispatch($kassabuch);
+        return $response;
     }
 
 
-    private function validateBuchung(Request $request) : Anschrift | Never_
+    private function validateAnschrift(Request $request): Anschrift|Never_
     {
         //TODO: validate gesamtpreis
 
@@ -64,7 +74,7 @@ class KassabuchungController extends Controller implements _CrudControllerInterf
         if ($anschrift_id != null) {
             return Anschrift::findOrFail($anschrift_id);
         } else if ($request['anschrift']['firma'] || ($request['anschrift']['vorname'] && $request['anschrift']['zuname'])) {
-            $anschrift =  new Anschrift($request['anschrift']);
+            $anschrift = new Anschrift($request['anschrift']);
             $anschrift->save();
             return $anschrift;
         } else {
@@ -85,7 +95,7 @@ class KassabuchungController extends Controller implements _CrudControllerInterf
 
         $kassabuch = Kassabuch::findOrFail($request['kassabuch_id']);
 
-        if($kassabuch->aktiv == false){
+        if ($kassabuch->aktiv == false) {
             abort(422, 'Kassabuch ist inaktiv!');
         }
 

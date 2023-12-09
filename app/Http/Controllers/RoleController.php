@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Configurations\PermissionMap;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
@@ -12,12 +13,13 @@ use DB;
 class RoleController extends Controller
 {
 
+
     function __construct()
     {
-        $this->middleware('permission:role_read', ['only' => ['getAllRoles', 'getAllPermissions', 'getPermissionsForRole']]);
-        $this->middleware('permission:role_save', ['only' => ['createRole', 'updateRole']]);
-        $this->middleware('permission:role_delete', ['only' => ['deleteRole']]);
-        $this->middleware('permission:role_assign', ['only' => ['assignRolesToUser']]);
+        $this->middleware('permission:' . PermissionMap::ROLE_READ, ['only' => ['getAllRoles', 'getAllPermissions', 'getPermissionsForRole']]);
+        $this->middleware('permission:' . PermissionMap::ROLE_SAVE, ['only' => ['createRole', 'updateRole']]);
+        $this->middleware('permission:' . PermissionMap::ROLE_DELETE, ['only' => ['deleteRole']]);
+        $this->middleware('permission:' . PermissionMap::ROLE_ASSIGN, ['only' => ['assignRolesToUser']]);
     }
 
     /**

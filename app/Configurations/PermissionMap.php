@@ -5,13 +5,8 @@ namespace App\Configurations;
 class PermissionMap
 {
     //to be added
-    public const ADMIN = "admin";
-    public const ANSCHRIFTEN_READ = "anschriften_read";
-    public const ANSCHRIFTEN_SAVE = "anschriften_save";
-    public const ANSCHRIFTEN_DELETE = "anschriften_delete";
-    public const KASSABUCHUNGEN_READ = "kassabuchungen_read";
-    public const KASSABUCHUNGEN_SAVE = "kassabuchungen_save";
-    public const KASSABUCHUNGEN_DELETE = "kassabuchungen_delete";
+
+
 
     //added
     public const TERMIN_READ = "ausrueckungen_read";
@@ -37,6 +32,15 @@ class PermissionMap
     public const INSTRUMENTE_READ = "instrumente_read";
     public const INSTRUMENTE_SAVE = "instrumente_save";
     public const INSTRUMENTE_DELETE = "instrumente_delete";
+    public const ANSCHRIFTEN_READ = "anschriften_read";
+    public const ANSCHRIFTEN_SAVE = "anschriften_save";
+    public const ANSCHRIFTEN_DELETE = "anschriften_delete";
+    public const KASSABUCHUNG_READ = "kassabuchung_read";
+    public const KASSABUCHUNG_SAVE = "kassabuchung_save";
+    public const KASSABUCHUNG_DELETE = "kassabuchung_delete";
+    public const KASSABUCH_READ = "kassabuch_read";
+    public const KASSABUCH_SAVE = "kassabuch_save";
+    public const KASSABUCH_DELETE = "kassabuch_delete";
     public const ROLE_READ = "role_read";
     public const ROLE_SAVE = "role_save";
     public const ROLE_DELETE = "role_delete";
