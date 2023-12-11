@@ -14,7 +14,6 @@ class KassabuchController extends Controller implements _CrudControllerInterface
             ['getList', 'getById']]);
         $this->middleware('permission:' . PermissionMap::KASSABUCH_SAVE, ['only' => ['create', 'update']]);
         $this->middleware('permission:' . PermissionMap::KASSABUCH_DELETE, ['only' => ['delete']]);
-
     }
 
     public function getList(Request $request)

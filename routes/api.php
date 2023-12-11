@@ -104,20 +104,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/gruppen/addmitglied', [GruppenController::class, 'addMitgliedToGruppe']);
     Route::post('/gruppen/removemitglied', [GruppenController::class, 'removeMitgliedFromGruppe']);
 
-    Route::get('/instrumente', [InstrumentenController::class, 'getAll']);
-    Route::get('/instrumente/{id}', [InstrumentenController::class, 'getInstrumentById']);
-    Route::post('/instrumente', [InstrumentenController::class, 'save']);
-    Route::delete('/instrumente/{id}', [InstrumentenController::class, 'destroy']);
-
-    Route::get('/noten', [NotenController::class, 'getAll']);
-    Route::get('/noten/{id}', [NotenController::class, 'getNotenById']);
-    Route::get('/noten/search/{name}', [NotenController::class, 'search']);
-    Route::post('/noten', [NotenController::class, 'create']);
-    Route::put('/noten/{id}', [NotenController::class, 'update']);
-    Route::delete('/noten/{id}', [NotenController::class, 'destroy']);
-    Route::post('/addnoten', [NotenController::class, 'attachNoten']);
-    Route::post('/removenoten', [NotenController::class, 'detachNoten']);
-    Route::get('/notenausrueckung/{id}', [NotenController::class, 'getNotenOfAusrueckung']);
+    Route::post('/instrumente/list', [InstrumentenController::class, 'getList']);
+    Route::get('/instrumente/{id}', [InstrumentenController::class, 'getById']);
+    Route::post('/instrumente', [InstrumentenController::class, 'create']);
+    Route::put('/instrumente/{id}', [InstrumentenController::class, 'update']);
+    Route::delete('/instrumente/{id}', [InstrumentenController::class, 'delete']);
 
     Route::post('/notenmappe/list', [NotenMappenController::class, 'getList']);
     Route::get('/notenmappe/{id}', [NotenMappenController::class, 'getById']);
@@ -149,6 +140,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/anschrift/{id}', [AnschriftenController::class, 'update']);
     Route::delete('/anschrift/{id}', [AnschriftenController::class, 'delete']);
     Route::get('/anschrift/search/{string}', [AnschriftenController::class, 'search']);
+
+    Route::post('/noten/list', [NotenController::class, 'getList']);
+    Route::get('/noten/{id}', [NotenController::class, 'getById']);
+    Route::post('/noten', [NotenController::class, 'create']);
+    Route::put('/noten/{id}', [NotenController::class, 'update']);
+    Route::delete('/noten/{id}', [NotenController::class, 'delete']);
+    Route::post('/noten/attach', [NotenController::class, 'attachNoten']);
+    Route::post('/noten/detach', [NotenController::class, 'detachNoten']);
+    Route::get('/noten/search/{name}', [NotenController::class, 'search']);
+    Route::get('/noten/termin/{id}', [NotenController::class, 'getNotenOfTermin']);
 
     Route::post('/kassabuch/list', [KassabuchController::class, 'getList']);
     Route::get('/kassabuch/{id}', [KassabuchController::class, 'getById']);

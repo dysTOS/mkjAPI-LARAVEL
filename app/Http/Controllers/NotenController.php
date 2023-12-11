@@ -7,15 +7,29 @@ use App\Models\Termin;
 use App\Models\Noten;
 use Illuminate\Http\Request;
 
-class NotenController extends Controller
+class NotenController extends Controller implements _CrudControllerInterface
 {
     function __construct()
     {
 
-        $this->middleware('permission:' . PermissionMap::NOTEN_READ, ['only' => ['getAll', 'getNotenById', 'search', 'getNotenOfAusrueckung']]);
+        $this->middleware('permission:' . PermissionMap::NOTEN_READ, ['only' => ['getList', 'getById', 'search', 'getNotenOfTermin']]);
         $this->middleware('permission:' . PermissionMap::NOTEN_SAVE, ['only' => ['create', 'update']]);
-        $this->middleware('permission:' . PermissionMap::NOTEN_DELETE, ['only' => ['destroy']]);
+        $this->middleware('permission:' . PermissionMap::NOTEN_DELETE, ['only' => ['delete']]);
         $this->middleware('permission:' . PermissionMap::NOTEN_ASSIGN, ['only' => ['attachNoten', 'detachNoten']]);
+    }
+
+    public function getList(Request $request)
+    {
+        $list = Noten::all();
+        return response([
+            "totalCount" => $list->count(),
+            "values" => $list
+        ], 200);
+    }
+
+    public function getById(Request $request, $id)
+    {
+        return Noten::find($id);
     }
 
     public function attachNoten(Request $request)
@@ -57,17 +71,7 @@ class NotenController extends Controller
         ], 200);
     }
 
-    public function getAll()
-    {
-        return Noten::all();
-    }
-
-    public static function getNotenById(Request $request, $id)
-    {
-        return Noten::find($id);
-    }
-
-    public function getNotenOfAusrueckung($id)
+    public function getNotenOfTermin($id)
     {
         $ausrueckung = Termin::find($id);
         $noten = $ausrueckung->noten()->get();
@@ -91,7 +95,7 @@ class NotenController extends Controller
         return $noten;
     }
 
-    public function destroy($id)
+    public function delete(Request $request, $id)
     {
         Noten::destroy($id);
     }
