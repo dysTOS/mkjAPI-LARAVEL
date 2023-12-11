@@ -8,7 +8,7 @@ class UiNamingConfig extends _AbstractOptions
         'Termine' => 'Termine',
         'Mitglieder' => 'Mitglieder',
         'Instrumente' => 'Instrumente',
-        'Register & Gruppen' => 'Register & Gruppen',
+        'Gruppen' => 'Register & Gruppen',
         'Archiv' => 'Archiv',
         'Noten' => 'Noten',
         'Notenmappen' => 'Notenmappen',
