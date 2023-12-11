@@ -7,11 +7,11 @@ class UiNamingConfig extends _AbstractOptions
     private $options = [
         'Termine' => 'Termine',
         'Mitglieder' => 'Mitglieder',
+        'Instrumente' => 'Instrumente',
         'Register & Gruppen' => 'Register & Gruppen',
         'Archiv' => 'Archiv',
         'Noten' => 'Noten',
         'Notenmappen' => 'Notenmappen',
-        'Instrumente' => 'Instrumente',
         'Statistiken' => 'Statistiken',
         'Finanzen' => 'Finanzen',
     ];

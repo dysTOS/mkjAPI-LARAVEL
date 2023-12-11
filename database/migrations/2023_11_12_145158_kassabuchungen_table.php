@@ -16,7 +16,7 @@ class KassabuchungenTable extends Migration
         Schema::create('kassabuchungen', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->string('typ', 2);
-            $table->string('nummer', 8);
+            $table->string('nummer', 8)->nullable();
             $table->string('datum');
             $table->foreignUuid('anschrift_id')
                 ->nullable()
