@@ -19,7 +19,11 @@ class AnschriftenController extends Controller implements _CrudControllerInterfa
 
     public function getList(Request $request)
     {
-        return Anschrift::all();
+        $list = Anschrift::all();
+        return response([
+            "totalCount" => $list->count(),
+            "values" => $list
+        ], 200);
     }
 
     public function getById(Request $request, $id)
@@ -37,28 +41,32 @@ class AnschriftenController extends Controller implements _CrudControllerInterfa
 
     public function create(Request $request)
     {
-        $request->validate([
-            'zuname' => 'exclude_if:firma|required|string',
-            'vorname' => 'exclude_if:firma|required|string'
-        ]);
-
-        return Anschrift::create($request->all());
+        if ($this->validateRequest($request)) {
+            $anschrift = new Anschrift($request->all());
+            $anschrift->save();
+            return $anschrift;
+        }
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'zuname' => 'exclude_if:firma|required|string',
-            'vorname' => 'exclude_if:firma|required|string'
-        ]);
-
-        $anschrift = Anschrift::find($id);
-        $anschrift->update($request->all());
-        return $anschrift;
+        if ($this->validateRequest($request)) {
+            $anschrift = Anschrift::findOrFail($request['id']);
+            $anschrift->update($request->all());
+            return $anschrift;
+        }
     }
 
     public function delete(Request $request, $id)
     {
         return Anschrift::destroy($id);
     }
+
+    private function validateRequest(Request $request) : bool{
+        if ($request['firma'] || ($request['vorname'] && $request['zuname'])) {
+            return true;
+        } else {
+            return abort(422, 'Fehlende Angaben der Anschrift!');
+        }
+}
 }

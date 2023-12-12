@@ -11,6 +11,8 @@ class UiNamingConfig extends _AbstractOptions
         'Gruppen' => 'Register & Gruppen',
         'Archiv' => 'Archiv',
         'Noten' => 'Noten',
+        'Anschriften' => 'Adressen',
+        'Anschrift' => 'Adresse',
         'Notenmappen' => 'Notenmappen',
         'Statistiken' => 'Statistiken',
         'Finanzen' => 'Finanzen',
