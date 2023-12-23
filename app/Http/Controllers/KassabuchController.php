@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\classes\ListQueryHandler;
 use App\Configurations\PermissionMap;
 use App\Models\Kassabuch;
 use Illuminate\Http\Request;
@@ -18,16 +19,14 @@ class KassabuchController extends Controller implements _CrudControllerInterface
 
     public function getList(Request $request)
     {
-        $list = Kassabuch::all()->load('gruppe');
-        return response([
-            "totalCount" => $list->count(),
-            "values" => $list
-        ], 200);
+        $handler = new ListQueryHandler(Kassabuch::class, array('load' => 'gruppe'));
+        $output = $handler->getListOutput($request);
+        return response($output, 200);
     }
 
     public function getById(Request $request, $id)
     {
-        return Kassabuch::find($id)->load('gruppe')->load('kassabuchungen');
+        return Kassabuch::findOrFail($id)->load('gruppe');
     }
 
     public function create(Request $request)

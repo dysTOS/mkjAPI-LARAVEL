@@ -89,7 +89,7 @@ class TerminController extends Controller
                 $filter, function($query, $filter){
                     foreach($filter as $f){
                         if($f){
-                            $query->where($f['filterField'], $f['operator'], $f['value']);
+                            $query->where($f['field'], $f['operator'], $f['value']);
                         }
                     }
                     return $query;

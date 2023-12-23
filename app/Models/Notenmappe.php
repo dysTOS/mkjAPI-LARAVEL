@@ -13,7 +13,7 @@ class Notenmappe extends Model
     public function noten()
     {
         return $this->belongsToMany(Noten::class, 'mappe_noten',
-            'mappe_id', 'noten_id')->withPivot('verzeichnisNr')->withTimestamps();
+            'mappe_id', 'noten_id')->withPivot('verzeichnisNr')->withPivot('orderIndex')->withTimestamps()->orderBy('orderIndex');
     }
 
     protected $table = 'notenmappen';

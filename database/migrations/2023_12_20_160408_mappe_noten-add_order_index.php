@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateConfig extends Migration
+class MappeNotenAddOrderIndex extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreateConfig extends Migration
      */
     public function up()
     {
-        Schema::create('config', function (Blueprint $table) {
-            $table->string('key')->primary()->unique();
-            $table->json('value')->nullable();
+        Schema::table('mappe_noten', function (Blueprint $table) {
+            $table->integer('orderIndex')->nullable()->after("verzeichnisNr");
         });
     }
 
@@ -26,6 +25,8 @@ class CreateConfig extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('config');
+        Schema::table('mappe_noten', function (Blueprint $table) {
+            $table->dropColumn('orderIndex');
+        });
     }
 }

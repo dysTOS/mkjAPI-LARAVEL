@@ -16,7 +16,7 @@ class CreateNotenmappenTables extends Migration
         Schema::create('notenmappen', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->string('name');
-            $table->char('color', 10);
+            $table->char('color', 10)->nullable();
             $table->boolean('hatVerzeichnis')->default(false);
             $table->timestamps();
         });

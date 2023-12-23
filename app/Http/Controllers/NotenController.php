@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\classes\ListQueryHandler;
 use App\Configurations\PermissionMap;
 use App\Models\Termin;
 use App\Models\Noten;
@@ -20,16 +21,14 @@ class NotenController extends Controller implements _CrudControllerInterface
 
     public function getList(Request $request)
     {
-        $list = Noten::all();
-        return response([
-            "totalCount" => $list->count(),
-            "values" => $list
-        ], 200);
+        $handler = new ListQueryHandler(Noten::class);
+        $output = $handler->getListOutput($request);
+        return response($output, 200);
     }
 
     public function getById(Request $request, $id)
     {
-        return Noten::find($id);
+        return Noten::findOrFail($id);
     }
 
     public function attachNoten(Request $request)

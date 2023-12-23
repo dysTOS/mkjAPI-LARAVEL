@@ -12,10 +12,10 @@ class NotenMappenController extends Controller implements _CrudControllerInterfa
 {
     function __construct()
     {
-        $this->middleware('permission:' . PermissionMap::NOTENMAPPE_READ, ['only' => ['getList', 'getById']]);
+        $this->middleware('permission:' . PermissionMap::NOTENMAPPE_READ, ['only' => ['getList', 'getById', 'getNotenOfMappe']]);
         $this->middleware('permission:' . PermissionMap::NOTENMAPPE_SAVE, ['only' => ['create', 'update']]);
         $this->middleware('permission:' . PermissionMap::NOTENMAPPE_DELETE, ['only' => ['delete']]);
-        $this->middleware('permission:' . PermissionMap::NOTENMAPPE_ASSIGN, ['only' => ['notenmappeAttach', 'notenmappeDetach']]);
+        $this->middleware('permission:' . PermissionMap::NOTENMAPPE_ASSIGN, ['only' => ['syncNoten', 'notenmappeAttach', 'notenmappeDetach']]);
     }
 
     public function getList(Request $request)
@@ -30,7 +30,7 @@ class NotenMappenController extends Controller implements _CrudControllerInterfa
     public function getById(Request $request, $id)
     {
         $mappe = Notenmappe::find($id);
-        return $mappe->load('noten');
+        return $mappe;
     }
 
     public function create(Request $request)
@@ -52,6 +52,27 @@ class NotenMappenController extends Controller implements _CrudControllerInterfa
     public function delete(Request $request, $id)
     {
         Notenmappe::destroy($id);
+    }
+
+    public function syncNoten(Request $request)
+    {
+        $fields = $request->validate([
+            'collectionId' => 'required',
+            'values' => 'required'
+        ]);
+
+        $mappe = Notenmappe::findOrFail($fields['collectionId']);
+        $syncArray = array();
+        foreach ($fields['values'] as $note) {
+            $syncArray[$note['id']] = ['orderIndex' => $note['pivot']['orderIndex'],
+                'verzeichnisNr' => $note['pivot']['verzeichnisNr']];
+        }
+        $mappe->noten()->sync($syncArray);
+
+        return (response([
+            'success' => true,
+            'message' => $syncArray
+        ], 200));
     }
 
 
@@ -104,5 +125,15 @@ class NotenMappenController extends Controller implements _CrudControllerInterfa
         ], 200);
     }
 
+    public function getNotenOfMappe(Request $request, $id)
+    {
+        if ($id == null) {
+            abort(500, "Keine Mappen ID angegeben!");
+        }
+
+        $mappe = Notenmappe::findOrFail($request['id']);
+
+        return $mappe->noten()->get();
+    }
 
 }

@@ -34,7 +34,7 @@ class GruppenController extends Controller implements _CrudControllerInterface
 
     public function getById(Request $request, $id)
     {
-        return Gruppe::find($request->id)->load('mitglieder')->load('gruppenleiter');
+        return Gruppe::find($request->id)->load('gruppenleiter');
     }
 
     public function create(Request $request)
@@ -69,6 +69,9 @@ class GruppenController extends Controller implements _CrudControllerInterface
 
         $mitglied = Mitglieder::findOrFail($fields['mitglied_id']);
         $gruppe = Gruppe::findOrFail($fields['gruppe_id']);
+        if($gruppe->mitglieder()->get()->contains($mitglied)){
+            abort(500, "Mitglied bereits zugewiesen!");
+        }
         $gruppe->mitglieder()->attach($mitglied);
 
         return response([

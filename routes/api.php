@@ -117,6 +117,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('/notenmappe/{id}', [NotenMappenController::class, 'delete']);
     Route::post('/notenmappe/attach', [NotenMappenController::class, 'attach']);
     Route::post('/notenmappe/detach', [NotenMappenController::class, 'detach']);
+    Route::post('/notenmappe/noten', [NotenMappenController::class, 'syncNoten']);
+    Route::get('/notenmappe/noten/{id}', [NotenMappenController::class, 'getNotenOfMappe']);
 
     Route::get('/roles', [RoleController::class, 'getAllRoles']);
     Route::get('/roles/{id}', [RoleController::class, 'getUserRoles']);
