@@ -34,7 +34,7 @@ class AuthController extends Controller
         }
 
         if($mitglied->aktiv != true){
-            abort(403, "Dein Account muss erst aktiviviert werden! Bitte kontaktiere deinen Administrator");
+            abort(403, "Dein Account muss erst aktiviviert werden! Bitte kontaktiere deinen Administrator!");
         }
 
         if ($mitglied->vorname != $fields['vorname'] || $mitglied->zuname != $fields['zuname']) {

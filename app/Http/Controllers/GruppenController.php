@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\classes\ListQueryHandler;
 use Illuminate\Http\Request;
 use App\Models\Mitglieder;
 use App\Models\Gruppe;
@@ -19,17 +20,9 @@ class GruppenController extends Controller implements _CrudControllerInterface
 
     public function getList(Request $request)
     {
-        $gruppen = Gruppe::all();
-        $gruppen->load('mitglieder');
-        $gruppen->load('gruppenleiter');
-//        $gruppen->load('ausrueckungen');
-
-        $count = $gruppen->count();
-
-        return response([
-            'totalCount' => $count,
-            'values' => $gruppen
-        ], 200);
+        $handler = new ListQueryHandler(Gruppe::class, array('load' => array('mitglieder', 'gruppenleiter')));
+        $output = $handler->getListOutput($request);
+        return response($output, 200);
     }
 
     public function getById(Request $request, $id)

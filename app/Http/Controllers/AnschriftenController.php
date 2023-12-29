@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\classes\ListQueryHandler;
 use App\Configurations\PermissionMap;
 use App\Models\Anschrift;
 use Illuminate\Http\Request;
@@ -19,11 +20,9 @@ class AnschriftenController extends Controller implements _CrudControllerInterfa
 
     public function getList(Request $request)
     {
-        $list = Anschrift::all();
-        return response([
-            "totalCount" => $list->count(),
-            "values" => $list
-        ], 200);
+        $handler = new ListQueryHandler(Anschrift::class);
+        $output = $handler->getListOutput($request);
+        return response($output, 200);
     }
 
     public function getById(Request $request, $id)

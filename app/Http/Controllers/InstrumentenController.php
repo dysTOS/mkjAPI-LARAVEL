@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\classes\ListQueryHandler;
 use App\Configurations\PermissionMap;
 use App\Models\Instrument;
 use App\Models\Mitglieder;
@@ -19,11 +20,9 @@ class InstrumentenController extends Controller implements _CrudControllerInterf
 
     public function getList(Request $request)
     {
-        $list = Instrument::all()->load('mitglied')->load('gruppe');
-        return response([
-            "totalCount" => $list->count(),
-            "values" => $list
-        ], 200);
+        $handler = new ListQueryHandler(Instrument::class, array('load' => array('mitglied', 'gruppe')));
+        $output = $handler->getListOutput($request);
+        return response($output, 200);
     }
 
     public function getById(Request $request, $id)
