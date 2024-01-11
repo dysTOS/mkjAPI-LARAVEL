@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\classes\ListQueryHandler;
 use App\Configurations\PermissionMap;
-use App\Models\Termin;
+use App\DAO\ListQueryDAO;
 use App\Models\Noten;
 use App\Models\Notenmappe;
 use Illuminate\Http\Request;
@@ -21,7 +20,7 @@ class NotenMappenController extends Controller implements _CrudControllerInterfa
 
     public function getList(Request $request)
     {
-        $handler = new ListQueryHandler(Notenmappe::class, array('load' => 'noten'));
+        $handler = new ListQueryDAO(Notenmappe::class, array('load' => 'noten'));
         $output = $handler->getListOutput($request);
         return response($output, 200);
     }

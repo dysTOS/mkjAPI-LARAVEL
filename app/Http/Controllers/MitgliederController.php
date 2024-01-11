@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DAO\ListQueryDAO;
 use App\Models\Termin;
 use Illuminate\Http\Request;
 use App\Models\Mitglieder;
@@ -10,26 +11,21 @@ use App\Models\Gruppe;
 use App\Configurations\PermissionMap;
 use Illuminate\Support\Carbon;
 
-class MitgliederController extends Controller
+class MitgliederController extends Controller implements _CrudControllerInterface
 {
     function __construct()
     {
-        $this->middleware('permission:' . PermissionMap::MITGLIEDER_READ, ['only' => ['getAll', 'getAllActive', 'getMitgliederOfAusrueckung', 'search', 'updateOwnMitgliedData']]);
-        $this->middleware('permission:' . PermissionMap::MITGLIEDER_SAVE, ['only' => ['create', 'update', 'getSingle']]);
-        $this->middleware('permission:' . PermissionMap::MITGLIEDER_DELETE, ['only' => ['destroy']]);
+        $this->middleware('permission:' . PermissionMap::MITGLIEDER_READ, ['only' => ['getList', 'getMitgliederOfAusrueckung', 'search', 'updateOwnMitgliedData']]);
+        $this->middleware('permission:' . PermissionMap::MITGLIEDER_SAVE, ['only' => ['create', 'update', 'getById']]);
+        $this->middleware('permission:' . PermissionMap::MITGLIEDER_DELETE, ['only' => ['delete']]);
         $this->middleware('permission:' . PermissionMap::MITGLIEDER_ASSIGN, ['only' => ['attachMitgliedToAusrueckung', 'detachMitgliedFromAusrueckung', 'attachMitgliedToGruppe', 'detachMitgliedFromGruppe']]);
     }
 
-    public function getAll()
+    public function getList(Request $request)
     {
-        $mitglieder = Mitglieder::query()->orderBy('zuname', 'asc')->get();
-        return $mitglieder->load('gruppen');
-    }
-
-    public function getAllActive()
-    {
-        $mitglieder = Mitglieder::where('aktiv', true)->orderBy('zuname', 'asc')->get();
-        return $mitglieder->load('gruppen');
+        $handler = new ListQueryDAO(Mitglieder::class, array('load' => 'gruppen'));
+        $output = $handler->getListOutput($request);
+        return response($output, 200);
     }
 
     public function getMitgliederOfAusrueckung($id)
@@ -37,6 +33,24 @@ class MitgliederController extends Controller
         $ausrueckung = Termin::find($id);
         $mitglieder = $ausrueckung->mitglieder()->get();
         return $mitglieder;
+    }
+
+    public function getById(Request $request, $id)
+    {
+        return Mitglieder::findOrFail($id);
+    }
+
+    public function delete(Request $request, $id)
+    {
+        $mitglied = Mitglieder::findOrFail($id);
+        $user = User::findOrFail($mitglied->user_id);
+
+        if ($user) {
+            $user->tokens()->delete();
+            User::destroy($user->id);
+        }
+
+        Mitglieder::destroy($id);
     }
 
     public function create(Request $request)
@@ -49,11 +63,6 @@ class MitgliederController extends Controller
         return Mitglieder::create($request->all());
     }
 
-    public function getSingle($id)
-    {
-        return Mitglieder::find($id);
-    }
-
     public function update(Request $request, $id)
     {
         $mitglied = Mitglieder::find($id);
@@ -61,7 +70,7 @@ class MitgliederController extends Controller
         return $mitglied;
     }
 
-    public static function getNextGeburtstage(Request $request)
+    public function getNextGeburtstage(Request $request)
     {
         $date = now();
         return Mitglieder::where(function ($query) {
@@ -113,19 +122,6 @@ class MitgliederController extends Controller
         ));
 
         return $mitglied;
-    }
-
-    public function destroy($id)
-    {
-        $mitglied = Mitglieder::findOrFail($id);
-        $user = User::find($mitglied->user_id);
-
-        if ($user) {
-            $user->tokens()->delete();
-            User::destroy($user->id);
-        }
-
-        Mitglieder::destroy($id);
     }
 
     public function search($name)

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\classes\ListQueryHandler;
 use App\Configurations\PermissionMap;
+use App\DAO\ListQueryDAO;
 use App\Models\Instrument;
 use App\Models\Mitglieder;
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ class InstrumentenController extends Controller implements _CrudControllerInterf
 
     public function getList(Request $request)
     {
-        $handler = new ListQueryHandler(Instrument::class, array('load' => array('mitglied', 'gruppe')));
+        $handler = new ListQueryDAO(Instrument::class, array('load' => array('mitglied', 'gruppe')));
         $output = $handler->getListOutput($request);
         return response($output, 200);
     }

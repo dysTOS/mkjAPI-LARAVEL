@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\classes\ListQueryHandler;
 use App\Configurations\PermissionMap;
-use App\Models\Termin;
+use App\DAO\ListQueryDAO;
 use App\Models\Noten;
+use App\Models\Termin;
 use Illuminate\Http\Request;
 
 class NotenController extends Controller implements _CrudControllerInterface
@@ -21,7 +21,7 @@ class NotenController extends Controller implements _CrudControllerInterface
 
     public function getList(Request $request)
     {
-        $handler = new ListQueryHandler(Noten::class);
+        $handler = new ListQueryDAO(Noten::class);
         $output = $handler->getListOutput($request);
         return response($output, 200);
     }

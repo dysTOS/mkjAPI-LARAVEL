@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\classes\ListQueryHandler;
-use Illuminate\Http\Request;
-use App\Models\Mitglieder;
-use App\Models\Gruppe;
 use App\Configurations\PermissionMap;
+use App\DAO\ListQueryDAO;
+use App\Models\Gruppe;
+use App\Models\Mitglieder;
+use Illuminate\Http\Request;
 
 class GruppenController extends Controller implements _CrudControllerInterface
 {
@@ -20,14 +20,14 @@ class GruppenController extends Controller implements _CrudControllerInterface
 
     public function getList(Request $request)
     {
-        $handler = new ListQueryHandler(Gruppe::class, array('load' => array('mitglieder', 'gruppenleiter')));
+        $handler = new ListQueryDAO(Gruppe::class, array('load' => array('mitglieder', 'gruppenleiter')));
         $output = $handler->getListOutput($request);
         return response($output, 200);
     }
 
     public function getById(Request $request, $id)
     {
-        return Gruppe::find($request->id)->load('gruppenleiter');
+        return Gruppe::findOrFail($request->id)->load('gruppenleiter');
     }
 
     public function create(Request $request)
@@ -43,7 +43,7 @@ class GruppenController extends Controller implements _CrudControllerInterface
         $request->validate([
             'name' => 'required',
         ]);
-        $existentGruppe = Gruppe::find($request['id']);
+        $existentGruppe = Gruppe::findOrFail($request['id']);
         return $existentGruppe->update($request->all());
 
     }

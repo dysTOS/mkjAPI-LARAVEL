@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Noten;
 use App\Models\Termin;
 use App\Models\Gruppe;
 use Illuminate\Support\Facades\DB;

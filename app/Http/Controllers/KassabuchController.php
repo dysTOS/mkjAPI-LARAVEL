@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\classes\ListQueryHandler;
 use App\Configurations\PermissionMap;
+use App\DAO\ListQueryDAO;
 use App\Models\Kassabuch;
 use Illuminate\Http\Request;
 
@@ -19,7 +19,7 @@ class KassabuchController extends Controller implements _CrudControllerInterface
 
     public function getList(Request $request)
     {
-        $handler = new ListQueryHandler(Kassabuch::class, array('load' => 'gruppe'));
+        $handler = new ListQueryDAO(Kassabuch::class, array('load' => 'gruppe'));
         $output = $handler->getListOutput($request);
         return response($output, 200);
     }

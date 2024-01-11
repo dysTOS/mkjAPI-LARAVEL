@@ -61,27 +61,24 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/deleteuser', [AuthController::class, 'deleteUser']);
 
-    Route::get('/reports', [ReportsController::class, 'getAll']);
-    Route::post('/reports', [ReportsController::class, 'save']);
+    Route::post('/termine/list', [TerminController::class, 'getList']);
+    Route::get('/termine/{id}', [TerminController::class, 'getById']);
+    Route::post('/termine', [TerminController::class, 'create']);
+    Route::put('/termine/{id}', [TerminController::class, 'update']);
+    Route::delete('/termine/{id}', [TerminController::class, 'delete']);
 
-    Route::get('/ausrueckungen', [TerminController::class, 'getAll']);
-    Route::get('/ausrueckungen/{id}', [TerminController::class, 'getSingle']);
     Route::post('/nextausrueckung', [TerminController::class, 'getNextActual']);
-    Route::post('/ausrueckungenfiltered', [TerminController::class, 'getFiltered']);
-    Route::post('/ausrueckungen', [TerminController::class, 'create']);
     Route::post('/saveterminbyleiter', [TerminController::class, 'saveTerminByGruppenleiter']);
-    Route::put('/ausrueckungen/{id}', [TerminController::class, 'update']);
-    Route::delete('/ausrueckungen/{id}', [TerminController::class, 'destroy']);
 
-    Route::get('/mitglieder', [MitgliederController::class, 'getAll']);
-    Route::get('/mitgliedernextgeb', [MitgliederController::class, 'getNextGeburtstage']);
-    Route::get('/mitgliederaktiv', [MitgliederController::class, 'getAllActive']);
-    Route::post('/mitgliedselbst', [MitgliederController::class, 'updateOwnMitgliedData']);
-    Route::get('/mitglieder/{id}', [MitgliederController::class, 'getSingle']);
-    Route::get('/mitglieder/search/{name}', [MitgliederController::class, 'search']);
+    Route::post('/mitglieder/list', [MitgliederController::class, 'getList']);
+    Route::get('/mitglieder/{id}', [MitgliederController::class, 'getById']);
     Route::post('/mitglieder', [MitgliederController::class, 'create']);
     Route::put('/mitglieder/{id}', [MitgliederController::class, 'update']);
-    Route::delete('/mitglieder/{id}', [MitgliederController::class, 'destroy']);
+    Route::delete('/mitglieder/{id}', [MitgliederController::class, 'delete']);
+
+    Route::get('/mitgliedernextgeb', [MitgliederController::class, 'getNextGeburtstage']);
+    Route::post('/mitgliedselbst', [MitgliederController::class, 'updateOwnMitgliedData']);
+    Route::get('/mitglieder/search/{name}', [MitgliederController::class, 'search']);
     Route::post('/addmitglied', [MitgliederController::class, 'attachMitgliedToAusrueckung']);
     Route::post('/removemitglied', [MitgliederController::class, 'detachMitgliedFromAusrueckung']);
     Route::post('/addmitgliedgruppe', [MitgliederController::class, 'attachMitgliedToGruppe']);

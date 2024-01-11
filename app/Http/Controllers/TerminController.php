@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Configurations\PermissionMap;
+use App\DAO\ListQueryDAO;
 use App\Models\Termin;
 use App\Models\Gruppe;
 use App\Models\Mitglieder;
 use Illuminate\Http\Request;
 use Validator;
 
-class TerminController extends Controller
+class TerminController extends Controller implements _CrudControllerInterface
 {
     function __construct()
     {
@@ -19,7 +20,7 @@ class TerminController extends Controller
         $this->middleware('permission:'.PermissionMap::TERMIN_GRUPPENLEITER_SAVE, ['only' => ['saveTerminByGruppenleiter']]);
     }
 
-    public static function saveTerminByGruppenleiter(Request $request)
+    public function saveTerminByGruppenleiter(Request $request)
     {
         $request->validate([
             'gruppe_id' => 'required'
@@ -37,9 +38,9 @@ class TerminController extends Controller
         }
 
         if($termin){
-            return TerminController::update($request, $request->id);
+            return $this->update($request, $request->id);
         }else{
-            return TerminController::create($request);
+            return $this->create($request);
         }
 
     }
@@ -61,61 +62,6 @@ class TerminController extends Controller
             ->where('status', '!=', 'abgesagt')
             ->where('oeffentlich', true)
             ->oldest('vonDatum')->first();
-    }
-
-
-    public function getAll(Request $request)
-    {
-        $gruppen = Mitglieder::where('user_id', $request->user()->id)->first()->gruppen()->get();
-        return Termin::when(
-            $gruppen, function($query, $gruppen){
-            foreach($gruppen as $gruppe){
-                if($gruppe){
-                    $query->orWhere('gruppe_id', '=', $gruppe['id']);
-                }
-            }
-            return $query->orWhere('gruppe_id', '=', null);
-        }
-        )->get();
-    }
-
-    public function getFiltered(Request $request)
-    {
-        $filter = $request->get('filterAnd');
-        $mitglied = Mitglieder::where('user_id', $request->user()->id)->first();
-        $gruppen = $mitglied->gruppen()->get();
-
-        $ausrueckungen = Termin::when(
-                $filter, function($query, $filter){
-                    foreach($filter as $f){
-                        if($f){
-                            $query->where($f['field'], $f['operator'], $f['value']);
-                        }
-                    }
-                    return $query;
-                }
-            )->when(
-                $gruppen, function($query, $gruppen){
-                    $query->where(function($query) use ($gruppen) {
-                        foreach($gruppen as $gruppe){
-                            if($gruppe){
-                                $query->orWhere('gruppe_id', '=', $gruppe['id']);
-                            }
-                        }
-                        return $query->orWhere('gruppe_id', '=', null);
-                    });
-                }
-                )
-            ->skip($request->get('skip') ?? 0)
-            ->take($request->get('take') ?? PHP_INT_MAX)
-            ->get();
-
-
-
-        return response([
-            'values' => $ausrueckungen->load('gruppe'),
-            'totalCount' => $ausrueckungen->count()],
-            200);
     }
 
     public function getNextActual(Request $request)
@@ -146,7 +92,7 @@ class TerminController extends Controller
             ->get()->offsetGet($skip);
     }
 
-    public static function create(Request $request)
+    public function create(Request $request)
     {
         $request->validate([
             'name' => 'required',
@@ -159,19 +105,28 @@ class TerminController extends Controller
         return Termin::create($request->all());
     }
 
-    public function getSingle($id)
-    {
-        return Termin::find($id);
-    }
 
-    public static function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
-        $ausrueckung = Termin::find($id);
+        $ausrueckung = Termin::findOrFail($id);
         $ausrueckung->update($request->all());
         return $ausrueckung;
     }
 
-    public function destroy(Request $request, $id)
+
+    public function getList(Request $request)
+    {
+        $handler = new ListQueryDAO(Termin::class, array('load' => 'gruppe'));
+        $output = $handler->getListOutput($request);
+        return response($output, 200);
+    }
+
+    public function getById(Request $request, $id)
+    {
+        return Termin::findOrFail($id);
+    }
+
+    public function delete(Request $request, $id)
     {
         return Termin::destroy($id);
     }

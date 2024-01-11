@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\classes\ListQueryHandler;
 use App\Configurations\PermissionMap;
+use App\DAO\ListQueryDAO;
 use App\Models\Anschrift;
 use Illuminate\Http\Request;
 
@@ -20,7 +20,7 @@ class AnschriftenController extends Controller implements _CrudControllerInterfa
 
     public function getList(Request $request)
     {
-        $handler = new ListQueryHandler(Anschrift::class);
+        $handler = new ListQueryDAO(Anschrift::class);
         $output = $handler->getListOutput($request);
         return response($output, 200);
     }
