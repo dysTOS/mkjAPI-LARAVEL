@@ -2,6 +2,7 @@
 
 namespace App\DAO;
 
+use App\Models\Mitglieder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -19,6 +20,10 @@ class ListQueryDAO
     public function getListOutput(Request $request)
     {
         $query = $this->model::query();
+        if ($this->options != null && isset($this->options['preFilterGruppen'])) {
+            $this->preFilterGruppen($query, $request);
+        }
+
         $this->setFilters($query, $request);
         $totalCount = $query->count();
 
@@ -40,7 +45,7 @@ class ListQueryDAO
         );
     }
 
-    private function setFilters(Builder $builder, Request $request): Builder
+    private function setFilters(Builder $builder, Request $request)
     {
         if ($request['filterAnd'] != null) {
             foreach ($request['filterAnd'] as $filter) {
@@ -67,6 +72,22 @@ class ListQueryDAO
                 }
             );
         }
-        return $builder;
+    }
+
+    private function preFilterGruppen(Builder $builder, Request $request)
+    {
+        $gruppen = Mitglieder::where('user_id', $request->user()->id)->first()->gruppen()->get();
+
+        $builder->when(
+            $gruppen, function ($query, $gruppen) {
+            $query->where(function ($query) use ($gruppen) {
+                foreach ($gruppen as $gruppe) {
+                    if ($gruppe) {
+                        $query->orWhere('gruppe_id', '=', $gruppe['id']);
+                    }
+                }
+                return $query->orWhere('gruppe_id', '=', null);
+            });
+        });
     }
 }

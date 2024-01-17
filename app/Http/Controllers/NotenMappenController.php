@@ -85,20 +85,10 @@ class NotenMappenController extends Controller implements _CrudControllerInterfa
         $noten = Noten::find($fields['noten_id']);
         $mappe = Notenmappe::find($fields['mappe_id']);
 
-        if ($mappe->hatVerzeichnis) {
-            $fields = $request->validate([
-                'verzeichnisNr' => 'required'
-            ]);
-
-            if ($mappe->noten()->wherePivot('verzeichnisNr', $fields['verzeichnisNr'])->first()) {
-                abort(403, 'Verzeichnis Nr. ist bereits vergeben!');
-            }
-        }
-
         if ($mappe->noten()->get()->contains($noten)) {
             abort(403, 'Stück ist bereits zugewiesen!');
         }
-        $mappe->noten()->attach($noten, ['verzeichnisNr' => $request['verzeichnisNr']]);
+        $mappe->noten()->attach($noten);
 
         return response([
             'success' => $mappe->noten()->get()->contains($noten),

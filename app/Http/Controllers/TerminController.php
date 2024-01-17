@@ -116,7 +116,7 @@ class TerminController extends Controller implements _CrudControllerInterface
 
     public function getList(Request $request)
     {
-        $handler = new ListQueryDAO(Termin::class, array('load' => 'gruppe'));
+        $handler = new ListQueryDAO(Termin::class, array('load' => 'gruppe', 'preFilterGruppen' => true));
         $output = $handler->getListOutput($request);
         return response($output, 200);
     }
