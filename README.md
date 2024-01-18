@@ -23,7 +23,7 @@ Administration of arbitrary many cash-books for each group of members.
 
 ### Statistics
 
-## Backend
+## Frontend
 
 see [mkjAPP](https://github.com/dysTOS/mkjAPP)
 
