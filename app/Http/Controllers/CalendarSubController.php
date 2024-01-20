@@ -62,6 +62,8 @@ class CalendarSubController extends Controller
             }
             if ($event->bisZeit) {
                 $bisDateTime = $bisDateTime . " " . $event->bisZeit;
+            } else {
+                $bisDateTime = $bisDateTime . " 24:00";
             }
             if (!$event->vonZeit) {
                 $vonDateTime = $vonDateTime . " 00:00";
