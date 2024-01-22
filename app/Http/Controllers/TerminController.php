@@ -99,7 +99,9 @@ class TerminController extends Controller implements _CrudControllerInterface
             'kategorie' => 'required',
             'status' => 'required',
             'vonDatum' => 'required',
-            'bisDatum' => 'required'
+            'bisDatum' => 'required',
+            'vonZeit' => ['required_with:bisZeit'],
+            'bisZeit' => ['required_with:vonZeit'],
         ]);
 
         return Termin::create($request->all());
@@ -108,6 +110,16 @@ class TerminController extends Controller implements _CrudControllerInterface
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required',
+            'kategorie' => 'required',
+            'status' => 'required',
+            'vonDatum' => 'required',
+            'bisDatum' => 'required',
+            'vonZeit' => ['required_with:bisZeit'],
+            'bisZeit' => ['required_with:vonZeit'],
+        ]);
+
         $ausrueckung = Termin::findOrFail($id);
         $ausrueckung->update($request->all());
         return $ausrueckung;
