@@ -7,7 +7,7 @@ class TerminKategorien extends _AbstractOptions
     private $options = array(
         [
             'label' => 'Kirchlich',
-            'value' => 'kirlich',
+            'value' => 'kirchlich',
         ], [
             'label' => 'Konzert',
             'value' => 'konzert',
