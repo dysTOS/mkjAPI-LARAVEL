@@ -5,17 +5,18 @@ namespace App\Configurations\defaults;
 class UiNamingConfig extends _AbstractOptions
 {
     private $options = [
-        'Termine' => 'Termine',
-        'Mitglieder' => 'Mitglieder',
-        'Instrumente' => 'Instrumente',
-        'Gruppen' => 'Register & Gruppen',
         'Archiv' => 'Archiv',
-        'Noten' => 'Noten',
-        'Anschriften' => 'Adressen',
         'Anschrift' => 'Adresse',
+        'Anschriften' => 'Adressen',
+        'Finanzen' => 'Finanzen',
+        'Gruppen' => 'Register & Gruppen',
+        'Instrumente' => 'Instrumente',
+        'Mitglieder' => 'Mitglieder',
+        'Noten' => 'Noten',
+        'Notengattung' => 'Gattung',
         'Notenmappen' => 'Notenmappen',
         'Statistiken' => 'Statistiken',
-        'Finanzen' => 'Finanzen',
+        'Termine' => 'Termine',
     ];
 
     protected function getKey(): string
