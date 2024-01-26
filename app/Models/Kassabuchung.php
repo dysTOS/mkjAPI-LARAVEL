@@ -33,4 +33,9 @@ class Kassabuchung extends Model
         'anschrift_id',
         'kassabuch_id'
     ];
+
+    protected $casts = [
+        'positionen' => 'array',
+        'konditionen' => 'array'
+    ];
 }
