@@ -38,6 +38,8 @@ class KassabuchungController extends Controller implements _CrudControllerInterf
     {
         $kassabuch = $this->validateKassabuch($request);
         $anschrift = $this->validateAnschrift($request);
+        $this->validatePreise($request);
+
 
         $request['anschrift_id'] = $anschrift->id;
         $buchung = Kassabuchung::create($request->all());
@@ -51,6 +53,7 @@ class KassabuchungController extends Controller implements _CrudControllerInterf
         $kassabuch = $this->validateKassabuch($request);
         $buchung = Kassabuchung::findOrFail($request['id']);
         $anschrift = $this->validateAnschrift($request);
+        $this->validatePreise($request);
 
         $request['anschrift_id'] = $anschrift->id;
         $buchung->update($request->all());
@@ -71,8 +74,6 @@ class KassabuchungController extends Controller implements _CrudControllerInterf
 
     private function validateAnschrift(Request $request): Anschrift|Never_
     {
-        //TODO: validate gesamtpreis
-
         $anschrift_id = $request['anschrift_id'];
         if ($anschrift_id != null) {
             return Anschrift::findOrFail($anschrift_id);
@@ -103,5 +104,18 @@ class KassabuchungController extends Controller implements _CrudControllerInterf
         }
 
         return $kassabuch;
+    }
+
+    private function validatePreise(Request $request)
+    {
+        $gesamtpreis = $request['gesamtpreis'];
+        $positionen = $request['positionen'];
+        $summe = 0;
+        foreach ($positionen as $position) {
+            $summe += $position['preis'];
+        }
+        if ($gesamtpreis != $summe) {
+            abort(422, 'Gesamtpreis stimmt nicht mit den Positionen überein!');
+        }
     }
 }
