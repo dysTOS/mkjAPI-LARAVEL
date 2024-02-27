@@ -94,32 +94,14 @@ class TerminController extends Controller implements _CrudControllerInterface
 
     public function create(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'kategorie' => 'required',
-            'status' => 'required',
-            'vonDatum' => 'required',
-            'bisDatum' => 'required',
-            'vonZeit' => ['required_with:bisZeit'],
-            'bisZeit' => ['required_with:vonZeit'],
-        ]);
-
+        $this->validateTermin($request);
         return Termin::create($request->all());
     }
 
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'kategorie' => 'required',
-            'status' => 'required',
-            'vonDatum' => 'required',
-            'bisDatum' => 'required',
-            'vonZeit' => ['required_with:bisZeit'],
-            'bisZeit' => ['required_with:vonZeit'],
-        ]);
-
+        $this->validateTermin($request);
         $ausrueckung = Termin::findOrFail($id);
         $ausrueckung->update($request->all());
         return $ausrueckung;
@@ -129,8 +111,7 @@ class TerminController extends Controller implements _CrudControllerInterface
     public function getList(Request $request)
     {
         $handler = new ListQueryDAO(Termin::class, array('load' => 'gruppe', 'preFilterGruppen' => true));
-        $output = $handler->getListOutput($request);
-        return response($output, 200);
+        return response($handler->getListOutput($request), 200);
     }
 
     public function getById(Request $request, $id)
@@ -141,5 +122,18 @@ class TerminController extends Controller implements _CrudControllerInterface
     public function delete(Request $request, $id)
     {
         return Termin::destroy($id);
+    }
+
+    private function validateTermin(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'kategorie' => 'required',
+            'status' => 'required',
+            'vonDatum' => 'required',
+            'bisDatum' => 'required',
+            'vonZeit' => ['required_with:bisZeit'],
+            'bisZeit' => ['required_with:vonZeit'],
+        ]);
     }
 }
