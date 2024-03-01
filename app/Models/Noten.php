@@ -30,6 +30,8 @@ class Noten extends Model
         'arrangeur',
         'verlag',
         'gattung',
+        'dauer',
+        'schwierigkeit',
         'ausgeliehenAb',
         'ausgeliehenVon',
         'anmerkungen',

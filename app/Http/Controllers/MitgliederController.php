@@ -9,6 +9,7 @@ use App\Models\Mitglieder;
 use App\Models\User;
 use App\Models\Gruppe;
 use App\Configurations\PermissionMap;
+use App\Models\Anschrift;
 use Illuminate\Support\Carbon;
 
 class MitgliederController extends Controller implements _CrudControllerInterface
@@ -60,13 +61,16 @@ class MitgliederController extends Controller implements _CrudControllerInterfac
             'zuname' => 'required',
         ]);
 
-        return Mitglieder::create($request->all());
+        $mitglied = Mitglieder::create($request->all());
+        $this->updateAnschrift($mitglied);
+        return $mitglied;
     }
 
     public function update(Request $request, $id)
     {
         $mitglied = Mitglieder::find($id);
         $mitglied->update($request->all());
+        $this->updateAnschrift($mitglied);
         return $mitglied;
     }
 
@@ -99,6 +103,7 @@ class MitgliederController extends Controller implements _CrudControllerInterfac
 
         $user = $request->user();
         $mitglied = Mitglieder::where('id', '=', $user->mitglied_id)->first();
+        $this->updateAnschrift($mitglied);
 
         if ($mitglied->id != $fields['id']) {
             abort(300, 'Keine Berechtigung!');
@@ -196,5 +201,26 @@ class MitgliederController extends Controller implements _CrudControllerInterfac
             'success' => !$gruppe->mitglieder()->get()->contains($mitglied),
             'message' => 'Mitglied ' . $mitglied->vorname . ' ' . $mitglied->zuname . ' von ' . $gruppe->name . ' entfernt!'
         ], 200);
+    }
+
+    private function updateAnschrift(Mitglieder $mitglied)
+    {
+        $anschrift = $mitglied->anschrift;
+        if($anschrift != null){
+            $anschrift->update($mitglied->toArray());
+            return;
+        }
+
+        $anschrift = Anschrift::whereNotNull('email')->where('email', $mitglied->email)->first();
+        if($anschrift){
+            $anschrift->update($mitglied->toArray());
+            $mitglied->anschrift_id = $anschrift->id;
+            $mitglied->save();
+            return;
+        }
+
+        $anschrift = Anschrift::create($mitglied->toArray());
+        $mitglied->anschrift_id = $anschrift->id;
+        $mitglied->save();
     }
 }

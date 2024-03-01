@@ -38,11 +38,17 @@ class Mitglieder extends Model
         return $this->hasMany(Instrument::class, 'mitglied_id');
     }
 
+    public function anschrift()
+    {
+        return $this->belongsTo(Anschrift::class);
+    }
+
 
     protected $table = 'mitglieder';
     protected $fillable = [
         'vorname',
         'zuname',
+        'anschrift_id',
         'titelVor',
         'titelNach',
         'geburtsdatum',

@@ -15,6 +15,11 @@ class Anschrift extends Model
         return $this->hasMany(Kassabuchung::class);
     }
 
+    public function mitglied()
+    {
+        return $this->hasOne(Mitglieder::class, 'anschrift_id');
+    }
+
     protected $table = 'anschriften';
     protected $fillable = [
         'vorname',

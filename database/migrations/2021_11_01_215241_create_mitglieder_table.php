@@ -21,7 +21,7 @@ class CreateMitgliederTable extends Migration
             $table->foreign('user_id')
             ->references('id')
             ->on('users')
-            ->onDelete('cascade');
+            ->onDelete('set null');
 
             $table->string('vorname');
             $table->string('zuname');

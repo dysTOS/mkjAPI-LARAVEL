@@ -110,12 +110,17 @@ class KassabuchungController extends Controller implements _CrudControllerInterf
     {
         $gesamtpreis = $request['gesamtpreis'];
         $positionen = $request['positionen'];
+
+        if(count($positionen) == 0){
+            return;
+        }
+
         $summe = 0;
         foreach ($positionen as $position) {
-            $summe += $position['preis'];
+            $summe += $position['einzelpreis'];
         }
         if ($gesamtpreis != $summe) {
-            abort(422, 'Gesamtpreis stimmt nicht mit den Positionen überein!');
+            $request['gesamtpreis'] = $summe;
         }
     }
 }
