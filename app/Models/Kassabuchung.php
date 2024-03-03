@@ -25,6 +25,7 @@ class Kassabuchung extends Model
         'typ',
         'nummer',
         'datum',
+        'betreff',
         'gesamtpreis',
         'bezahltDatum',
         'positionen',

@@ -24,7 +24,7 @@ class KassabuchungController extends Controller implements _CrudControllerInterf
 
     public function getList(Request $request)
     {
-        $handler = new ListQueryDAO(Kassabuchung::class);
+        $handler = new ListQueryDAO(Kassabuchung::class, ['load' => ['anschrift']]);
         $output = $handler->getListOutput($request);
         return response($output, 200);
     }
