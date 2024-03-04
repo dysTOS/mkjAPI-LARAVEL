@@ -149,6 +149,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/noten/detach', [NotenController::class, 'detachNoten']);
     Route::get('/noten/search/{name}', [NotenController::class, 'search']);
     Route::get('/noten/termin/{id}', [NotenController::class, 'getNotenOfTermin']);
+    Route::get('/noten/search/{field}/{name}', [NotenController::class, 'searchFieldValues']);
 
     Route::post('/kassabuch/list', [KassabuchController::class, 'getList']);
     Route::get('/kassabuch/{id}', [KassabuchController::class, 'getById']);
@@ -161,9 +162,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/kassabuchung', [KassabuchungController::class, 'create']);
     Route::put('/kassabuchung/{id}', [KassabuchungController::class, 'update']);
     Route::delete('/kassabuchung/{id}', [KassabuchungController::class, 'delete']);
-
-    Route::get('/files', [FileController::class, 'getFiles']);
-    Route::post('/file', [FileController::class, 'storeFile']);
 
     Route::post('/pushsub', [PushNotificationsController::class, 'storeSubscription']);
 });

@@ -57,13 +57,13 @@ class CalendarSubController extends Controller
 
             $vonDateTime = $event->vonDatum;
             $bisDateTime = $event->bisDatum;
-            if ($event->treffzeit) {
-                $vonDateTime = $vonDateTime . " " . $event->treffzeit;
-            }
             if ($event->bisZeit) {
                 $bisDateTime = $bisDateTime . " " . $event->bisZeit;
             }
-            if (!$event->vonZeit) {
+            if ($event->treffzeit) {
+                $vonDateTime = $vonDateTime . " " . $event->treffzeit;
+            }
+            if (!$event->vonZeit && !$event->treffzeit) {
                 $vonDateTime = $vonDateTime . " 00:00";
                 $bisDateTime = $bisDateTime . " 24:00";
                 $calendarEvent->setAllDay(true)

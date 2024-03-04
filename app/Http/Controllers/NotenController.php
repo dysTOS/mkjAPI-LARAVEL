@@ -103,4 +103,20 @@ class NotenController extends Controller implements _CrudControllerInterface
     {
         return Noten::where('titel', 'like', '%' . $name . '%')->get();
     }
+
+    public function searchFieldValues($field, $searchText)
+    {
+        $values = Noten::where($field, 'like', '%' . $searchText . '%')->distinct()->get($field);
+        return response(
+            [
+                "totalCount" => $values->count(),
+                "values" => $values->map(
+                    function ($value) use ($field) {
+                        return array('label' => $value[$field], 'value' => $value[$field]);
+                    })
+            ], 200
+        );
+    }
+
+
 }
