@@ -4,7 +4,6 @@ use App\Http\Controllers\KassabuchungController;
 use App\Http\Controllers\TerminController;
 use App\Http\Controllers\CalendarSubController;
 use App\Http\Controllers\ConfigController;
-use App\Http\Controllers\FileController;
 use App\Http\Controllers\MitgliederController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GruppenController;
@@ -106,6 +105,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/instrumente', [InstrumentenController::class, 'create']);
     Route::put('/instrumente/{id}', [InstrumentenController::class, 'update']);
     Route::delete('/instrumente/{id}', [InstrumentenController::class, 'delete']);
+    Route::get('/instrumente/mitglied/{id}', [InstrumentenController::class, 'getInstrumenteOfMitglied']);
 
     Route::post('/notenmappe/list', [NotenMappenController::class, 'getList']);
     Route::get('/notenmappe/{id}', [NotenMappenController::class, 'getById']);
