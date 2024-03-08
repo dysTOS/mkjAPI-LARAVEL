@@ -24,8 +24,8 @@ class XXXTestController extends Controller
     {
         //test your shit here Rolando
 
-        $controller = new KassabuchungController();
-        return $controller->create($request);
+        $controller = new BewertungenController();
+        $controller->voteNoten($request);
     }
 
     public function testPut(Request $request)

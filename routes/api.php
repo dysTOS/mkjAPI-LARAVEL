@@ -19,6 +19,7 @@ use App\Http\Controllers\XXXTestController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnschriftenController;
 use App\Http\Controllers\KassabuchController;
+use App\Http\Controllers\BewertungenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -162,6 +163,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/kassabuchung', [KassabuchungController::class, 'create']);
     Route::put('/kassabuchung/{id}', [KassabuchungController::class, 'update']);
     Route::delete('/kassabuchung/{id}', [KassabuchungController::class, 'delete']);
+
+    Route::post('bewertungen/noten/set', [BewertungenController::class, 'voteNoten']);
+    Route::post('bewertungen/noten/get', [BewertungenController::class, 'getNotenVote']);
+
 
     Route::post('/pushsub', [PushNotificationsController::class, 'storeSubscription']);
 });

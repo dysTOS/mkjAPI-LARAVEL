@@ -22,6 +22,11 @@ class Noten extends Model
             'mappe_noten', 'noten_id', 'mappe_id')->withPivot('verzeichnisNr');
     }
 
+    public function bewertungen()
+    {
+        return $this->morphMany(Bewertung::class, 'bewertbar');
+    }
+
     protected $table = 'noten';
     protected $fillable = [
         'inventarId',

@@ -43,6 +43,11 @@ class Mitglieder extends Model
         return $this->belongsTo(Anschrift::class);
     }
 
+    public function bewertungen()
+    {
+        return $this->morphMany(Bewertung::class, 'bewertbar');
+    }
+
 
     protected $table = 'mitglieder';
     protected $fillable = [
