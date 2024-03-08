@@ -32,11 +32,21 @@ class TeilnahmenController extends Controller
             'termin_id' => 'required',
         ]);
 
-        return Gruppe::where('register', true)->with([
-            'mitglieder.teilnahmen' => function ($query) use ($fields) {
-                $query->where('termin_id', $fields['termin_id']);
+        $termin = Termin::findOrFail($fields['termin_id']);
+
+        if($termin->gruppe_id){
+            return Gruppe::where('id', $termin->gruppe_id)->with([
+                'mitglieder.teilnahmen' => function ($query) use ($fields) {
+                    $query->where('termin_id', $fields['termin_id']);
+                }
+            ])->orderBy('name')->get();
+        }else{
+            return Gruppe::where('register', true)->with([
+                'mitglieder.teilnahmen' => function ($query) use ($fields) {
+                    $query->where('termin_id', $fields['termin_id']);
+                }
+                ])->orderBy('name')->get();
             }
-        ])->orderBy('name')->get();
     }
 
     public function updateTeilnahme(Request $request)
