@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Throwable;
 
 class TestJob implements ShouldQueue
 {
@@ -26,5 +27,13 @@ class TestJob implements ShouldQueue
     public function handle(): void
     {
         echo 'handle';
+    }
+
+    /**
+     * Handle a job failure.
+     */
+    public function failed(?Throwable $exception): void
+    {
+        // Send user notification of failure, etc...
     }
 }
