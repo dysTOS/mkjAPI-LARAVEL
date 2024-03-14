@@ -117,7 +117,8 @@ class KassabuchungController extends Controller implements _CrudControllerInterf
 
         $summe = 0;
         foreach ($positionen as $position) {
-            $summe += $position['einzelpreis'];
+            $position['gesamtpreis'] = $position['menge'] * $position['einzelpreis'];
+            $summe += $position['gesamtpreis'];
         }
         if ($gesamtpreis != $summe) {
             $request['gesamtpreis'] = $summe;
