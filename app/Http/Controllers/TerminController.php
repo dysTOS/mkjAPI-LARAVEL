@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Configurations\PermissionMap;
 use App\DAO\ListQueryDAO;
+use App\Events\TerminCreated;
 use App\Models\Termin;
 use App\Models\Gruppe;
 use App\Models\Mitglieder;
+use App\Models\User;
+use App\Notifications\TerminCreated as NotificationsTerminCreated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Validator;
 
 class TerminController extends Controller implements _CrudControllerInterface
@@ -95,7 +99,8 @@ class TerminController extends Controller implements _CrudControllerInterface
     public function create(Request $request)
     {
         $this->validateTermin($request);
-        return Termin::create($request->all());
+        $termin = Termin::create($request->all());
+        return $termin;
     }
 
 
@@ -116,7 +121,11 @@ class TerminController extends Controller implements _CrudControllerInterface
 
     public function getById(Request $request, $id)
     {
-        return Termin::findOrFail($id);
+        $termin = Termin::findOrFail($id);
+        // TerminCreated::dispatch($termin);
+        $users = User::all();
+        Notification::sendNow($users, new NotificationsTerminCreated($termin));
+        return $termin;
     }
 
     public function delete(Request $request, $id)

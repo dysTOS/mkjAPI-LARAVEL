@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnschriftenController;
 use App\Http\Controllers\KassabuchController;
 use App\Http\Controllers\BewertungenController;
+use App\Http\Controllers\UserNotificationController;
+use Illuminate\Support\Facades\Broadcast;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,7 +44,6 @@ Route::get('/calendarsub/{id}', [CalendarSubController::class, 'getSubscription'
 Route::get('/configs', [ConfigController::class, 'getUiConfigs']);
 
 //Test Routes
-Route::get('/push', [PushNotificationsController::class, 'push']);
 Route::get('/savepost', [WordPressController::class, 'savepost']);
 
 Route::get('/test', [XXXTestController::class, 'testGet']);
@@ -167,6 +168,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('bewertungen/noten/set', [BewertungenController::class, 'voteNoten']);
     Route::post('bewertungen/noten/get', [BewertungenController::class, 'getNotenVote']);
 
-
-    Route::post('/pushsub', [PushNotificationsController::class, 'storeSubscription']);
+    Route::get('usernotifications/get', [UserNotificationController::class, 'getNotifications']);
+    Route::get('usernotifications/getunread', [UserNotificationController::class, 'getUnreadNotifications']);
+    Route::get('usernotifications/markasread/{id}', [UserNotificationController::class, 'markAsRead']);
+    Route::get('usernotifications/markallasread', [UserNotificationController::class, 'markAllAsRead']);
 });

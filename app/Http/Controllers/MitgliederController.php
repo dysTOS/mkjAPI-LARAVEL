@@ -9,7 +9,6 @@ use App\Models\Mitglieder;
 use App\Models\User;
 use App\Models\Gruppe;
 use App\Configurations\PermissionMap;
-use App\Jobs\TestJob;
 use App\Models\Anschrift;
 use Illuminate\Support\Carbon;
 
@@ -27,8 +26,6 @@ class MitgliederController extends Controller implements _CrudControllerInterfac
     {
         $handler = new ListQueryDAO(Mitglieder::class, array('load' => 'gruppen'));
         $output = $handler->getListOutput($request);
-        TestJob::dispatch();
-
         return response($output, 200);
     }
 
