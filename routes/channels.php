@@ -14,9 +14,6 @@ use Illuminate\Support\Facades\Broadcast;
 */
 
 
-Broadcast::channel('termin', function ($user) {
-    return true;
-});
-Broadcast::channel('usernotifications.{userId}', function ($user, $userId) {
-    return $user->id === $userId;
+Broadcast::channel('users.{userId}', function ($user, $userId) {
+    return $user->id == $userId;
 });

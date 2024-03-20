@@ -10,7 +10,6 @@ use App\Http\Controllers\GruppenController;
 use App\Http\Controllers\InstrumentenController;
 use App\Http\Controllers\NotenController;
 use App\Http\Controllers\NotenMappenController;
-use App\Http\Controllers\PushNotificationsController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StatistikController;
 use App\Http\Controllers\TeilnahmenController;
@@ -21,7 +20,6 @@ use App\Http\Controllers\AnschriftenController;
 use App\Http\Controllers\KassabuchController;
 use App\Http\Controllers\BewertungenController;
 use App\Http\Controllers\UserNotificationController;
-use Illuminate\Support\Facades\Broadcast;
 
 /*
 |--------------------------------------------------------------------------

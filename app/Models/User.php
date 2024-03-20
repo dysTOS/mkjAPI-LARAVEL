@@ -29,7 +29,7 @@ class User extends Authenticatable
      */
     public function receivesBroadcastNotificationsOn(): string
     {
-        return 'usernotifications.'.$this->id;
+        return 'users.'.$this->id;
     }
 
     protected $table = 'users';

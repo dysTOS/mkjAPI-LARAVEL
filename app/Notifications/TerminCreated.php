@@ -3,14 +3,18 @@
 namespace App\Notifications;
 
 use App\Models\Termin;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 
 class TerminCreated extends Notification
 {
-    use Queueable;
+    use Queueable, InteractsWithSockets, Dispatchable;
 
     /**
      * Create a new notification instance.
@@ -32,6 +36,12 @@ class TerminCreated extends Notification
         return ['broadcast', 'database'];
     }
 
+    public function broadcastAs()
+    {
+    return 'termin.created';
+    }
+
+
     /**
      * Get the mail representation of the notification.
      */
@@ -52,4 +62,12 @@ class TerminCreated extends Notification
     {
         return $this->termin->toArray();
     }
+
+    /**
+ * Get the broadcastable representation of the notification.
+ */
+public function toBroadcast(object $notifiable): BroadcastMessage
+{
+    return new BroadcastMessage($this->termin->toArray());
+}
 }
