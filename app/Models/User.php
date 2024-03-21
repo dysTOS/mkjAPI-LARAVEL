@@ -24,15 +24,6 @@ class User extends Authenticatable
         return $this->belongsTo(Mitglieder::class, 'user_id');
     }
 
-    // /**
-    //  * The channels the user receives notification broadcasts on.
-    //  */
-    // public function receivesBroadcastNotificationsOn(): string
-    // {
-    //     \Illuminate\Support\Facades\Log::info("receivesBroadcastNotificationsOn");
-    //     return 'users.'.$this->id;
-    // }
-
     protected $table = 'users';
 
     /**

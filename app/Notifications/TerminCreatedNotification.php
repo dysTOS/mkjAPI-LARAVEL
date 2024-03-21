@@ -13,7 +13,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 
-class TerminCreated extends Notification
+class TerminCreatedNotification extends Notification
 {
     use Queueable, InteractsWithSockets;
 
@@ -24,7 +24,6 @@ class TerminCreated extends Notification
         public Termin $termin
     )
     {
-        \Illuminate\Support\Facades\Log::info("TerminCreated constructor");
     }
 
     /**
@@ -34,12 +33,8 @@ class TerminCreated extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['broadcast'];
+        return ['broadcast', 'database'];
     }
-
-
-
-
 
     /**
      * Get the mail representation of the notification.
@@ -62,12 +57,11 @@ class TerminCreated extends Notification
         return $this->termin->toArray();
     }
 
-    /**
- * Get the broadcastable representation of the notification.
- */
-public function toBroadcast(object $notifiable): BroadcastMessage
-{
-    \Illuminate\Support\Facades\Log::info("TerminCreated toBroadcast");
-    return new BroadcastMessage($this->termin->toArray());
-}
+        /**
+     * Get the broadcastable representation of the notification.
+     */
+    public function toBroadcast(object $notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage(['data' => $this->termin->toArray()]);
+    }
 }

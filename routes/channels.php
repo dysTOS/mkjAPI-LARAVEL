@@ -14,10 +14,8 @@ use Illuminate\Support\Facades\Broadcast;
 */
 
 
-Broadcast::channel('App.User.{userId}', function ($user, $userId) {
+Broadcast::channel('App.Models.User.{userId}', function ($user, $userId) {
     return $user->id == $userId;
 });
 
-Broadcast::channel('test-channel', function ($user) {
-    return true;
-});
+

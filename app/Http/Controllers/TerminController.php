@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Configurations\PermissionMap;
 use App\DAO\ListQueryDAO;
-use App\Events\testbroadcast;
 use App\Models\Termin;
 use App\Models\Gruppe;
 use App\Models\Mitglieder;
 use App\Models\User;
-use App\Notifications\TerminCreated as NotificationsTerminCreated;
+use App\Notifications\TerminCreatedNotification;
+use App\Notifications\TerminUpdatedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Validator;
@@ -100,6 +100,10 @@ class TerminController extends Controller implements _CrudControllerInterface
     {
         $this->validateTermin($request);
         $termin = Termin::create($request->all());
+
+        $notification = new TerminCreatedNotification($termin);
+        $this->notifyUsers($notification, $termin, $request);
+
         return $termin;
     }
 
@@ -110,10 +114,8 @@ class TerminController extends Controller implements _CrudControllerInterface
         $termin = Termin::findOrFail($id);
         $termin->update($request->all());
 
-        $users = User::all();
-        // $request->user()->notify(new NotificationsTerminCreated($termin));
-        Notification::send($request->user(), new NotificationsTerminCreated($termin));
-        // TestBroadcast::dispatch($request->user()->id);
+        $notification = new TerminUpdatedNotification($termin);
+        $this->notifyUsers($notification, $termin, $request);
 
         return $termin;
     }
@@ -147,5 +149,18 @@ class TerminController extends Controller implements _CrudControllerInterface
             'vonZeit' => ['required_with:bisZeit'],
             'bisZeit' => ['required_with:vonZeit'],
         ]);
+    }
+
+    private function notifyUsers($notification, Termin $termin, Request $request)
+    {
+        $users = [];
+        if($termin->gruppe_id){
+            $gruppe = Gruppe::find($termin->gruppe_id);
+            $users = $gruppe->mitglieder()->users();
+        } else{
+            $users = User::all();
+        }
+        $users = $users->where('id', '!=', $request->user()->id);
+        Notification::send($users, $notification);
     }
 }
