@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Configurations\PermissionMap;
 use App\DAO\ListQueryDAO;
+use App\Events\testbroadcast;
 use App\Models\Termin;
 use App\Models\Gruppe;
 use App\Models\Mitglieder;
@@ -110,8 +111,9 @@ class TerminController extends Controller implements _CrudControllerInterface
         $termin->update($request->all());
 
         $users = User::all();
-        $request->user()->notify(new NotificationsTerminCreated($termin));
-        // Notification::send($request->user(), new NotificationsTerminCreated($termin), ['broadcast']);
+        // $request->user()->notify(new NotificationsTerminCreated($termin));
+        Notification::send($request->user(), new NotificationsTerminCreated($termin));
+        // TestBroadcast::dispatch($request->user()->id);
 
         return $termin;
     }

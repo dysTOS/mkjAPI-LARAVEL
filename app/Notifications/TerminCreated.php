@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Models\Termin;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -14,7 +15,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 
 class TerminCreated extends Notification
 {
-    use Queueable, InteractsWithSockets, Dispatchable;
+    use Queueable, InteractsWithSockets;
 
     /**
      * Create a new notification instance.
@@ -23,7 +24,7 @@ class TerminCreated extends Notification
         public Termin $termin
     )
     {
-        //
+        \Illuminate\Support\Facades\Log::info("TerminCreated constructor");
     }
 
     /**
@@ -33,13 +34,11 @@ class TerminCreated extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['broadcast', 'database'];
+        return ['broadcast'];
     }
 
-    public function broadcastAs()
-    {
-    return 'termin.created';
-    }
+
+
 
 
     /**
@@ -68,6 +67,7 @@ class TerminCreated extends Notification
  */
 public function toBroadcast(object $notifiable): BroadcastMessage
 {
+    \Illuminate\Support\Facades\Log::info("TerminCreated toBroadcast");
     return new BroadcastMessage($this->termin->toArray());
 }
 }
