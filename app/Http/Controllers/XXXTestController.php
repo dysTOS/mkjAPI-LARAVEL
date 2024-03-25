@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Configurations\defaults\TerminKategorien;
 use App\Configurations\defaults\UiNamingConfig;
+use App\Notifications\TestSocket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
+
 
 class XXXTestController extends Controller
 {
@@ -17,7 +20,7 @@ class XXXTestController extends Controller
 //        return $class->config;
 
         $controller = new KassabuchController();
-        return $controller->getList($request);
+        // return $controller->getList($request);
     }
 
     public function testPost(Request $request)
@@ -25,7 +28,7 @@ class XXXTestController extends Controller
         //test your shit here Rolando
 
         $controller = new BewertungenController();
-        $controller->voteNoten($request);
+        // $controller->voteNoten($request);
     }
 
     public function testPut(Request $request)
@@ -38,5 +41,12 @@ class XXXTestController extends Controller
     {
         //test your shit here Rolando
         return "testDelete";
+    }
+
+    public function testSocket(Request $request)
+    {
+        $data = $request['data'];
+        Notification::send($request->user(), new TestSocket($data));
+        return [];
     }
 }

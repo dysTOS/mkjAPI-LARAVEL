@@ -54,6 +54,8 @@ Route::delete('/test', [XXXTestController::class, 'testDelete']);
 
 //Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('testsocket', [XXXTestController::class, 'testSocket']);
+
     Route::post('/configs', [ConfigController::class, 'setUiConfigs']);
 
     Route::post('/user', [AuthController::class, 'getCurrentUser']);

@@ -46,6 +46,9 @@ class TestSocket extends Notification
      */
     public function toArray(object $notifiable): array
     {
-        return array(json_encode($this->data));
+        $data = json_encode($this->data);
+        return array($data);
     }
+
+
 }
