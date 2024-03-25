@@ -8,7 +8,7 @@ use App\Models\Noten;
 
 class BewertungenController extends Controller
 {
-    public function voteNoten(Request $request)
+    public function setNotenVote(Request $request)
     {
         $fields = $request->validate([
             'noten_id' => 'required'
@@ -34,7 +34,8 @@ class BewertungenController extends Controller
 
         return response(
             [
-                'message' => 'Bewertung gespeichert!'
+                'message' => 'Bewertung gespeichert!',
+                'bewertung' => $noten->bewertung
             ],
             200
         );

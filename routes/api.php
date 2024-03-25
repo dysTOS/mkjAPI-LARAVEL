@@ -163,7 +163,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/kassabuchung/{id}', [KassabuchungController::class, 'update']);
     Route::delete('/kassabuchung/{id}', [KassabuchungController::class, 'delete']);
 
-    Route::post('bewertungen/noten/set', [BewertungenController::class, 'voteNoten']);
+    Route::post('bewertungen/noten/set', [BewertungenController::class, 'setNotenVote']);
     Route::post('bewertungen/noten/get', [BewertungenController::class, 'getNotenVote']);
 
     Route::get('usernotifications/get', [UserNotificationController::class, 'getNotifications']);
