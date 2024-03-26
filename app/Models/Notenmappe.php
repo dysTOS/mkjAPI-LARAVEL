@@ -20,6 +20,7 @@ class Notenmappe extends Model
     protected $fillable = [
         'name',
         'hatVerzeichnis',
-        'color'
+        'color',
+        'dauer'
     ];
 }

@@ -6,7 +6,9 @@ use App\Configurations\PermissionMap;
 use App\DAO\ListQueryDAO;
 use App\Models\Noten;
 use App\Models\Notenmappe;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class NotenMappenController extends Controller implements _CrudControllerInterface
 {
@@ -90,6 +92,8 @@ class NotenMappenController extends Controller implements _CrudControllerInterfa
         }
         $mappe->noten()->attach($noten);
 
+        $this->calculateDauer($mappe, $mappe->noten()->get());
+
         return response([
             'success' => $mappe->noten()->get()->contains($noten),
             'message' => 'Musikstück ' . $noten->titel . ' zugewiesen!'
@@ -107,6 +111,8 @@ class NotenMappenController extends Controller implements _CrudControllerInterfa
         $mappe = Notenmappe::find($fields['mappe_id']);
         $mappe->noten()->detach($noten);
 
+        $this->calculateDauer($mappe, $mappe->noten()->get());
+
         return response([
             'success' => !$mappe->noten()->get()->contains($noten),
             'message' => 'Musikstück ' . $noten->titel . ' entfernt!'
@@ -122,6 +128,27 @@ class NotenMappenController extends Controller implements _CrudControllerInterfa
         $mappe = Notenmappe::findOrFail($request['id']);
 
         return $mappe->noten()->get();
+    }
+
+    private function calculateDauer($mappe, $noten)
+    {
+        // Convert each time duration to seconds and sum them up
+        $totalSeconds = $noten->map(function ($note) {
+            if($note['dauer'] == null) return 0;
+            $parts = explode(':', $note['dauer']);
+            $hours = (int)$parts[0];
+            $minutes = (int)$parts[1];
+            $seconds = (int)$parts[2];
+            return $hours * 3600 + $minutes * 60 + $seconds;
+        })->sum();
+
+        $hours = floor($totalSeconds / 3600);
+        $minutes = floor(($totalSeconds % 3600) / 60);
+        $seconds = $totalSeconds % 60;
+        $dauer= sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+
+        $mappe->dauer = $dauer;
+        $mappe->save();
     }
 
 }
