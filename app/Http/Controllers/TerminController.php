@@ -112,10 +112,10 @@ class TerminController extends Controller implements _CrudControllerInterface
     {
         $this->validateTermin($request);
         $termin = Termin::findOrFail($id);
-        $termin->update($request->all());
+        // $termin->update($request->all());
 
         $notification = new TerminUpdatedNotification($termin);
-        $this->notifyUsers($notification, $termin, $request);
+        return $this->notifyUsers($notification, $termin, $request);
 
         return $termin;
     }
@@ -156,7 +156,8 @@ class TerminController extends Controller implements _CrudControllerInterface
         $users = [];
         if($termin->gruppe_id){
             $gruppe = Gruppe::find($termin->gruppe_id);
-            $users = $gruppe->mitglieder()->users();
+            $mitgliedIds = $gruppe->mitglieder()->pluck('id');
+            $users = User::whereIn('mitglied_id', $mitgliedIds);
         } else{
             $users = User::all();
         }
