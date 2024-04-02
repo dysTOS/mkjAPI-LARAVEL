@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnschriftenController;
 use App\Http\Controllers\KassabuchController;
 use App\Http\Controllers\BewertungenController;
+use App\Http\Controllers\KommentarController;
 use App\Http\Controllers\UserNotificationController;
 
 /*
@@ -172,4 +173,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('usernotifications/getunread', [UserNotificationController::class, 'getUnreadNotifications']);
     Route::get('usernotifications/markasread/{id}', [UserNotificationController::class, 'markAsRead']);
     Route::get('usernotifications/markallasread', [UserNotificationController::class, 'markAllAsRead']);
+
+    Route::post('kommentare/list', [KommentarController::class, 'getList']);
+    Route::get('kommentare/{id}', [KommentarController::class, 'getById']);
+    Route::post('/kommentare', [KommentarController::class, 'create']);
+    Route::put('/kommentare/{id}', [KommentarController::class, 'update']);
+    Route::delete('/kommentare/{id}', [KommentarController::class, 'delete']);
+
 });

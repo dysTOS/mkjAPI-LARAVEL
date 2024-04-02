@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Commentable;
 use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Noten extends Model
 {
-    use HasFactory, Uuid;
+    use HasFactory, Uuid, Commentable;
 
     public function ausrueckung()
     {
@@ -25,6 +26,11 @@ class Noten extends Model
     public function bewertungen()
     {
         return $this->morphMany(Bewertung::class, 'bewertbar');
+    }
+
+    public function getMorphClass()
+    {
+        return 'noten';
     }
 
     protected $table = 'noten';
