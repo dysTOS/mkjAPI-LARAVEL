@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\classes\ModelType;
+use App\Configurations\PermissionMap;
 use App\DAO\ListQueryDAO;
 use App\Models\Kommentar;
 use App\Models\Mitglieder;
@@ -31,13 +32,14 @@ class KommentarController extends Controller implements _CrudControllerInterface
             'commentable_id' => 'required',
         ]);
 
-        $model = $this->getModel($request->commentable_type, $request->commentable_id);
+        $model = ModelType::getModel($request->commentable_type, $request->commentable_id);
         $mitglied = Mitglieder::findOrFail($request->user()->mitglied_id);
 
         $kommentar = new Kommentar();
         $kommentar->text = $request->text;
         $kommentar->mitglied_id = $mitglied->id;
         $kommentar->mitglied_name = $mitglied->vorname . ' ' . $mitglied->zuname;
+        $kommentar->number_child_comments = 0;
 
         if($request->parent_comment_id)
         {
@@ -75,21 +77,26 @@ class KommentarController extends Controller implements _CrudControllerInterface
         $kommentar = Kommentar::findOrFail($id);
         $user = $request->user();
 
-        if ($user->mitglied_id !== $kommentar->mitglied_id &&
-         !$user->hasRole('admin'))
+        if($user->mitglied_id === $kommentar->mitglied_id && $kommentar->mitglied_name != '')
+        {
+            $kommentar->text = 'Dieser Kommentar wurde vom Kommentator selbst gelöscht!';
+            $kommentar->mitglied_name = '';
+            $kommentar->save();
+            return $kommentar;
+        }
+
+        if (!$user->hasPermission(PermissionMap::USER_DELETE))
         {
             abort(403, 'Keine Berechtigung!');
         }
 
-        return Kommentar::destroy($id);
-    }
-
-    private function getModel($commentableType, $id)
-    {
-        if($commentableType === ModelType::NOTEN)
+        if($kommentar->parent_comment_id)
         {
-            return Noten::findOrFail($id);
+            $parentComment = Kommentar::findOrFail($kommentar->parent_comment_id);
+            $parentComment->number_child_comments--;
+            $parentComment->save();
         }
-        return abort(404, 'Model-Typ nicht gefunden!');
+
+        return Kommentar::destroy($id);
     }
 }
