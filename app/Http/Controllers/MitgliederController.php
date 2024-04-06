@@ -71,6 +71,14 @@ class MitgliederController extends Controller implements _CrudControllerInterfac
         $mitglied = Mitglieder::find($id);
         $mitglied->update($request->all());
         $this->updateAnschrift($mitglied);
+
+        $user = $mitglied->user();
+        if($user){
+            $user->update(array(
+                'name' => $mitglied->vorname . ' ' . $mitglied->zuname,
+                'email' => $mitglied->email
+            ));
+        }
         return $mitglied;
     }
 
@@ -103,11 +111,11 @@ class MitgliederController extends Controller implements _CrudControllerInterfac
 
         $user = $request->user();
         $mitglied = Mitglieder::where('id', '=', $user->mitglied_id)->first();
-        $this->updateAnschrift($mitglied);
 
-        if ($mitglied->id != $fields['id']) {
+        if ($mitglied->id != $fields['id'] && $mitglied->id != $user->mitglied_id) {
             abort(300, 'Keine Berechtigung!');
         }
+
 
         $mitglied->update(array(
             'vorname' => $request['vorname'],
@@ -124,6 +132,11 @@ class MitgliederController extends Controller implements _CrudControllerInterfac
             'telefonMobil' => $request['telefonMobil'],
             'email' => $request['email'],
             'beruf' => $request['beruf'],
+        ));
+        $this->updateAnschrift($mitglied);
+        $user->update(array(
+            'name' => $mitglied->vorname . ' ' . $mitglied->zuname,
+            'email' => $mitglied->email
         ));
 
         return $mitglied;

@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Traits\Uuid;
+use App\Notifications\ResetPasswordNotification;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,7 +14,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, Uuid;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, Uuid, CanResetPassword;
 
     /**
      * @var mixed
@@ -22,6 +24,18 @@ class User extends Authenticatable
     public function mitglied()
     {
         return $this->belongsTo(Mitglieder::class, 'user_id');
+    }
+
+        /**
+     * Send a password reset notification to the user.
+     *
+     * @param  string  $token
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $url = env('FE_URL').'/reset-password?token='.$token;
+
+        $this->notify(new ResetPasswordNotification($url));
     }
 
     protected $table = 'users';

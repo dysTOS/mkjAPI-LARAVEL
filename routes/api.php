@@ -41,6 +41,8 @@ Route::get('/ausrueckungenaktuellpublic', [TerminController::class, 'getActualYe
 Route::get('/calendarsub', [CalendarSubController::class, 'getSubscription']);
 Route::get('/calendarsub/{id}', [CalendarSubController::class, 'getSubscription']);
 Route::get('/configs', [ConfigController::class, 'getUiConfigs']);
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('guest')->name('password.email');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('guest')->name('password.update');
 
 //Test Routes
 Route::get('/savepost', [WordPressController::class, 'savepost']);
