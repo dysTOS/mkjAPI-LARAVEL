@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -155,27 +156,38 @@ class AuthController extends Controller
 
         $user = User::where('email', $fields['email'])->first();
 
+        if(!$user){
+            abort(404, 'E-Mail nicht gefunden! Entweder falsch eingegeben oder nicht registriert!');
+        }
+
         $user->sendPasswordResetNotification(
             Password::createToken($user)
         );
         return response([
-            'message' => 'Eine E-Mail wurde an die angegebene E-Mail-Adresse gesendet!'
+            'message' => 'Ein Link zum Zurücksetzen deines Passworts wurde an deine E-Mail Adresse gesendet!'
         ]);
     }
 
     public function resetPassword(Request $request)
     {
-        $request->validate([
+        $fields = $request->validate([
             'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+            // 'password' => 'required|min:8|confirmed',
+            'password' => 'required',
         ]);
+
+        $user = User::where('email', $fields['email'])->first();
+
+        if(!$user){
+            abort(404, 'Reset-Link ungültig!');
+        }
 
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function (User $user, string $password) {
                 $user->forceFill([
-                    'password' => Hash::make($password)
+                    'passwort' => Hash::make($password)
                 ])->setRememberToken(Str::random(60));
 
                 $user->save();
@@ -185,7 +197,9 @@ class AuthController extends Controller
         );
 
         return $status === Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
-                    : back()->withErrors(['email' => [__($status)]]);
+                    ? response([
+                        'message' => 'Passwort wurde gesetzt!'
+                    ], 200)
+                    : abort(500, 'Fehler beim Zurücksetzen des Passworts!');
     }
 }
