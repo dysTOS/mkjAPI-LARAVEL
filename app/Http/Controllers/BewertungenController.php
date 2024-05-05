@@ -8,6 +8,7 @@ use App\Models\Noten;
 
 class BewertungenController extends Controller
 {
+    //TODO: make generic for all models
     public function setNotenVote(Request $request)
     {
         $fields = $request->validate([

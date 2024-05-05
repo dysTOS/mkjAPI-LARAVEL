@@ -85,7 +85,7 @@ class KommentarController extends Controller implements _CrudControllerInterface
             return $kommentar;
         }
 
-        if (!$user->hasPermission(PermissionMap::USER_DELETE))
+        if (!$user->permissions(PermissionMap::USER_DELETE))
         {
             abort(403, 'Keine Berechtigung!');
         }
