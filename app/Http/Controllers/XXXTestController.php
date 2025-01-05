@@ -7,20 +7,17 @@ use App\Configurations\defaults\UiNamingConfig;
 use App\Notifications\TestSocket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
+use RuntimeException;
 
 
 class XXXTestController extends Controller
 {
     public function testGet(Request $request)
     {
-        //test your shit here Rolando
-//        $class = new TerminKategorien();
-//        $naming = new UiNamingConfig();
-//        return $naming->toJson();
-//        return $class->config;
-
-        $controller = new KassabuchController();
-        // return $controller->getList($request);
+        $controller = new FileHandler("Fotoarchiv/");
+        //return Storage::files("Fotoarchiv/2023");
+        return $controller->download('2023/IMG-20230715-WA0017.jpg');
     }
 
     public function testPost(Request $request)

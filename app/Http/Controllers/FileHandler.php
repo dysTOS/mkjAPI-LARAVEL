@@ -17,6 +17,7 @@ class FileHandler
     }
 
     public function download($filePath) {
-        return Storage::download($this->$pathPrefix . $filePath);
+        $path = $this->pathPrefix . $filePath;
+        return Storage::download($path);
     }
 }

@@ -14,8 +14,9 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
         "laravel/ui": "*",
-        "spatie/laravel-permission": "^6.4",
-        "plesk/ext-laravel-integration": "*"
+        "league/flysystem-webdav": "^3.29",
+        "plesk/ext-laravel-integration": "*",
+        "spatie/laravel-permission": "^6.4"
     },
     "require-dev": {
         "spatie/laravel-ignition": "^2.0",

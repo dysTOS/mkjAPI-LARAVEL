@@ -52,6 +52,12 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
 
+        'nextcloud' => [
+            'driver' => 'nextcloud',
+            'url' => env('NEXTCLOUD_URL'),
+            'user' => env('NEXTCLOUD_USER'),
+            'password' => env('NEXTCLOUD_PASSWORD'),
+        ]
     ],
 
     /*
