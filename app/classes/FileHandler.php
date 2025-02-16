@@ -16,6 +16,10 @@ class FileHandler
         }
     }
 
+    public function getDirectories($path = "") {
+        return Storage::directories($this->pathPrefix . $path, false);
+    }
+
     public function download($filePath) {
         $path = $this->pathPrefix . $filePath;
         return Storage::download($path);
