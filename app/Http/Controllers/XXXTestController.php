@@ -2,29 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Configurations\defaults\TerminKategorien;
-use App\Configurations\defaults\UiNamingConfig;
+use App\classes\FileHandler;
 use App\Notifications\TestSocket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
-use RuntimeException;
 
 
 class XXXTestController extends Controller
 {
     public function testGet(Request $request)
     {
-        $controller = new FileHandler("Fotoarchiv/");
-        //return Storage::files("Fotoarchiv/2023");
+        $controller = new FileHandler("Documents/");
+        return $controller->getFolders();
         return $controller->download('2023/IMG-20230715-WA0017.jpg');
     }
 
     public function testPost(Request $request)
     {
         //test your shit here Rolando
-
-        $controller = new BewertungenController();
+        $controller = new FileHandler("Fotoarchiv/");
+        return $controller->upload($request);
         // $controller->voteNoten($request);
     }
 
